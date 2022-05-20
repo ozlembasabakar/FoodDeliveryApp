@@ -5,17 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -173,12 +167,13 @@ fun DetailScreen(navController: NavController) {
 
         if (data != null) {
             //TODO: show only design screen
-            Column(horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(
-                    rememberScrollState()
-                )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(
+                        rememberScrollState()
+                    )
             ) {
                 DetailHeader(navController = navController)
 
@@ -200,6 +195,8 @@ fun DetailScreen(navController: NavController) {
                         .height(80.dp)
                 )
                 {
+                    val count = remember { mutableStateOf(0)}
+
                     Column(verticalArrangement = Arrangement.SpaceBetween) {
                         Text(
                             text = data.title,
@@ -227,18 +224,21 @@ fun DetailScreen(navController: NavController) {
                     }
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        BoxWithRes(
+
+                        BoxWithResCalc(
                             resId = R.drawable.minus,
                             description = "Minus",
+                            iconColor = BlackTextColor,
                             boxSize = 36,
-                            iconSize = 14,
-                            iconColor = BlackTextColor
-                        )
+                            iconSize = 14
+                        ) {
+                            count.value--
+                        }
 
                         Spacer(modifier = Modifier.width(14.dp))
 
                         Text(
-                            text = "01",
+                            text = "${count.value}",
                             style = Typography.body2,
                             color = TextColor,
                             fontSize = 18.sp,
@@ -246,16 +246,17 @@ fun DetailScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.width(14.dp))
 
-                        BoxWithRes(
+                        BoxWithResCalc(
                             resId = R.drawable.add,
                             description = "Add",
                             boxSize = 36,
                             iconSize = 24,
                             iconColor = Color.White,
                             bgColor = Yellow500
-                        )
+                        ) {
+                            count.value++
+                        }
                     }
-
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -486,6 +487,37 @@ fun FoodDetailBox(data: PopularData) {
 
             }
         }
+    }
+}
+
+@Composable
+fun BoxWithResCalc(
+    resId: Int,
+    description: String,
+    bgColor: Color? = CardItemBg,
+    iconColor: Color? = IconColor,
+    boxSize: Int? = 40,
+    iconSize: Int? = 24,
+    onClick: ()-> Unit
+) {
+
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(backgroundColor = bgColor!!),
+        contentPadding = PaddingValues(
+            start = 10.dp,
+            top = 10.dp,
+            end = 10.dp,
+            bottom = 10.dp),
+        modifier = Modifier.size(boxSize!!.dp)
+
+    ) {
+        Icon(
+            painter = painterResource(id = resId),
+            contentDescription = description,
+            modifier = Modifier.size(iconSize!!.dp),
+            tint = iconColor!!
+        )
     }
 }
 
