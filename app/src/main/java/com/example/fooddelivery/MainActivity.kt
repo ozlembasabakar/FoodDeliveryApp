@@ -205,33 +205,20 @@ fun DetailScreen(navController: NavController) {
                             fontSize = 22.sp
                         )
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(verticalAlignment = Alignment.CenterVertically) 
+                        {
                             Text(
-                                buildAnnotatedString {
-                                    withStyle(
-                                        style = SpanStyle(
-                                            color = Orange500,
-                                            fontStyle = Typography.body1.fontStyle,
-                                            fontSize = 20.sp
-                                        )
-                                    ) {
-                                        append(
-                                            "$"
-                                        )
-                                    }
+                                text = "$",
+                                style = Typography.body1,
+                                fontSize = 14.sp,
+                                color = Orange500
+                            )
 
-                                    withStyle(
-                                        style = SpanStyle(
-                                            color = BlackTextColor,
-                                            fontStyle = Typography.body1.fontStyle,
-                                            fontSize = 28.sp
-                                        )
-                                    ) {
-                                        append(
-                                            "10.55"
-                                        )
-                                    }
-                                }
+                            Text(
+                                text = "10.55",
+                                style = Typography.body1,
+                                fontSize = 20.sp,
+                                color = BlackTextColor
                             )
                         }
                     }
@@ -299,7 +286,9 @@ fun DetailScreen(navController: NavController) {
                             modifier = Modifier.size(20.dp)
                         )
 
-                        Divider(color = DividerColor,modifier = Modifier.fillMaxHeight().width(1.dp))
+                        Divider(color = DividerColor,modifier = Modifier
+                            .fillMaxHeight()
+                            .width(1.dp))
 
                         Image(
                             painter = painterResource(id = R.drawable.star),
@@ -307,7 +296,9 @@ fun DetailScreen(navController: NavController) {
                             modifier = Modifier.size(20.dp)
                         )
 
-                        Divider(color = DividerColor,modifier = Modifier.fillMaxHeight().width(1.dp))
+                        Divider(color = DividerColor,modifier = Modifier
+                            .fillMaxHeight()
+                            .width(1.dp))
 
                         Image(
                             painter = painterResource(id = R.drawable.schedule),
@@ -623,31 +614,18 @@ fun PopularItem(popularData: PopularData, navController: NavController) {
             Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        buildAnnotatedString {
-                            withStyle(
-                                style = SpanStyle(
-                                    color = Orange500,
-                                    fontStyle = Typography.body1.fontStyle,
-                                    fontSize = 14.sp
-                                )
-                            ) {
-                                append(
-                                    "$"
-                                )
-                            }
+                        text = "$",
+                        style = Typography.body1,
+                        fontSize = 14.sp,
+                        color = Orange500
+                    )
 
-                            withStyle(
-                                style = SpanStyle(
-                                    color = BlackTextColor,
-                                    fontStyle = Typography.body1.fontStyle,
-                                    fontSize = 20.sp
-                                )
-                            ) {
-                                append(
-                                    popularData.price.toString()
-                                )
-                            }
-                        })
+                    Text(
+                        text = popularData.price.toString(),
+                        style = Typography.body1,
+                        fontSize = 20.sp,
+                        color = BlackTextColor
+                    )
                 }
             }
         }
