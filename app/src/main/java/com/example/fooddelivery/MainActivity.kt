@@ -1,6 +1,8 @@
 package com.example.fooddelivery
 
+import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
@@ -14,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -62,6 +65,10 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+private fun mToast(context: Context){
+    Toast.makeText(context, "You can order up to 10", Toast.LENGTH_LONG).show()
 }
 
 @Composable
@@ -155,6 +162,10 @@ fun HomeScreen(navController: NavController) {
 
 @Composable
 fun DetailScreen(navController: NavController) {
+
+    val count = remember { mutableStateOf(0)}
+    val mContext = LocalContext.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -195,8 +206,6 @@ fun DetailScreen(navController: NavController) {
                         .height(80.dp)
                 )
                 {
-                    val count = remember { mutableStateOf(0)}
-
                     Column(verticalArrangement = Arrangement.SpaceBetween) {
                         Text(
                             text = data.title,
@@ -232,7 +241,7 @@ fun DetailScreen(navController: NavController) {
                             boxSize = 36,
                             iconSize = 14
                         ) {
-                            count.value--
+                            if(count.value >= 1) count.value--
                         }
 
                         Spacer(modifier = Modifier.width(14.dp))
@@ -254,7 +263,7 @@ fun DetailScreen(navController: NavController) {
                             iconColor = Color.White,
                             bgColor = Yellow500
                         ) {
-                            count.value++
+                            if(count.value <= 9) count.value++ else mToast(context = mContext)
                         }
                     }
                 }
