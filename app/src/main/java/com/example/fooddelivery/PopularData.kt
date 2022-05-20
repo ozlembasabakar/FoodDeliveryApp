@@ -11,7 +11,7 @@ data class PopularData(
     val price: Double,
     val rate: Double,
     val description: String,
-    val calorie: Double,
-    val scheduleTime: Double,
+    val calorie: Int,
+    val scheduleTime: Int,
     val ingredients: List<Int>
 ): Parcelable

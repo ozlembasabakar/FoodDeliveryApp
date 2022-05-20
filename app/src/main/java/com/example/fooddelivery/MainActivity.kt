@@ -3,10 +3,7 @@ package com.example.fooddelivery
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -24,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
@@ -76,12 +72,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun HomeScreen(navController: NavController) {
+
+    val scrollState = rememberScrollState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 30.dp, top = 40.dp, end = 17.dp)
     ) {
-        Column {
+        Column(modifier = Modifier.verticalScroll(scrollState)) {
 
             Header()
 
@@ -126,8 +125,8 @@ fun HomeScreen(navController: NavController) {
                         title = "Salad Pesto Salad",
                         description = "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.",
                         price = 10.55,
-                        calorie = 540.0,
-                        scheduleTime = 20.0,
+                        calorie = 540,
+                        scheduleTime = 20,
                         rate = 5.0,
                         ingredients = listOf(
                             R.drawable.ing1,
@@ -142,8 +141,8 @@ fun HomeScreen(navController: NavController) {
                         title = "Primavera Pizza",
                         description = "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.",
                         price = 12.55,
-                        calorie = 450.0,
-                        scheduleTime = 30.0,
+                        calorie = 450,
+                        scheduleTime = 30,
                         rate = 4.7,
                         ingredients = listOf(
                             R.drawable.ing1,
@@ -173,16 +172,20 @@ fun DetailScreen(navController: NavController) {
             navController.previousBackStackEntry?.arguments?.getParcelable<PopularData>(Destinations.DetailArgs.foodData)
 
         if (data != null) {
-            Text(text = data.title)
-        } else {
             //TODO: show only design screen
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                DetailHeader()
+            Column(horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(
+                    rememberScrollState()
+                )
+            ) {
+                DetailHeader(navController = navController)
 
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Image(
-                    painter = painterResource(id = R.drawable.salad_pesto_pizza),
+                    painter = painterResource(id = data.resId),
                     contentDescription = "",
                     modifier = Modifier.size(275.dp)
                 )
@@ -199,13 +202,13 @@ fun DetailScreen(navController: NavController) {
                 {
                     Column(verticalArrangement = Arrangement.SpaceBetween) {
                         Text(
-                            text = "Salad Pesto Pizza",
+                            text = data.title,
                             color = BlackTextColor,
                             style = Typography.body1,
                             fontSize = 22.sp
                         )
 
-                        Row(verticalAlignment = Alignment.CenterVertically) 
+                        Row(verticalAlignment = Alignment.CenterVertically)
                         {
                             Text(
                                 text = "$",
@@ -215,7 +218,7 @@ fun DetailScreen(navController: NavController) {
                             )
 
                             Text(
-                                text = "10.55",
+                                text = data.price.toString(),
                                 style = Typography.body1,
                                 fontSize = 20.sp,
                                 color = BlackTextColor
@@ -228,7 +231,7 @@ fun DetailScreen(navController: NavController) {
                             resId = R.drawable.minus,
                             description = "Minus",
                             boxSize = 36,
-                            iconSize = 24,
+                            iconSize = 14,
                             iconColor = BlackTextColor
                         )
 
@@ -258,7 +261,7 @@ fun DetailScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.",
+                    text = data.description,
                     style = Typography.h5,
                     color = TextColor,
                     fontSize = 16.sp,
@@ -267,45 +270,54 @@ fun DetailScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(20.dp))
 
+                FoodDetailBox(data = data)
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Text(
+                    text = "Ingredients",
+                    style = Typography.body1,
+                    fontSize = 22.sp,
+                    color = BlackTextColor,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    items(data.ingredients.size) { index ->
+                        Box(
+                            modifier = Modifier
+                                .size(56.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(
+                                    CardItemBg
+                                ), contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painter = painterResource(id = data.ingredients[index]),
+                                contentDescription = "Onion",
+                                modifier = Modifier.size(width = 30.dp, height = 24.dp)
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(72.dp)
-                        .clip(RoundedCornerShape(14.dp))
-                        .background(CardItemBg)
-                        .padding(15.dp)
+                        .size(width = 203.dp, height = 56.dp)
+                        .clip(RoundedCornerShape(topEnd = 18.dp, topStart = 18.dp))
+                        .background(
+                            Yellow500
+                        ), contentAlignment = Alignment.Center
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.calori),
-                            contentDescription = "Calorie",
-                            modifier = Modifier.size(20.dp)
-                        )
-
-                        Divider(color = DividerColor,modifier = Modifier
-                            .fillMaxHeight()
-                            .width(1.dp))
-
-                        Image(
-                            painter = painterResource(id = R.drawable.star),
-                            contentDescription = "Calorie",
-                            modifier = Modifier.size(20.dp)
-                        )
-
-                        Divider(color = DividerColor,modifier = Modifier
-                            .fillMaxHeight()
-                            .width(1.dp))
-
-                        Image(
-                            painter = painterResource(id = R.drawable.schedule),
-                            contentDescription = "Calorie",
-                            modifier = Modifier.size(20.dp)
-                        )
-                    }
+                    Text(text = "Add to card", style = Typography.body1, color = Color.White)
                 }
             }
         }
@@ -348,14 +360,18 @@ fun Header() {
 }
 
 @Composable
-fun DetailHeader() {
+fun DetailHeader(navController: NavController) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        BoxWithRes(resId = R.drawable.arrow_left, description = "Menu")
+        BoxWithRes(
+            resId = R.drawable.arrow_left,
+            description = "Back",
+            navController = navController
+        )
 
         Box(
             modifier = Modifier
@@ -397,18 +413,99 @@ fun DetailHeader() {
 }
 
 @Composable
+fun FoodDetailBox(data: PopularData) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(72.dp)
+            .clip(RoundedCornerShape(14.dp))
+            .background(CardItemBg)
+            .padding(15.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+
+            Row {
+                Image(
+                    painter = painterResource(id = R.drawable.calori),
+                    contentDescription = "Calorie",
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Text(
+                    text = "${data.calorie} Kcal",
+                    style = Typography.body2,
+                    color = BlackTextColor
+                )
+            }
+
+            Divider(
+                color = DividerColor, modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp)
+            )
+
+            Row {
+                Image(
+                    painter = painterResource(id = R.drawable.star),
+                    contentDescription = "Star",
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Text(
+                    text = data.rate.toString(),
+                    style = Typography.body2,
+                    color = BlackTextColor
+                )
+            }
+
+            Divider(
+                color = DividerColor, modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp)
+            )
+
+            Row {
+                Image(
+                    painter = painterResource(id = R.drawable.schedule),
+                    contentDescription = "Time",
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Text(
+                    text = "${data.scheduleTime} Min.",
+                    style = Typography.body2,
+                    color = BlackTextColor
+                )
+
+            }
+        }
+    }
+}
+
+@Composable
 fun BoxWithRes(
     resId: Int,
     description: String,
     bgColor: Color? = CardItemBg,
     iconColor: Color? = IconColor,
     boxSize: Int? = 40,
-    iconSize: Int? = 24
+    iconSize: Int? = 24,
+    navController: NavController? = null
 ) {
     Box(
         modifier = Modifier
             .size(boxSize!!.dp)
             .clip(RoundedCornerShape(10.dp))
+            .clickable {
+                navController?.navigateUp()
+            }
             .background(bgColor!!),
         contentAlignment = Alignment.Center
     )
@@ -551,137 +648,145 @@ fun CategoryItem(categoryData: CategoryData, selectedIndex: MutableState<Int>, i
 
 @Composable
 fun PopularList(popularList: List<PopularData>, navController: NavController) {
-    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        items(popularList.size) { index ->
-            PopularItem(popularData = popularList[index], navController = navController)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        for (item in popularList) {
+            PopularItem(popularData = item, navController = navController)
         }
     }
 }
 
 @Composable
 fun PopularItem(popularData: PopularData, navController: NavController) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(176.dp)
-    ) {
+
+    Column {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(176.dp)
-                .padding(end = 13.dp)
-                .clip(
-                    RoundedCornerShape(18.dp)
-                )
-                .clickable {
-                    navController.currentBackStackEntry?.arguments = Bundle().apply {
-                        putParcelable(Destinations.DetailArgs.foodData, popularData)
-                    }
-                    navController.navigate(Destinations.Detail)
-                }
-                .background(CardItemBg)
-        )
-
-        Column(
-            modifier = Modifier
-                .padding(top = 20.dp, start = 20.dp)
         ) {
-            Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(id = R.drawable.crown),
-                        contentDescription = "Crown",
-                        modifier = Modifier.size(24.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(176.dp)
+                    .padding(end = 13.dp)
+                    .clip(
+                        RoundedCornerShape(18.dp)
                     )
-                    Spacer(modifier = Modifier.width(11.dp))
+                    .clickable {
+                        navController.currentBackStackEntry?.arguments = Bundle().apply {
+                            putParcelable(Destinations.DetailArgs.foodData, popularData)
+                        }
+                        navController.navigate(Destinations.Detail)
+                    }
+                    .background(CardItemBg)
+            )
 
-                    Text(
-                        text = "Best Selling",
-                        style = Typography.h1,
-                        fontSize = 14.sp,
-                        color = TextColor
-                    )
-                }
-            }
-            Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
-                Text(
-                    text = popularData.title,
-                    color = BlackTextColor,
-                    style = Typography.body1,
-                    fontSize = 18.sp
-                )
-            }
-            Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "$",
-                        style = Typography.body1,
-                        fontSize = 14.sp,
-                        color = Orange500
-                    )
-
-                    Text(
-                        text = popularData.price.toString(),
-                        style = Typography.body1,
-                        fontSize = 20.sp,
-                        color = BlackTextColor
-                    )
-                }
-            }
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomStart)
-        )
-        {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier
-                        .size(width = 60.dp, height = 40.dp)
-                        .clip(
-                            RoundedCornerShape(bottomStart = 18.dp, topEnd = 18.dp)
+            Column(
+                modifier = Modifier
+                    .padding(top = 20.dp, start = 20.dp)
+            ) {
+                Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(id = R.drawable.crown),
+                            contentDescription = "Crown",
+                            modifier = Modifier.size(24.dp)
                         )
-                        .background(Yellow500),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.add),
-                        contentDescription = "Add Button",
-                        modifier = Modifier.size(24.dp),
-                        tint = Color.White
+                        Spacer(modifier = Modifier.width(11.dp))
+
+                        Text(
+                            text = "Best Selling",
+                            style = Typography.h1,
+                            fontSize = 14.sp,
+                            color = TextColor
+                        )
+                    }
+                }
+                Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
+                    Text(
+                        text = popularData.title,
+                        color = BlackTextColor,
+                        style = Typography.body1,
+                        fontSize = 18.sp
                     )
                 }
-                Spacer(modifier = Modifier.width(48.dp))
+                Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = "$",
+                            style = Typography.body1,
+                            fontSize = 14.sp,
+                            color = Orange500
+                        )
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.star),
-                        contentDescription = "Rating Star",
-                        modifier = Modifier.size(16.dp),
-                        tint = BlackTextColor
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Text(
-                        text = "${popularData.rate}",
-                        style = Typography.body1,
-                        color = BlackTextColor
-                    )
+                        Text(
+                            text = popularData.price.toString(),
+                            style = Typography.body1,
+                            fontSize = 20.sp,
+                            color = BlackTextColor
+                        )
+                    }
                 }
             }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomStart)
+            )
+            {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(width = 60.dp, height = 40.dp)
+                            .clip(
+                                RoundedCornerShape(bottomStart = 18.dp, topEnd = 18.dp)
+                            )
+                            .background(Yellow500),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.add),
+                            contentDescription = "Add Button",
+                            modifier = Modifier.size(24.dp),
+                            tint = Color.White
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(48.dp))
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.star),
+                            contentDescription = "Rating Star",
+                            modifier = Modifier.size(16.dp),
+                            tint = BlackTextColor
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Text(
+                            text = "${popularData.rate}",
+                            style = Typography.body1,
+                            color = BlackTextColor
+                        )
+                    }
+                }
+            }
+
+            Image(
+                painter = painterResource(id = popularData.resId),
+                contentDescription = popularData.title,
+                modifier = Modifier
+                    .size(156.dp)
+                    .align(
+                        Alignment.CenterEnd
+                    )
+            )
         }
 
-        Image(
-            painter = painterResource(id = popularData.resId),
-            contentDescription = popularData.title,
-            modifier = Modifier
-                .size(156.dp)
-                .align(
-                    Alignment.CenterEnd
-                )
-        )
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 
