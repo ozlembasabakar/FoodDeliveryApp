@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             FoodDeliveryTheme {
 
-                LoginSubScreen()
+                ForgotPasswordScreen()
 /*
                 val navController = rememberNavController()
 
@@ -860,9 +860,224 @@ fun LoginScreenCard(
     }
 }
 
+@Composable
+fun InputCard(text: String, color: Color) {
+    Card(
+        modifier = Modifier
+            .padding(start = 45.dp, end = 45.dp)
+            .fillMaxWidth()
+            .height(50.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(color)
+    ) {
+        Text(text = text)
+    }
+}
+
 
 @Composable
 fun SignUpSubScreen() {
+    Column(
+        modifier = Modifier
+            .background(LoginBg),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(
+            modifier = Modifier
+                //.height(200.dp)
+                .fillMaxWidth()
+                .clip(
+                    RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
+                )
+                .background(Color.White)
+        ) {
+            Column {
+                Image(
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(height = 206.dp, width = 307.dp)
+                        .padding(start = 85.dp)
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 45.dp, end = 45.dp)
+                ) {
+
+                    Column(
+                        Modifier.width(134.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Log In")
+                        Box(
+                            Modifier
+                                .clip(RoundedCornerShape(30.dp))
+
+                                .background(Password)
+                                .height(3.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+
+                    Column(
+                        Modifier.width(134.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Sign Up")
+                        Box(
+                            Modifier
+                                .clip(RoundedCornerShape(30.dp))
+                                .background(Password)
+                                .height(3.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+            }
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.padding(top = 20.dp)
+        ) {
+            Text(
+                text = "Register",
+                color = Orange500,
+                style = Typography.h6,
+                modifier = Modifier.padding(end = 40.dp)
+            )
+
+            Row {
+                Image(
+                    painter = painterResource(id = R.drawable.facebook),
+                    contentDescription = "",
+                    modifier = Modifier.size(40.dp)
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Image(
+                    painter = painterResource(id = R.drawable.google),
+                    contentDescription = "",
+                    modifier = Modifier.size(40.dp)
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        Column() {
+            InputCard("Full Name", Color.White)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            InputCard("Mobile Number", Color.White)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            InputCard("Password", Color.White)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            InputCard("Confirm Password", Color.White)
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Row(Modifier.padding(25.dp)) {
+            Box(
+                modifier = Modifier
+                    .size(height = 58.dp, width = 185.dp)
+                    .clip(RoundedCornerShape(30.dp))
+                    .background(LoginButton1),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "Sign Up", color = Color.White)
+            }
+
+            Text(
+                text = "Already a \n Member? Login",
+                color = Color.LightGray,
+                style = Typography.h4,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun ForgotPasswordScreen() {
+    Column(
+        modifier = Modifier
+            .background(LoginBg)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        Box(
+            modifier = Modifier
+                //.height(200.dp)
+                .fillMaxWidth()
+                .clip(
+                    RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
+                )
+                .background(Color.White)
+        ) {
+            Column {
+                Image(
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(height = 246.dp, width = 347.dp)
+                        .padding(start = 25.dp)
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 45.dp, end = 45.dp)
+                ) {
+
+                    Column(
+                        Modifier.width(134.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Log In")
+                        Box(
+                            Modifier
+                                .clip(RoundedCornerShape(30.dp))
+
+                                .background(Password)
+                                .height(3.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+
+                    Column(
+                        Modifier.width(134.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Sign Up")
+                        Box(
+                            Modifier
+                                .clip(RoundedCornerShape(30.dp))
+                                .background(Password)
+                                .height(3.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+            }
+        }
+    }
+
 
 }
 
@@ -912,7 +1127,8 @@ fun LoginSubScreen() {
 
                                 .background(Password)
                                 .height(3.dp)
-                                .fillMaxWidth())
+                                .fillMaxWidth()
+                        )
                     }
 
                     Column(
@@ -925,7 +1141,8 @@ fun LoginSubScreen() {
                                 .clip(RoundedCornerShape(30.dp))
                                 .background(Password)
                                 .height(3.dp)
-                                .fillMaxWidth())
+                                .fillMaxWidth()
+                        )
                     }
                 }
             }
@@ -1025,6 +1242,6 @@ fun DefaultPreview() {
     FoodDeliveryTheme {
         //val navController = rememberNavController()
         //DetailScreen(navController = navController)
-        LoginSubScreen()
+        ForgotPasswordScreen()
     }
 }
