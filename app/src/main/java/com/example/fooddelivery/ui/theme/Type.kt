@@ -27,7 +27,7 @@ val Typography = Typography(
     ),
     h2 = TextStyle(
         fontFamily = fonts,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Bold,
         fontSize = 26.sp
     ),
     h3 = TextStyle(
@@ -37,8 +37,8 @@ val Typography = Typography(
     ),
     h4 = TextStyle(
         fontFamily = fonts,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 14.sp
     ),
     h5 = TextStyle(
         fontFamily = fonts,
