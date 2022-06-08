@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -874,6 +875,73 @@ fun InputCard(text: String, color: Color) {
     }
 }
 
+@Composable
+fun LoginScreenTop() {
+    Column(
+        modifier = Modifier
+            .background(LoginBg)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(
+            modifier = Modifier
+                //.height(200.dp)
+                .fillMaxWidth()
+                .clip(
+                    RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
+                )
+                .background(Color.White)
+        ) {
+            Column {
+                Image(
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(height = 246.dp, width = 347.dp)
+                        .padding(start = 25.dp)
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 45.dp, end = 45.dp)
+                ) {
+
+                    Column(
+                        Modifier.width(134.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Log In")
+                        Box(
+                            Modifier
+                                .clip(RoundedCornerShape(30.dp))
+
+                                .background(Password)
+                                .height(3.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+
+                    Column(
+                        Modifier.width(134.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "Sign Up")
+                        Box(
+                            Modifier
+                                .clip(RoundedCornerShape(30.dp))
+                                .background(Password)
+                                .height(3.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun SignUpSubScreen() {
@@ -1016,8 +1084,7 @@ fun ForgotPasswordScreen() {
         modifier = Modifier
             .background(LoginBg)
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+        //horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
             modifier = Modifier
@@ -1033,7 +1100,7 @@ fun ForgotPasswordScreen() {
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = "",
                     modifier = Modifier
-                        .size(height = 246.dp, width = 347.dp)
+                        .size(height = 226.dp, width = 327.dp)
                         .padding(start = 25.dp)
                 )
 
@@ -1054,7 +1121,7 @@ fun ForgotPasswordScreen() {
                             Modifier
                                 .clip(RoundedCornerShape(30.dp))
 
-                                .background(Password)
+                                .background(Orange500)
                                 .height(3.dp)
                                 .fillMaxWidth()
                         )
@@ -1068,7 +1135,7 @@ fun ForgotPasswordScreen() {
                         Box(
                             Modifier
                                 .clip(RoundedCornerShape(30.dp))
-                                .background(Password)
+                                .background(Orange500)
                                 .height(3.dp)
                                 .fillMaxWidth()
                         )
@@ -1076,10 +1143,85 @@ fun ForgotPasswordScreen() {
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Column(
+            Modifier
+                .background(LoginBg)
+                .padding(start = 25.dp, end = 25.dp)
+        ) {
+            Box(Modifier.size(22.dp)) {
+                Image(
+                    painter = painterResource(id = R.drawable.back),
+                    contentDescription = ""
+                )
+            }
+
+            Spacer(modifier = Modifier.height(36.dp))
+
+            Text(text = "Forgot\npassword?", color = Orange500, style = Typography.h6)
+
+            Spacer(modifier = Modifier.height(28.dp))
+
+            Card(
+                modifier = Modifier
+                    .padding(start = 45.dp, end = 45.dp)
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Color.White)
+            ) {
+                Row {
+                    Image(painter = painterResource(id = R.drawable.mail), contentDescription = "")
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Text(text = "Enter your mail address")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(28.dp))
+
+            Row() {
+                Text(
+                    text = "* ",
+                    style = Typography.h4,
+                    color = Orange500
+                )
+                Text(
+                    text = "We will you a message to set or reset your new password",
+                    style = Typography.h4,
+                    color = Color.Gray
+                )
+
+            }
+
+            Spacer(modifier = Modifier.height(28.dp))
+
+            Text(
+                text = "Send Code",
+                style = Typography.h6,
+                color = Color.Gray
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Box(
+                Modifier
+                    .align(Alignment.End)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.arrow_forward),
+                    contentDescription = "", Modifier.size(50.dp)
+                )
+            }
+
+            Spacer(Modifier.height(16.dp))
+        }
     }
-
-
 }
+
 
 @Composable
 fun LoginSubScreen() {

@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ozlem/AndroidStudioProjects/FoodDelivery/app/src/main/res/drawable/arrow_back.xml" value="0.1205" />
+        <entry key="..\:/Users/ozlem/AndroidStudioProjects/FoodDelivery/app/src/main/res/drawable/arrow_forward.xml" value="0.2085" />
+        <entry key="..\:/Users/ozlem/AndroidStudioProjects/FoodDelivery/app/src/main/res/drawable/back.xml" value="0.2085" />
         <entry key="..\:/Users/ozlem/AndroidStudioProjects/FoodDelivery/app/src/main/res/drawable/facebook_logo.xml" value="0.2085" />
+        <entry key="..\:/Users/ozlem/AndroidStudioProjects/FoodDelivery/app/src/main/res/drawable/next_button.xml" value="0.162" />
       </map>
     </option>
   </component>
