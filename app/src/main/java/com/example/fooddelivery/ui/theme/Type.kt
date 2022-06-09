@@ -19,6 +19,8 @@ val fonts = FontFamily(
     )
 )
 
+val nunito = FontFamily(Font(R.font.nunito_regular))
+
 val Typography = Typography(
     h1 = TextStyle(
         fontFamily = fonts,
@@ -33,7 +35,7 @@ val Typography = Typography(
     h3 = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Normal,
-        fontSize = 24.sp
+        fontSize = 16.sp
     ),
     h4 = TextStyle(
         fontFamily = fonts,

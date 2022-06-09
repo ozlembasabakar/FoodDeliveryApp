@@ -2,6 +2,7 @@ package com.example.fooddelivery
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,17 +11,28 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,7 +55,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             FoodDeliveryTheme {
 
-                ForgotPasswordScreen()
+                LoginSubScreen()
 /*
                 val navController = rememberNavController()
 
@@ -71,6 +83,7 @@ class MainActivity : ComponentActivity() {
 private fun mToast(context: Context) {
     Toast.makeText(context, "You can order up to 10", Toast.LENGTH_LONG).show()
 }
+
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -862,20 +875,6 @@ fun LoginScreenCard(
 }
 
 @Composable
-fun InputCard(text: String, color: Color) {
-    Card(
-        modifier = Modifier
-            .padding(start = 45.dp, end = 45.dp)
-            .fillMaxWidth()
-            .height(50.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .background(color)
-    ) {
-        Text(text = text)
-    }
-}
-
-@Composable
 fun LoginScreenTop() {
     Column(
         modifier = Modifier
@@ -945,8 +944,23 @@ fun LoginScreenTop() {
 
 @Composable
 fun SignUpSubScreen() {
+
+    var name by remember {
+        mutableStateOf("")
+    }
+    var password by remember {
+        mutableStateOf("")
+    }
+
+    var number by remember {
+        mutableStateOf("")
+    }
+
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier
+            .fillMaxSize()
             .background(LoginBg),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -1037,27 +1051,163 @@ fun SignUpSubScreen() {
             }
         }
 
-        Spacer(modifier = Modifier.height(25.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Column() {
-            InputCard("Full Name", Color.White)
+            Card(
+                modifier = Modifier
+                    .padding(start = 25.dp, end = 25.dp)
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Color.White)
+            ) {
+                TextField(
+                    value = name, onValueChange = { name = it },
+                    placeholder = {
+                        Text(
+                            text = "Full Name",
+                            color = Color(0xFFA0A0A0).copy(alpha = 0.6f)
+                        )
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                    ),
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.White
+                    ),
+                    textStyle = TextStyle(
+                        color = Color(0xFFA0A0A0),
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 16.sp,
+                        fontFamily = nunito
+                    )
+                )
+                //Text(text = "Enter your mail address")
+            }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Card(
+                modifier = Modifier
+                    .padding(start = 25.dp, end = 25.dp, top = 20.dp)
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Color.White)
+            ) {
+                TextField(
+                    value = number, onValueChange = { number = it },
+                    placeholder = {
+                        Text(
+                            text = "Mobile Number",
+                            color = Color(0xFFA0A0A0).copy(alpha = 0.6f)
+                        )
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Phone,
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                    ),
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.White
+                    ),
+                    textStyle = TextStyle(
+                        color = Color(0xFFA0A0A0).copy(alpha = 0.6f),
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 16.sp,
+                        fontFamily = nunito
+                    )
+                )
+                //Text(text = "Enter your mail address")
+            }
 
-            InputCard("Mobile Number", Color.White)
+            Card(
+                modifier = Modifier
+                    .padding(start = 25.dp, end = 25.dp, top = 20.dp)
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Color.White)
+            ) {
+                TextField(
+                    value = password, onValueChange = { password = it },
+                    placeholder = {
+                        Text(
+                            text = "Password",
+                            color = Color(0xFFA0A0A0).copy(alpha = 0.6f)
+                        )
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password,
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                    ),
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.White
+                    ),
+                    textStyle = TextStyle(
+                        color = Color(0xFFA0A0A0).copy(alpha = 0.6f),
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 16.sp,
+                        fontFamily = nunito
+                    )
+                )
+                //Text(text = "Enter your mail address")
+            }
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            InputCard("Password", Color.White)
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            InputCard("Confirm Password", Color.White)
+            Card(
+                modifier = Modifier
+                    .padding(start = 25.dp, end = 25.dp, top = 20.dp, bottom = 30.dp)
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Color.White)
+            ) {
+                TextField(
+                    value = password, onValueChange = { password = it },
+                    placeholder = {
+                        Text(
+                            text = "Confirm Password",
+                            color = Color(0xFFA0A0A0).copy(alpha = 0.6f)
+                        )
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password,
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = { focusManager.clearFocus() }
+                    ),
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.White
+                    ),
+                    textStyle = TextStyle(
+                        color = Color(0xFFA0A0A0).copy(alpha = 0.6f),
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 16.sp,
+                        fontFamily = nunito
+                    )
+                )
+                //Text(text = "Enter your mail address")
+            }
         }
 
-        Spacer(modifier = Modifier.height(30.dp))
-
-        Row(Modifier.padding(25.dp)) {
+        Row(Modifier.padding(start = 25.dp, end = 25.dp)) {
             Box(
                 modifier = Modifier
                     .size(height = 58.dp, width = 185.dp)
@@ -1068,18 +1218,66 @@ fun SignUpSubScreen() {
                 Text(text = "Sign Up", color = Color.White)
             }
 
-            Text(
-                text = "Already a \n Member? Login",
-                color = Color.LightGray,
-                style = Typography.h4,
-                modifier = Modifier.padding(start = 8.dp)
+            Spacer(modifier = Modifier.padding(end = 20.dp))
+
+            val annotatedText = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        color = Color(0xFFB3B3B3),
+                        fontWeight = FontWeight.ExtraLight,
+                        fontFamily = nunito,
+                        fontSize = 16.sp
+                    )
+                ) {
+                    append("Already a \nMember? ")
+                }
+                pushStringAnnotation(
+                    tag = "URL",
+                    annotation = "https://developer.android.com"
+                )
+                withStyle(
+                    style = SpanStyle(
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color(0xFFB3B3B3),
+                        fontFamily = nunito,
+                        fontSize = 16.sp
+                    )
+                ) {
+                    append(" Login")
+                }
+            }
+
+            ClickableText(
+                text = annotatedText,
+                onClick = { offset ->
+                    // We check if there is an *URL* annotation attached to the text
+                    // at the clicked position
+                    annotatedText.getStringAnnotations(
+                        tag = "URL", start = offset,
+                        end = offset
+                    )
+                        .firstOrNull()?.let { annotation ->
+                            // If yes, we log its value
+                            Log.d("Clicked URL", annotation.item)
+                        }
+                }
             )
+
         }
     }
 }
 
 @Composable
 fun ForgotPasswordScreen() {
+
+    var email by remember {
+        mutableStateOf("")
+    }
+    var password by remember {
+        mutableStateOf("")
+    }
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier
             .background(LoginBg)
@@ -1166,18 +1364,46 @@ fun ForgotPasswordScreen() {
 
             Card(
                 modifier = Modifier
-                    .padding(start = 45.dp, end = 45.dp)
                     .fillMaxWidth()
                     .height(50.dp)
                     .clip(RoundedCornerShape(10.dp))
                     .background(Color.White)
             ) {
-                Row {
-                    Image(painter = painterResource(id = R.drawable.mail), contentDescription = "")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier.padding(start = 8.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.mail),
+                        contentDescription = ""
+                    )
 
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Text(text = "Enter your mail address")
+                    TextField(
+                        value = email, onValueChange = { email = it },
+                        label = { Text(text = "Email Address",
+                            color = Color(0xFFA0A0A0).copy(alpha = 0.6f)
+                        ) },
+                        placeholder = { Text(text = "abc@domain.com") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Email,
+                            imeAction = ImeAction.Next
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onNext = { focusManager.clearFocus() }
+                        ),
+                        colors = TextFieldDefaults.textFieldColors(
+                            backgroundColor = Color.White
+                        ),
+                        textStyle = TextStyle(
+                            color = TextField.copy(alpha = 0.6f),
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 12.sp
+                        ),
+                    )
+                    //Text(text = "Enter your mail address")
                 }
             }
 
@@ -1191,24 +1417,27 @@ fun ForgotPasswordScreen() {
                 )
                 Text(
                     text = "We will you a message to set or reset your new password",
-                    style = Typography.h4,
-                    color = Color.Gray
+                    fontSize = 12.sp,
+                    color = Color(0xFF676767),
+                    fontWeight = FontWeight.Normal
                 )
 
             }
 
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(34.dp))
 
             Text(
                 text = "Send Code",
-                style = Typography.h6,
-                color = Color.Gray
+                fontSize = 24.sp,
+                color = Color(0xFFB2B2B2),
+                fontWeight = FontWeight.Bold
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
             Box(
                 Modifier
+                    .padding(end = 16.dp)
                     .align(Alignment.End)
             ) {
                 Image(
@@ -1222,9 +1451,17 @@ fun ForgotPasswordScreen() {
     }
 }
 
-
 @Composable
 fun LoginSubScreen() {
+
+    var email by remember {
+        mutableStateOf("")
+    }
+    var password by remember {
+        mutableStateOf("")
+    }
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier
             .background(LoginBg)
@@ -1293,26 +1530,74 @@ fun LoginSubScreen() {
         Card(
             //text = "hello",
             modifier = Modifier
-                .padding(start = 45.dp, end = 45.dp, top = 50.dp)
+                .padding(start = 25.dp, end = 25.dp, top = 50.dp)
                 .fillMaxWidth()
                 .height(60.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .background(Color.White)
         ) {
-            Text(text = "Hello")
+            TextField(
+                value = email, onValueChange = { email = it },
+                placeholder = { Text(text = "Username, Mobile Number",
+                    color = Color(0xFFA0A0A0).copy(alpha = 0.6f)
+                ) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                ),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White
+                ),
+                textStyle = TextStyle(
+                    color = Color(0xFFA0A0A0).copy(alpha = 0.6f),
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    fontFamily = nunito
+                )
+            )
+            //Text(text = "Enter your mail address")
         }
+
 
         Spacer(modifier = Modifier.height(18.dp))
 
         Card(
             modifier = Modifier
-                .padding(start = 45.dp, end = 45.dp)
+                .padding(start = 25.dp, end = 25.dp, top = 18.dp)
                 .fillMaxWidth()
                 .height(60.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .background(Color.White)
         ) {
-            Text(text = "Hello")
+            TextField(
+                value = password, onValueChange = { password = it },
+                placeholder = { Text(text = "Password",
+                    color = Color(0xFFA0A0A0).copy(alpha = 0.6f)
+                ) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.clearFocus() }
+                ),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White
+                ),
+                textStyle = TextStyle(
+                    color = Color(0xFFA0A0A0).copy(alpha = 0.6f),
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    fontFamily = nunito
+                )
+            )
         }
 
         Spacer(modifier = Modifier.height(25.dp))
@@ -1323,7 +1608,7 @@ fun LoginSubScreen() {
             color = Password,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 45.dp)
+                .padding(start = 25.dp)
         )
 
         Spacer(modifier = Modifier.height(25.dp))
@@ -1354,7 +1639,7 @@ fun LoginSubScreen() {
                         .size(50.dp)
                 )
 
-                Spacer(modifier = Modifier.width(20.dp))
+                Spacer(modifier = Modifier.width(40.dp))
 
                 Image(
                     painter = painterResource(id = R.drawable.google),
@@ -1367,16 +1652,6 @@ fun LoginSubScreen() {
     }
 }
 
-@Composable
-fun LoginScreen() {
-    var email by remember {
-        mutableStateOf("")
-    }
-
-    var password by remember {
-        mutableStateOf("")
-    }
-}
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -1384,6 +1659,6 @@ fun DefaultPreview() {
     FoodDeliveryTheme {
         //val navController = rememberNavController()
         //DetailScreen(navController = navController)
-        ForgotPasswordScreen()
+        LoginSubScreen()
     }
 }
