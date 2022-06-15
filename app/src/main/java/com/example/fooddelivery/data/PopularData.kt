@@ -1,4 +1,4 @@
-package com.example.fooddelivery
+package com.example.fooddelivery.data
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
