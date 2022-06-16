@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 object Destinations {
     const val Home = "Home"
@@ -27,7 +29,7 @@ fun ScreensMain(){
         builder =  {
 
             composable(Destinations.Login) {
-                LoginScreen(navController = navController)
+                LoginScreen(navController = navController, Firebase.auth)
             }
 
             composable(Destinations.SignUp) {

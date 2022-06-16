@@ -1,6 +1,8 @@
 package com.example.fooddelivery.ui.screens
 
 import android.os.Bundle
+import android.util.Log
+import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -9,10 +11,11 @@ import com.example.fooddelivery.R
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,44 +28,25 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.fooddelivery.data.UserProfile
 import com.example.fooddelivery.ui.theme.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
-@Composable
-fun LoginScreenCard(
-    height: Int,
-    text: String,
-    backgroundColor: Color,
-    textColor: Color,
-
-    ) {
-
-    Box(
-        modifier = Modifier
-            .padding(start = 45.dp, end = 45.dp)
-            .fillMaxWidth()
-            .height(height.dp)
-            .clip(RoundedCornerShape(30.dp))
-            .background(backgroundColor), contentAlignment = Alignment.Center
-
-
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-
-            Text(
-                text = text, color = textColor, style = Typography.body1
-            )
-        }
-    }
+private val auth by lazy {
+    Firebase.auth
 }
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
+
+    val TAG = UserProfile.TAG
 
     var email by remember {
         mutableStateOf("")
@@ -73,13 +57,26 @@ fun LoginScreen(navController: NavController) {
     }
     val focusManager = LocalFocusManager.current
 
+    val isEmailValid by derivedStateOf {
+        Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    val isPasswordValid by derivedStateOf {
+        password.length > 8
+    }
+
+    var isPasswordVisible by remember {
+        mutableStateOf(false)
+    }
+
     Column(
         modifier = Modifier
             .background(Color.LightGray.copy(alpha = 0.2f))
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
-    ) {
+    )
+    {
         Box(
             modifier = Modifier
                 //.height(200.dp)
@@ -162,7 +159,7 @@ fun LoginScreen(navController: NavController) {
                 .clip(RoundedCornerShape(10.dp))
                 .background(Color.White)
         ) {
-            TextField(
+            OutlinedTextField(
                 value = email, onValueChange = { email = it },
                 placeholder = {
                     Text(
@@ -187,11 +184,18 @@ fun LoginScreen(navController: NavController) {
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
                     fontFamily = nunito
-                )
+                ),
+                isError = !isEmailValid,
+                trailingIcon = {
+                    when {
+                        email.isNotBlank() ->
+                            IconButton(onClick = { email = "" }) {
+                                Icon(imageVector = Icons.Filled.Clear, contentDescription = "")
+                            }
+                    }
+                }
             )
-            //Text(text = "Enter your mail address")
         }
-
 
         Spacer(modifier = Modifier.height(18.dp))
 
@@ -203,7 +207,7 @@ fun LoginScreen(navController: NavController) {
                 .clip(RoundedCornerShape(10.dp))
                 .background(Color.White)
         ) {
-            TextField(
+            OutlinedTextField(
                 value = password, onValueChange = { password = it },
                 placeholder = {
                     Text(
@@ -218,7 +222,7 @@ fun LoginScreen(navController: NavController) {
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusManager.clearFocus() }
+                    onDone = { focusManager.clearFocus() }
                 ),
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.White
@@ -228,7 +232,17 @@ fun LoginScreen(navController: NavController) {
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
                     fontFamily = nunito
-                )
+                ),
+                isError = !isPasswordValid,
+                trailingIcon = {
+                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                        Icon(
+                            imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                            contentDescription = ""
+                        )
+                    }
+                },
+                visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
             )
         }
 
@@ -252,16 +266,36 @@ fun LoginScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(25.dp))
 
-        Box(modifier = Modifier.clickable {
-            navController.currentBackStackEntry?.arguments =
-                Bundle().apply {
 
-                }
-            navController.navigate(Destinations.Home)
-        }
+        Button(
+            onClick = {
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            Log.d(TAG, "User logged in successfully.")
+                            navController.currentBackStackEntry?.arguments =
+                                Bundle().apply {
+
+                                }
+                            navController.navigate(Destinations.Home)
+                        } else {
+                            Log.w(TAG, "LOGIN FAILED!", it.exception)
+                        }
+                    }
+            },
+            modifier = Modifier
+                .padding(start = 45.dp, end = 45.dp)
+                .fillMaxWidth()
+                .height(56.dp)
+                .clip(RoundedCornerShape(30.dp)),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
+            enabled = isEmailValid && isPasswordVisible,
         ) {
-            LoginScreenCard(56, "Login", Yellow500, Color.White)
+            Text(
+                text = "Login", color = Color.White, style = Typography.body1
+            )
         }
+
         Spacer(modifier = Modifier.height(15.dp))
 
         Text(

@@ -11,10 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -171,7 +168,7 @@ fun SignUpScreen(navController: NavController) {
                     .clip(RoundedCornerShape(10.dp))
                     .background(Color.White)
             ) {
-                TextField(
+                OutlinedTextField(
                     value = name, onValueChange = { name = it },
                     placeholder = {
                         Text(
@@ -209,7 +206,7 @@ fun SignUpScreen(navController: NavController) {
                     .clip(RoundedCornerShape(10.dp))
                     .background(Color.White)
             ) {
-                TextField(
+                OutlinedTextField(
                     value = number, onValueChange = { number = it },
                     placeholder = {
                         Text(
@@ -247,7 +244,7 @@ fun SignUpScreen(navController: NavController) {
                     .clip(RoundedCornerShape(10.dp))
                     .background(Color.White)
             ) {
-                TextField(
+                OutlinedTextField(
                     value = password, onValueChange = { password = it },
                     placeholder = {
                         Text(
@@ -285,7 +282,7 @@ fun SignUpScreen(navController: NavController) {
                     .clip(RoundedCornerShape(10.dp))
                     .background(Color.White)
             ) {
-                TextField(
+                OutlinedTextField(
                     value = password, onValueChange = { password = it },
                     placeholder = {
                         Text(
