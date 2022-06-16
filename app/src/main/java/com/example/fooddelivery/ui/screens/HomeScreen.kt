@@ -128,16 +128,6 @@ fun Header(navController: NavController) {
             .padding(end = 13.dp)
     ) {
         BoxWithRes(resId = R.drawable.menu, description = "Menu")
-        Image(
-            painter = painterResource(id = R.drawable.menu),
-            contentDescription = "",
-            modifier = Modifier.clickable {
-                navController.currentBackStackEntry?.arguments = Bundle().apply {
-
-                }
-                navController.navigate(Destinations.Login)
-            }
-        )
 
         Row(verticalAlignment = Alignment.CenterVertically)
         {

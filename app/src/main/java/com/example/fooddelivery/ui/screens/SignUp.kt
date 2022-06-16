@@ -27,9 +27,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.fooddelivery.ui.theme.*
 
 @Composable
@@ -51,7 +53,7 @@ fun SignUpScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(LoginBg),
+            .background(CardItemBg),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
@@ -370,4 +372,11 @@ fun SignUpScreen(navController: NavController) {
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun PreviewSignUpScreen() {
+    val navController = rememberNavController()
+    SignUpScreen(navController = navController)
 }

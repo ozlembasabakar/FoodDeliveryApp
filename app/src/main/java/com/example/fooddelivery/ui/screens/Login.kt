@@ -62,7 +62,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
     }
 
     val isPasswordValid by derivedStateOf {
-        password.length > 8
+        password.length >= 8
     }
 
     var isPasswordVisible by remember {
@@ -71,7 +71,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
 
     Column(
         modifier = Modifier
-            .background(Color.LightGray.copy(alpha = 0.2f))
+            .background(CardItemBg)
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
@@ -163,7 +163,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 value = email, onValueChange = { email = it },
                 placeholder = {
                     Text(
-                        text = "Username, Mobile Number",
+                        text = "Email Address",
                         color = Color(0xFFA0A0A0).copy(alpha = 0.6f)
                     )
                 },
@@ -288,8 +288,8 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 .fillMaxWidth()
                 .height(56.dp)
                 .clip(RoundedCornerShape(30.dp)),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
-            enabled = isEmailValid && isPasswordVisible,
+            colors = ButtonDefaults.buttonColors(backgroundColor = Yellow500),
+            enabled = isEmailValid && password.length >= 8,
         ) {
             Text(
                 text = "Login", color = Color.White, style = Typography.body1
