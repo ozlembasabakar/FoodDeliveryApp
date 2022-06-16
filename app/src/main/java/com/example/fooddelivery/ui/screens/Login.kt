@@ -33,7 +33,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.fooddelivery.data.UserProfile
+import com.example.fooddelivery.data.User
 import com.example.fooddelivery.ui.theme.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -46,7 +46,7 @@ private val auth by lazy {
 @Composable
 fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
 
-    val TAG = UserProfile.TAG
+    val TAG = User.TAG
 
     var email by remember {
         mutableStateOf("")

@@ -2,7 +2,7 @@ package com.example.fooddelivery.data
 
 import com.example.fooddelivery.MainActivity
 
-data class UserProfile(
+data class User(
     val email: String,
     val password: String
 ) {

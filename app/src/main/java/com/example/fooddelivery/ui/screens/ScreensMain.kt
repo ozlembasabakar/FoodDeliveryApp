@@ -20,13 +20,13 @@ object Destinations {
 }
 
 @Composable
-fun ScreensMain(){
+fun ScreensMain() {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
         startDestination = Destinations.Login,
-        builder =  {
+        builder = {
 
             composable(Destinations.Login) {
                 LoginScreen(navController = navController, Firebase.auth)
