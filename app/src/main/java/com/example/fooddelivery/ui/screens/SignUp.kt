@@ -2,9 +2,9 @@ package com.example.fooddelivery.ui.screens
 
 import android.os.Bundle
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import android.util.Patterns
+import android.widget.Toast
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import com.example.fooddelivery.R
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,16 +12,22 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AlternateEmail
+import androidx.compose.material.icons.filled.Password
+import androidx.compose.material.icons.filled.PermIdentity
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -32,23 +38,82 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.fooddelivery.MainActivity
+import com.example.fooddelivery.ui.composables.CustomOutlinedTextField
 import com.example.fooddelivery.ui.theme.*
+
 
 @Composable
 fun SignUpScreen(navController: NavController) {
 
-    var name by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
+    var name by rememberSaveable { mutableStateOf("") }
+    var surname by rememberSaveable { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var phone by rememberSaveable { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmedPassword by remember { mutableStateOf("") }
 
-    var number by remember {
-        mutableStateOf("")
-    }
+    var validateName by rememberSaveable { mutableStateOf(true) }
+    var validateSurname by rememberSaveable { mutableStateOf(true) }
+    var validateEmail by rememberSaveable { mutableStateOf(true) }
+    var validatePhone by rememberSaveable { mutableStateOf(true) }
+    var validatePassword by rememberSaveable { mutableStateOf(true) }
+    var validateConfirmedPassword by rememberSaveable { mutableStateOf(true) }
+    var validateArePasswordsEquals by rememberSaveable { mutableStateOf(true) }
+    var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
+    var isConfirmedPasswordVisible by rememberSaveable { mutableStateOf(false) }
+
+    val validateNameError = "Please input a valid name"
+    var validateSurnameError = "Please input a valid surname"
+    var validateEmailError = "The format of the email doesn't seem right"
+    var validatePhoneError = "The format of the phone number doesn't seem right"
+    var validatePasswordError =
+        "Must mix capital and non-capital letters, a number, spacial character and min. length of 8"
+    var validateEqualPasswordError = "Password must be equal"
 
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
+    val scrollState = rememberScrollState()
+
+    fun validateData(
+        name: String,
+        surname: String,
+        email: String,
+        phone: String,
+        password: String,
+        confirmedPassword: String
+    ): Boolean {
+        val passwordRegex = "(?=.*\\d)(?=.*\\[a-z])(?=.*\\[A-Z])(?=.*\\[@#\$%^!/&+=]).{8,}".toRegex()
+
+        validateName = name.isNotBlank()
+        validateSurname = surname.isNotBlank()
+        validateEmail = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        validatePhone = Patterns.PHONE.matcher(phone).matches()
+        validatePassword = passwordRegex.matches(password)
+        validateConfirmedPassword = passwordRegex.matches(confirmedPassword)
+        validateArePasswordsEquals = password == confirmedPassword
+
+        return validateName && validateSurname && validateEmail && validatePhone && validatePassword && validateConfirmedPassword && validateArePasswordsEquals
+    }
+
+    fun register(
+        name: String,
+        surname: String,
+        email: String,
+        phone: String,
+        password: String,
+        confirmedPassword: String
+    ) {
+        if (validateData(name, surname, email, phone, password, confirmedPassword)) {
+            // Registration logic
+            Log.d(
+                MainActivity::class.java.simpleName,
+                "Name: $name, Surname: $surname, Email: $email, Password: $password"
+            )
+        } else {
+            Toast.makeText(context, "Please, review fields", Toast.LENGTH_LONG).show()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -66,14 +131,6 @@ fun SignUpScreen(navController: NavController) {
                 .background(Color.White)
         ) {
             Column {
-/*                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(height = 206.dp, width = 307.dp)
-                        .padding(start = 85.dp)
-                )*/
-
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
@@ -161,218 +218,181 @@ fun SignUpScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Column {
-            Card(
-                modifier = Modifier
-                    .padding(start = 25.dp, end = 25.dp)
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color.White)
-            ) {
-                OutlinedTextField(
-                    value = name, onValueChange = { name = it },
-                    placeholder = {
-                        Text(
-                            text = "Full Name",
-                            color = Color(0xFFA0A0A0).copy(alpha = 0.6f)
-                        )
-                    },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                    ),
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = Color.White
-                    ),
-                    textStyle = TextStyle(
-                        color = Color(0xFFA0A0A0),
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 16.sp,
-                        fontFamily = nunito
-                    )
+        Column(
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CustomOutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = "Name",
+                showError = !validateName,
+                errorMessage = validateNameError,
+                leadingIconImageVector = Icons.Default.PermIdentity,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
                 )
-                //Text(text = "Enter your mail address")
-            }
-
-            Card(
-                modifier = Modifier
-                    .padding(start = 25.dp, end = 25.dp, top = 20.dp)
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color.White)
-            ) {
-                OutlinedTextField(
-                    value = number, onValueChange = { number = it },
-                    placeholder = {
-                        Text(
-                            text = "Mobile Number",
-                            color = Color(0xFFA0A0A0).copy(alpha = 0.6f)
-                        )
-                    },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Phone,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                    ),
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = Color.White
-                    ),
-                    textStyle = TextStyle(
-                        color = Color(0xFFA0A0A0).copy(alpha = 0.6f),
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 16.sp,
-                        fontFamily = nunito
-                    )
-                )
-                //Text(text = "Enter your mail address")
-            }
-
-            Card(
-                modifier = Modifier
-                    .padding(start = 25.dp, end = 25.dp, top = 20.dp)
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color.White)
-            ) {
-                OutlinedTextField(
-                    value = password, onValueChange = { password = it },
-                    placeholder = {
-                        Text(
-                            text = "Password",
-                            color = Color(0xFFA0A0A0).copy(alpha = 0.6f)
-                        )
-                    },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                    ),
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = Color.White
-                    ),
-                    textStyle = TextStyle(
-                        color = Color(0xFFA0A0A0).copy(alpha = 0.6f),
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 16.sp,
-                        fontFamily = nunito
-                    )
-                )
-                //Text(text = "Enter your mail address")
-            }
-
-            Card(
-                modifier = Modifier
-                    .padding(start = 25.dp, end = 25.dp, top = 20.dp, bottom = 30.dp)
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color.White)
-            ) {
-                OutlinedTextField(
-                    value = password, onValueChange = { password = it },
-                    placeholder = {
-                        Text(
-                            text = "Confirm Password",
-                            color = Color(0xFFA0A0A0).copy(alpha = 0.6f)
-                        )
-                    },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.clearFocus() }
-                    ),
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = Color.White
-                    ),
-                    textStyle = TextStyle(
-                        color = Color(0xFFA0A0A0).copy(alpha = 0.6f),
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 16.sp,
-                        fontFamily = nunito
-                    )
-                )
-                //Text(text = "Enter your mail address")
-            }
-        }
-
-        Row(Modifier.padding(start = 25.dp, end = 25.dp)) {
-            Box(
-                modifier = Modifier
-                    .size(height = 58.dp, width = 185.dp)
-                    .clip(RoundedCornerShape(30.dp))
-                    .background(Yellow500),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "Sign Up", color = Color.White)
-            }
-
-            Spacer(modifier = Modifier.padding(end = 20.dp))
-
-            val annotatedText = buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        color = Color(0xFFB3B3B3),
-                        fontWeight = FontWeight.ExtraLight,
-                        fontFamily = nunito,
-                        fontSize = 16.sp
-                    )
-                ) {
-                    append("Already a \nMember? ")
-                }
-                pushStringAnnotation(
-                    tag = "URL",
-                    annotation = "https://developer.android.com"
-                )
-                withStyle(
-                    style = SpanStyle(
-                        fontWeight = FontWeight.ExtraBold,
-                        color = Color(0xFFB3B3B3),
-                        fontFamily = nunito,
-                        fontSize = 16.sp
-                    )
-                ) {
-                    append(" Login")
-                }
-            }
-
-            ClickableText(
-                text = annotatedText,
-                onClick = { offset ->
-                    // We check if there is an *URL* annotation attached to the text
-                    // at the clicked position
-                    annotatedText.getStringAnnotations(
-                        tag = "URL", start = offset,
-                        end = offset
-                    )
-                        .firstOrNull()?.let { annotation ->
-                            // If yes, we log its value
-                            Log.d("Clicked URL", annotation.item)
-                        }
-                },
             )
+
+            CustomOutlinedTextField(
+                value = surname,
+                onValueChange = { surname = it },
+                label = "Surname",
+                showError = !validateSurname,
+                errorMessage = validateSurnameError,
+                leadingIconImageVector = Icons.Default.PermIdentity,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                )
+            )
+
+            CustomOutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = "Email Address",
+                showError = !validateEmail,
+                errorMessage = validateEmailError,
+                leadingIconImageVector = Icons.Default.AlternateEmail,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                )
+            )
+
+            CustomOutlinedTextField(
+                value = phone,
+                onValueChange = { phone = it },
+                label = "Phone Number",
+                showError = !validatePhone,
+                errorMessage = validatePhoneError,
+                leadingIconImageVector = Icons.Default.Phone,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                )
+            )
+
+            CustomOutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = "Password",
+                showError = !validatePassword,
+                errorMessage = validatePasswordError,
+                isPasswordField = true,
+                isPasswordVisible = isPasswordVisible,
+                onVisibilityChange = { isPasswordVisible = it },
+                leadingIconImageVector = Icons.Default.Password,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                )
+            )
+
+            CustomOutlinedTextField(
+                value = confirmedPassword,
+                onValueChange = { confirmedPassword = it },
+                label = "Confirmed Password",
+                showError = !validateConfirmedPassword or !validateArePasswordsEquals,
+                errorMessage = if (!validateConfirmedPassword) validatePasswordError else validateEqualPasswordError,
+                isPasswordField = true,
+                isPasswordVisible = isConfirmedPasswordVisible,
+                onVisibilityChange = { isConfirmedPasswordVisible = it },
+                leadingIconImageVector = Icons.Default.Password,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { focusManager.clearFocus() }
+                )
+            )
+
+            Row(Modifier.padding(start = 25.dp, end = 25.dp)) {
+
+                Button(
+                    onClick = {
+                        register(name, surname, email, phone, password, confirmedPassword)
+                    },
+                    modifier = Modifier
+                        .size(height = 58.dp, width = 185.dp)
+                        .clip(RoundedCornerShape(30.dp)),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Yellow500,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Sign Up", color = Color.White)
+                }
+
+                Spacer(modifier = Modifier.padding(end = 20.dp))
+
+                val annotatedText = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            color = Color(0xFFB3B3B3),
+                            fontWeight = FontWeight.ExtraLight,
+                            fontFamily = nunito,
+                            fontSize = 16.sp
+                        )
+                    ) {
+                        append("Already a \nMember? ")
+                    }
+                    pushStringAnnotation(
+                        tag = "URL",
+                        annotation = "https://developer.android.com"
+                    )
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.ExtraBold,
+                            color = Color(0xFFB3B3B3),
+                            fontFamily = nunito,
+                            fontSize = 16.sp
+                        )
+                    ) {
+                        append(" Login")
+                    }
+                }
+
+                ClickableText(
+                    text = annotatedText,
+                    onClick = { offset ->
+                        // We check if there is an *URL* annotation attached to the text
+                        // at the clicked position
+                        annotatedText.getStringAnnotations(
+                            tag = "URL", start = offset,
+                            end = offset
+                        )
+                            .firstOrNull()?.let { annotation ->
+                                // If yes, we log its value
+                                Log.d("Clicked URL", annotation.item)
+                            }
+                    },
+                )
+            }
         }
     }
 }
+
 
 @Preview
 @Composable
