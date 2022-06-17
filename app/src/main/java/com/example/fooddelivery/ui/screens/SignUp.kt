@@ -41,7 +41,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fooddelivery.MainActivity
 import com.example.fooddelivery.ui.composables.CustomOutlinedTextField
 import com.example.fooddelivery.ui.theme.*
-
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 
 @Composable
 fun SignUpScreen(navController: NavController) {
@@ -50,8 +51,8 @@ fun SignUpScreen(navController: NavController) {
     var surname by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var phone by rememberSaveable { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmedPassword by remember { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var confirmedPassword by rememberSaveable { mutableStateOf("") }
 
     var validateName by rememberSaveable { mutableStateOf(true) }
     var validateSurname by rememberSaveable { mutableStateOf(true) }
@@ -64,12 +65,12 @@ fun SignUpScreen(navController: NavController) {
     var isConfirmedPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
     val validateNameError = "Please input a valid name"
-    var validateSurnameError = "Please input a valid surname"
-    var validateEmailError = "The format of the email doesn't seem right"
-    var validatePhoneError = "The format of the phone number doesn't seem right"
-    var validatePasswordError =
+    val validateSurnameError = "Please input a valid surname"
+    val validateEmailError = "The format of the email doesn't seem right"
+    val validatePhoneError = "The format of the phone number doesn't seem right"
+    val validatePasswordError =
         "Must mix capital and non-capital letters, a number, spacial character and min. length of 8"
-    var validateEqualPasswordError = "Password must be equal"
+    val validateEqualPasswordError = "Passwords must be equal"
 
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
@@ -83,7 +84,7 @@ fun SignUpScreen(navController: NavController) {
         password: String,
         confirmedPassword: String
     ): Boolean {
-        val passwordRegex = "(?=.*\\d)(?=.*\\[a-z])(?=.*\\[A-Z])(?=.*\\[@#\$%^!/&+=]).{8,}".toRegex()
+        val passwordRegex = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^!/&+=]).{8,}".toRegex()
 
         validateName = name.isNotBlank()
         validateSurname = surname.isNotBlank()
@@ -110,6 +111,11 @@ fun SignUpScreen(navController: NavController) {
                 MainActivity::class.java.simpleName,
                 "Name: $name, Surname: $surname, Email: $email, Password: $password"
             )
+            navController.currentBackStackEntry?.arguments =
+                Bundle().apply {
+
+                }
+            navController.navigate(Destinations.Login)
         } else {
             Toast.makeText(context, "Please, review fields", Toast.LENGTH_LONG).show()
         }
@@ -327,7 +333,7 @@ fun SignUpScreen(navController: NavController) {
                 )
             )
 
-            Row(Modifier.padding(start = 25.dp, end = 25.dp)) {
+            Row(Modifier.padding(start = 25.dp, end = 25.dp, bottom = 20.dp, top = 12.dp)) {
 
                 Button(
                     onClick = {
