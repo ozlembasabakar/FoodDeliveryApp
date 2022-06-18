@@ -87,14 +87,6 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 .background(Color.White)
         ) {
             Column {
-/*                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(height = 246.dp, width = 347.dp)
-                        .padding(start = 25.dp)
-                )*/
-
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
@@ -185,7 +177,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                     fontSize = 16.sp,
                     fontFamily = nunito
                 ),
-                isError = !isEmailValid,
+                isError = !isEmailValid and email.isNotBlank(),
                 trailingIcon = {
                     when {
                         email.isNotBlank() ->

@@ -43,10 +43,14 @@ import com.example.fooddelivery.ui.composables.CustomOutlinedTextField
 import com.example.fooddelivery.ui.theme.*
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.ViewModelProvider
+import com.example.fooddelivery.data.database.CustomerItem
+import com.example.fooddelivery.data.database.CustomerViewModel
 
 @Composable
-fun SignUpScreen(navController: NavController) {
+fun SignUpScreen(customerViewModel: CustomerViewModel, navController: NavController) {
 
+    var id by rememberSaveable { mutableStateOf("") }
     var name by rememberSaveable { mutableStateOf("") }
     var surname by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
@@ -338,6 +342,11 @@ fun SignUpScreen(navController: NavController) {
                 Button(
                     onClick = {
                         register(name, surname, email, phone, password, confirmedPassword)
+                        if (name.isNotEmpty() and surname.isNotEmpty() and email.isNotEmpty() and phone.isNotEmpty() and password.isNotEmpty()) {
+                            customerViewModel.insertCustomer((
+                                    CustomerItem(name, surname, email, password, phone)
+                                    ))
+                        }
                     },
                     modifier = Modifier
                         .size(height = 58.dp, width = 185.dp)
@@ -348,6 +357,7 @@ fun SignUpScreen(navController: NavController) {
                     )
                 ) {
                     Text(text = "Sign Up", color = Color.White)
+
                 }
 
                 Spacer(modifier = Modifier.padding(end = 20.dp))
@@ -397,12 +407,4 @@ fun SignUpScreen(navController: NavController) {
             }
         }
     }
-}
-
-
-@Preview
-@Composable
-fun PreviewSignUpScreen() {
-    val navController = rememberNavController()
-    SignUpScreen(navController = navController)
 }

@@ -1,9 +1,15 @@
 package com.example.fooddelivery.ui.screens
 
+import android.app.Application
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.fooddelivery.data.database.CustomerViewModel
+import com.example.fooddelivery.data.database.CustomerViewModelFactory
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -20,7 +26,7 @@ object Destinations {
 }
 
 @Composable
-fun ScreensMain() {
+fun ScreensMain(customerViewModel: CustomerViewModel) {
     val navController = rememberNavController()
 
     NavHost(
@@ -33,7 +39,7 @@ fun ScreensMain() {
             }
 
             composable(Destinations.SignUp) {
-                SignUpScreen(navController = navController)
+                SignUpScreen(navController = navController, customerViewModel = customerViewModel)
             }
 
             composable(Destinations.ForgotPassword) {
