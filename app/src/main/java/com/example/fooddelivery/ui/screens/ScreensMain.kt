@@ -1,15 +1,14 @@
 package com.example.fooddelivery.ui.screens
 
-import android.app.Application
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.fooddelivery.data.ContactViewModel
 import com.example.fooddelivery.data.database.CustomerViewModel
-import com.example.fooddelivery.data.database.CustomerViewModelFactory
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -39,7 +38,7 @@ fun ScreensMain(customerViewModel: CustomerViewModel) {
             }
 
             composable(Destinations.SignUp) {
-                SignUpScreen(navController = navController, customerViewModel = customerViewModel)
+                SignUpScreen(navController = navController)
             }
 
             composable(Destinations.ForgotPassword) {

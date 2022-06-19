@@ -2,7 +2,6 @@ package com.example.fooddelivery.ui.screens
 
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -33,97 +32,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.fooddelivery.MainActivity
 import com.example.fooddelivery.ui.composables.CustomOutlinedTextField
 import com.example.fooddelivery.ui.theme.*
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.ViewModelProvider
-import com.example.fooddelivery.data.database.CustomerItem
-import com.example.fooddelivery.data.database.CustomerViewModel
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fooddelivery.data.ContactViewModel
+import com.google.firebase.ktx.Firebase
 
 @Composable
-fun SignUpScreen(customerViewModel: CustomerViewModel, navController: NavController) {
+fun SignUpScreen(navController: NavController) {
+    // val contactViewModel: ContactViewModel = viewModel()
+    // ViewModelProvider().get(ContactViewModel::class.java)
 
-    var id by rememberSaveable { mutableStateOf("") }
-    var name by rememberSaveable { mutableStateOf("") }
-    var surname by rememberSaveable { mutableStateOf("") }
-    var email by rememberSaveable { mutableStateOf("") }
-    var phone by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-    var confirmedPassword by rememberSaveable { mutableStateOf("") }
+    val contactViewModel: ContactViewModel = viewModel()
 
-    var validateName by rememberSaveable { mutableStateOf(true) }
-    var validateSurname by rememberSaveable { mutableStateOf(true) }
-    var validateEmail by rememberSaveable { mutableStateOf(true) }
-    var validatePhone by rememberSaveable { mutableStateOf(true) }
-    var validatePassword by rememberSaveable { mutableStateOf(true) }
-    var validateConfirmedPassword by rememberSaveable { mutableStateOf(true) }
-    var validateArePasswordsEquals by rememberSaveable { mutableStateOf(true) }
-    var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
-    var isConfirmedPasswordVisible by rememberSaveable { mutableStateOf(false) }
-
-    val validateNameError = "Please input a valid name"
-    val validateSurnameError = "Please input a valid surname"
-    val validateEmailError = "The format of the email doesn't seem right"
-    val validatePhoneError = "The format of the phone number doesn't seem right"
-    val validatePasswordError =
-        "Must mix capital and non-capital letters, a number, spacial character and min. length of 8"
-    val validateEqualPasswordError = "Passwords must be equal"
+    val viewState by contactViewModel.viewState.observeAsState()
 
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
     val scrollState = rememberScrollState()
-
-    fun validateData(
-        name: String,
-        surname: String,
-        email: String,
-        phone: String,
-        password: String,
-        confirmedPassword: String
-    ): Boolean {
-        val passwordRegex = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^!/&+=]).{8,}".toRegex()
-
-        validateName = name.isNotBlank()
-        validateSurname = surname.isNotBlank()
-        validateEmail = Patterns.EMAIL_ADDRESS.matcher(email).matches()
-        validatePhone = Patterns.PHONE.matcher(phone).matches()
-        validatePassword = passwordRegex.matches(password)
-        validateConfirmedPassword = passwordRegex.matches(confirmedPassword)
-        validateArePasswordsEquals = password == confirmedPassword
-
-        return validateName && validateSurname && validateEmail && validatePhone && validatePassword && validateConfirmedPassword && validateArePasswordsEquals
-    }
-
-    fun register(
-        name: String,
-        surname: String,
-        email: String,
-        phone: String,
-        password: String,
-        confirmedPassword: String
-    ) {
-        if (validateData(name, surname, email, phone, password, confirmedPassword)) {
-            // Registration logic
-            Log.d(
-                MainActivity::class.java.simpleName,
-                "Name: $name, Surname: $surname, Email: $email, Password: $password"
-            )
-            navController.currentBackStackEntry?.arguments =
-                Bundle().apply {
-
-                }
-            navController.navigate(Destinations.Login)
-        } else {
-            Toast.makeText(context, "Please, review fields", Toast.LENGTH_LONG).show()
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -236,11 +168,11 @@ fun SignUpScreen(customerViewModel: CustomerViewModel, navController: NavControl
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CustomOutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
+                value = viewState!!.name.text.value,
+                onValueChange = { viewState!!.name.onTextChanged(it) },
                 label = "Name",
-                showError = !validateName,
-                errorMessage = validateNameError,
+                showError = !viewState!!.isValidName && viewState!!.showValidationError,
+                errorMessage = "Please input a valid name",
                 leadingIconImageVector = Icons.Default.PermIdentity,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -252,11 +184,11 @@ fun SignUpScreen(customerViewModel: CustomerViewModel, navController: NavControl
             )
 
             CustomOutlinedTextField(
-                value = surname,
-                onValueChange = { surname = it },
+                value = viewState!!.surname.text.value,
+                onValueChange = { viewState!!.surname.onTextChanged(it) },
                 label = "Surname",
-                showError = !validateSurname,
-                errorMessage = validateSurnameError,
+                showError = !viewState!!.isValidSurname && viewState!!.showValidationError,
+                errorMessage = "Please input a valid surname",
                 leadingIconImageVector = Icons.Default.PermIdentity,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -268,11 +200,11 @@ fun SignUpScreen(customerViewModel: CustomerViewModel, navController: NavControl
             )
 
             CustomOutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
+                value = viewState!!.email.text.value,
+                onValueChange = { viewState!!.email.onTextChanged(it) },
                 label = "Email Address",
-                showError = !validateEmail,
-                errorMessage = validateEmailError,
+                showError = !viewState!!.isValidEmail && viewState!!.showValidationError,
+                errorMessage = "The format of the email doesn't seem right",
                 leadingIconImageVector = Icons.Default.AlternateEmail,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
@@ -284,11 +216,11 @@ fun SignUpScreen(customerViewModel: CustomerViewModel, navController: NavControl
             )
 
             CustomOutlinedTextField(
-                value = phone,
-                onValueChange = { phone = it },
+                value = viewState!!.phoneNumber.text.value,
+                onValueChange = { viewState!!.phoneNumber.onTextChanged(it) },
                 label = "Phone Number",
-                showError = !validatePhone,
-                errorMessage = validatePhoneError,
+                showError = !viewState!!.isValidPhoneNumber && viewState!!.showValidationError,
+                errorMessage = "The format of the phone number doesn't seem right",
                 leadingIconImageVector = Icons.Default.Phone,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Phone,
@@ -300,14 +232,14 @@ fun SignUpScreen(customerViewModel: CustomerViewModel, navController: NavControl
             )
 
             CustomOutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
+                value = viewState!!.password.text.value,
+                onValueChange = { viewState!!.password.onTextChanged(it) },
                 label = "Password",
-                showError = !validatePassword,
-                errorMessage = validatePasswordError,
+                showError = !viewState!!.isValidPassword && viewState!!.showValidationError,
+                errorMessage = "Must mix capital and non-capital letters, a number, spacial character and min. length of 8",
                 isPasswordField = true,
-                isPasswordVisible = isPasswordVisible,
-                onVisibilityChange = { isPasswordVisible = it },
+                isPasswordVisible = viewState!!.isPasswordVisible,
+                onVisibilityChange = { contactViewModel.togglePasswordVisibility() },
                 leadingIconImageVector = Icons.Default.Password,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -319,14 +251,17 @@ fun SignUpScreen(customerViewModel: CustomerViewModel, navController: NavControl
             )
 
             CustomOutlinedTextField(
-                value = confirmedPassword,
-                onValueChange = { confirmedPassword = it },
+                value = viewState!!.confirmedPassword.text.value,
+                onValueChange = { viewState!!.confirmedPassword.onTextChanged(it) },
                 label = "Confirmed Password",
-                showError = !validateConfirmedPassword or !validateArePasswordsEquals,
-                errorMessage = if (!validateConfirmedPassword) validatePasswordError else validateEqualPasswordError,
+                showError = !viewState!!.isValidConfirmedPassword && viewState!!.showValidationError,
+                errorMessage = when {
+                    !viewState!!.isValidConfirmedPassword -> "Must mix capital and non-capital letters, a number, spacial character and min. length of 8"
+                    else -> "Passwords must be equal"
+                },
                 isPasswordField = true,
-                isPasswordVisible = isConfirmedPasswordVisible,
-                onVisibilityChange = { isConfirmedPasswordVisible = it },
+                isPasswordVisible = viewState!!.isPasswordVisible,
+                onVisibilityChange = { contactViewModel.togglePasswordVisibility() },
                 leadingIconImageVector = Icons.Default.Password,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -341,12 +276,20 @@ fun SignUpScreen(customerViewModel: CustomerViewModel, navController: NavControl
 
                 Button(
                     onClick = {
-                        register(name, surname, email, phone, password, confirmedPassword)
-                        if (name.isNotEmpty() and surname.isNotEmpty() and email.isNotEmpty() and phone.isNotEmpty() and password.isNotEmpty()) {
+                        contactViewModel.register(
+                            { navController.navigate(Destinations.Login) },
+                            {
+                                Toast.makeText(context, "Please, review fields", Toast.LENGTH_LONG)
+                                    .show()
+                            }
+                        )
+
+                        // room'a kaydetme kısmı
+/*                        if (name.isNotEmpty() and surname.isNotEmpty() and email.isNotEmpty() and phone.isNotEmpty() and password.isNotEmpty()) {
                             customerViewModel.insertCustomer((
                                     CustomerItem(name, surname, email, password, phone)
                                     ))
-                        }
+                        }*/
                     },
                     modifier = Modifier
                         .size(height = 58.dp, width = 185.dp)
@@ -357,7 +300,6 @@ fun SignUpScreen(customerViewModel: CustomerViewModel, navController: NavControl
                     )
                 ) {
                     Text(text = "Sign Up", color = Color.White)
-
                 }
 
                 Spacer(modifier = Modifier.padding(end = 20.dp))
