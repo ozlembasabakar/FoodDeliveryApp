@@ -1,4 +1,4 @@
-package com.example.fooddelivery.data
+package com.example.fooddelivery.view
 
 import androidx.compose.runtime.mutableStateOf
 

@@ -1,26 +1,16 @@
-package com.example.fooddelivery.data
+package com.example.fooddelivery.viewmodel
 
-import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.fooddelivery.MainActivity
-import com.example.fooddelivery.ui.screens.Destinations
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ktx.database
+import com.example.fooddelivery.view.SignUpViewState
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.lang.Exception
 
 class ContactViewModel : ViewModel() {
 
     private val _viewState = MutableLiveData<SignUpViewState>(SignUpViewState())
     val viewState: LiveData<SignUpViewState> = _viewState
-
-    private val _viewStateLogin = MutableLiveData<LoginViewState>(LoginViewState())
-    val viewStateLogin: LiveData<LoginViewState> = _viewStateLogin
 
     fun register(
         onUserRegistered: () -> Unit,
@@ -60,22 +50,4 @@ class ContactViewModel : ViewModel() {
         val currentVisibility = _viewState.value!!.isPasswordVisible
         _viewState.value = viewState.value!!.copy(isPasswordVisible = currentVisibility.not())
     }
-
-    fun togglePasswordVisibilityLogin() {
-        val currentVisibility = _viewStateLogin.value!!.isPasswordVisible
-        _viewStateLogin.value = viewStateLogin.value!!.copy(isPasswordVisible = currentVisibility.not())
-    }
-
-    fun login(
-        onUserLoggedIn: () -> Unit,
-        onError: () -> Unit
-    ) {
-        if (viewStateLogin.value!!.isValidEmail && viewStateLogin.value!!.isPasswordValid) {
-            onUserLoggedIn
-        } else {
-            onError()
-        }
-    }
-
-
 }

@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.PermIdentity
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,12 +36,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fooddelivery.ui.composables.CustomOutlinedTextField
 import com.example.fooddelivery.ui.theme.*
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.fooddelivery.data.ContactViewModel
-import com.google.firebase.ktx.Firebase
+import com.example.fooddelivery.viewmodel.ContactViewModel
 
 @Composable
 fun SignUpScreen(navController: NavController) {

@@ -1,8 +1,6 @@
 package com.example.fooddelivery.ui.screens
 
-import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,7 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.fooddelivery.data.ContactViewModel
+import com.example.fooddelivery.viewmodel.LoginViewModel
+import com.example.fooddelivery.viewmodel.ContactViewModel
 import com.example.fooddelivery.data.User
 import com.example.fooddelivery.ui.theme.*
 import com.google.firebase.auth.FirebaseAuth
@@ -53,8 +52,9 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
     val TAG = User.TAG
 
     val contactViewModel: ContactViewModel = viewModel()
+    val loginViewModel: LoginViewModel = viewModel()
 
-    val viewStateLogin by contactViewModel.viewStateLogin.observeAsState()
+    val viewStateLogin by loginViewModel.viewStateLogin.observeAsState()
 
     val focusManager = LocalFocusManager.current
 
@@ -220,7 +220,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 ),
                 isError = !viewStateLogin!!.isPasswordValid,
                 trailingIcon = {
-                    IconButton(onClick = { contactViewModel.togglePasswordVisibilityLogin() }) {
+                    IconButton(onClick = { loginViewModel.togglePasswordVisibilityLogin() }) {
                         Icon(
                             imageVector = if (viewStateLogin!!.isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                             contentDescription = ""

@@ -1,4 +1,4 @@
-package com.example.fooddelivery.data
+package com.example.fooddelivery.view
 
 import android.util.Patterns
 import androidx.compose.runtime.*
