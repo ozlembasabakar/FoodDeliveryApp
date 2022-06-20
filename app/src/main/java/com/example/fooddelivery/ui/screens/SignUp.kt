@@ -1,8 +1,13 @@
 package com.example.fooddelivery.ui.screens
 
+import android.app.Activity
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import com.example.fooddelivery.R
@@ -38,8 +43,18 @@ import com.example.fooddelivery.ui.composables.CustomOutlinedTextField
 import com.example.fooddelivery.ui.theme.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fooddelivery.MainActivity
 import com.example.fooddelivery.viewmodel.ContactViewModel
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthAnonymousUpgradeException
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import kotlin.math.sign
+
 
 @Composable
 fun SignUpScreen(navController: NavController) {
@@ -280,6 +295,21 @@ fun SignUpScreen(navController: NavController) {
                                     .show()
                             }
                         )
+
+                        FirebaseAuth.getInstance()
+                            .createUserWithEmailAndPassword(viewState!!.email.text.value,
+                                viewState!!.password.text.value)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    val firebaseUser: FirebaseUser = task.result!!.user!!
+
+                                    val intent = Intent(context, MainActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    intent.putExtra("user_id", firebaseUser.uid)
+                                    intent.putExtra("email_id", viewState!!.email.text.value)
+                                    context.startActivity(intent)
+                                }
+                            }
                     },
                     modifier = Modifier
                         .size(height = 58.dp, width = 185.dp)

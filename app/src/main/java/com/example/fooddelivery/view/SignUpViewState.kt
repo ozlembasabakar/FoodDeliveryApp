@@ -3,6 +3,9 @@ package com.example.fooddelivery.view
 import android.util.Patterns
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 data class SignUpViewState(
     val name: TextInputState = TextInputState(),
@@ -12,7 +15,8 @@ data class SignUpViewState(
     val password: TextInputState = TextInputState(),
     val confirmedPassword: TextInputState = TextInputState(),
     val isPasswordVisible: Boolean = false,
-    val showValidationError: Boolean = false
+    val showValidationError: Boolean = false,
+    var auth: FirebaseAuth = Firebase.auth
 ) {
 
     val isValidName by derivedStateOf {

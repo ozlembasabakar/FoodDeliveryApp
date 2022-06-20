@@ -51,7 +51,6 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
 
     val TAG = User.TAG
 
-    val contactViewModel: ContactViewModel = viewModel()
     val loginViewModel: LoginViewModel = viewModel()
 
     val viewStateLogin by loginViewModel.viewStateLogin.observeAsState()

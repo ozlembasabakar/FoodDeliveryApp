@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,12 +24,20 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.fooddelivery.ui.theme.*
+import com.example.fooddelivery.viewmodel.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun ForgotPasswordScreen(navController: NavController) {
+
+    val loginViewModel: LoginViewModel = viewModel()
+
+    val viewStateLogin by loginViewModel.viewStateLogin.observeAsState()
 
     var email by remember {
         mutableStateOf("")
