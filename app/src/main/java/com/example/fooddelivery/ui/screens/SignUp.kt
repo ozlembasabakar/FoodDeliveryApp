@@ -283,13 +283,6 @@ fun SignUpScreen(navController: NavController) {
                                     .show()
                             }
                         )
-
-                        // room'a kaydetme kısmı
-/*                        if (name.isNotEmpty() and surname.isNotEmpty() and email.isNotEmpty() and phone.isNotEmpty() and password.isNotEmpty()) {
-                            customerViewModel.insertCustomer((
-                                    CustomerItem(name, surname, email, password, phone)
-                                    ))
-                        }*/
                     },
                     modifier = Modifier
                         .size(height = 58.dp, width = 185.dp)

@@ -17,6 +17,8 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,7 +34,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.fooddelivery.data.ContactViewModel
 import com.example.fooddelivery.data.User
 import com.example.fooddelivery.ui.theme.*
 import com.google.firebase.auth.FirebaseAuth
@@ -48,26 +52,14 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
 
     val TAG = User.TAG
 
-    var email by remember {
-        mutableStateOf("")
-    }
+    val contactViewModel: ContactViewModel = viewModel()
 
-    var password by remember {
-        mutableStateOf("")
-    }
+    val viewStateLogin by contactViewModel.viewStateLogin.observeAsState()
+
     val focusManager = LocalFocusManager.current
 
-    val isEmailValid by derivedStateOf {
-        Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    val isPasswordValid by derivedStateOf {
-        password.length >= 8
-    }
-
-    var isPasswordVisible by remember {
-        mutableStateOf(false)
-    }
+    var password by rememberSaveable { mutableStateOf("") }
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -99,10 +91,14 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                         Modifier
                             .width(134.dp)
                             .clickable {
-                                navController.currentBackStackEntry?.arguments =
-                                    Bundle().apply {
+                                // room'a kaydetme kısmı
+/*                        if (name.isNotEmpty() and surname.isNotEmpty() and email.isNotEmpty() and phone.isNotEmpty() and password.isNotEmpty()) {
+                            customerViewModel.insertCustomer((
+                                    CustomerItem(name, surname, email, password, phone)
+                                    ))
+                        }*/
 
-                                    }
+                                navController.currentBackStackEntry?.arguments
                                 navController.navigate(Destinations.Login)
                             },
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -121,10 +117,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                         Modifier
                             .width(134.dp)
                             .clickable {
-                                navController.currentBackStackEntry?.arguments =
-                                    Bundle().apply {
-
-                                    }
+                                navController.currentBackStackEntry?.arguments
                                 navController.navigate(Destinations.SignUp)
                             },
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -152,7 +145,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 .background(Color.White)
         ) {
             OutlinedTextField(
-                value = email, onValueChange = { email = it },
+                value = viewStateLogin!!.email.text.value, onValueChange = { viewStateLogin!!.email.onTextChanged(it) },
                 placeholder = {
                     Text(
                         text = "Email Address",
@@ -177,11 +170,11 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                     fontSize = 16.sp,
                     fontFamily = nunito
                 ),
-                isError = !isEmailValid and email.isNotBlank(),
+                isError = !viewStateLogin!!.isValidEmail and viewStateLogin!!.email.text.value.isNotBlank(),
                 trailingIcon = {
                     when {
-                        email.isNotBlank() ->
-                            IconButton(onClick = { email = "" }) {
+                        viewStateLogin!!.email.text.value.isNotBlank() ->
+                            IconButton(onClick = { viewStateLogin!!.email.text.value = "" }) {
                                 Icon(imageVector = Icons.Filled.Clear, contentDescription = "")
                             }
                     }
@@ -200,7 +193,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 .background(Color.White)
         ) {
             OutlinedTextField(
-                value = password, onValueChange = { password = it },
+                value = viewStateLogin!!.password.text.value, onValueChange = { viewStateLogin!!.password.onTextChanged(it) },
                 placeholder = {
                     Text(
                         text = "Password",
@@ -225,16 +218,16 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                     fontSize = 16.sp,
                     fontFamily = nunito
                 ),
-                isError = !isPasswordValid,
+                isError = !viewStateLogin!!.isPasswordValid,
                 trailingIcon = {
-                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                    IconButton(onClick = { contactViewModel.togglePasswordVisibilityLogin() }) {
                         Icon(
-                            imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                            imageVector = if (viewStateLogin!!.isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                             contentDescription = ""
                         )
                     }
                 },
-                visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
+                visualTransformation = if (viewStateLogin!!.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
             )
         }
 
@@ -248,12 +241,9 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 .fillMaxWidth()
                 .padding(start = 25.dp)
                 .clickable {
-                    navController.currentBackStackEntry?.arguments = Bundle().apply {
-
-                    }
+                    navController.currentBackStackEntry?.arguments
                     navController.navigate(Destinations.ForgotPassword)
                 }
-
         )
 
         Spacer(modifier = Modifier.height(25.dp))
@@ -261,14 +251,11 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
 
         Button(
             onClick = {
-                auth.signInWithEmailAndPassword(email, password)
+                auth.signInWithEmailAndPassword(viewStateLogin!!.email.text.value, viewStateLogin!!.password.text.value)
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             Log.d(TAG, "User logged in successfully.")
-                            navController.currentBackStackEntry?.arguments =
-                                Bundle().apply {
-
-                                }
+                            navController.currentBackStackEntry?.arguments
                             navController.navigate(Destinations.Home)
                         } else {
                             Log.w(TAG, "LOGIN FAILED!", it.exception)
@@ -281,7 +268,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 .height(56.dp)
                 .clip(RoundedCornerShape(30.dp)),
             colors = ButtonDefaults.buttonColors(backgroundColor = Yellow500),
-            enabled = isEmailValid && password.length >= 8,
+            enabled = viewStateLogin!!.isValidEmail && viewStateLogin!!.isPasswordValid,
         ) {
             Text(
                 text = "Login", color = Color.White, style = Typography.body1

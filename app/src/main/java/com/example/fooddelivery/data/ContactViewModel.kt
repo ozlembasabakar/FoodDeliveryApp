@@ -19,6 +19,9 @@ class ContactViewModel : ViewModel() {
     private val _viewState = MutableLiveData<SignUpViewState>(SignUpViewState())
     val viewState: LiveData<SignUpViewState> = _viewState
 
+    private val _viewStateLogin = MutableLiveData<LoginViewState>(LoginViewState())
+    val viewStateLogin: LiveData<LoginViewState> = _viewStateLogin
+
     fun register(
         onUserRegistered: () -> Unit,
         onError: () -> Unit
@@ -57,4 +60,22 @@ class ContactViewModel : ViewModel() {
         val currentVisibility = _viewState.value!!.isPasswordVisible
         _viewState.value = viewState.value!!.copy(isPasswordVisible = currentVisibility.not())
     }
+
+    fun togglePasswordVisibilityLogin() {
+        val currentVisibility = _viewStateLogin.value!!.isPasswordVisible
+        _viewStateLogin.value = viewStateLogin.value!!.copy(isPasswordVisible = currentVisibility.not())
+    }
+
+    fun login(
+        onUserLoggedIn: () -> Unit,
+        onError: () -> Unit
+    ) {
+        if (viewStateLogin.value!!.isValidEmail && viewStateLogin.value!!.isPasswordValid) {
+            onUserLoggedIn
+        } else {
+            onError()
+        }
+    }
+
+
 }

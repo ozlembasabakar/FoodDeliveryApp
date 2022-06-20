@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fooddelivery.ui.theme.*
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun ForgotPasswordScreen(navController: NavController) {
@@ -111,10 +112,7 @@ fun ForgotPasswordScreen(navController: NavController) {
                     painter = painterResource(id = R.drawable.back),
                     contentDescription = "",
                     modifier = Modifier.clickable {
-                        navController.currentBackStackEntry?.arguments =
-                            Bundle().apply {
-
-                            }
+                        navController.currentBackStackEntry?.arguments
                         navController.navigate(Destinations.Login)
                     }
                 )
