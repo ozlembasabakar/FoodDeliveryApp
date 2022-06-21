@@ -211,35 +211,39 @@ fun ForgotPasswordScreen(navController: NavController) {
                 text = "Send Code",
                 fontSize = 24.sp,
                 color = Color(0xFFB2B2B2),
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.clickable {
+                    if (viewStateForgotPassword!!.isInvalidEmail) {
+                        Toast.makeText(context, "Please enter a valid email", Toast.LENGTH_LONG)
+                            .show()
+                    } else {
+                        FirebaseAuth.getInstance()
+                            .sendPasswordResetEmail(viewStateForgotPassword!!.email.text.value)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Toast.makeText(context,
+                                        "Email send successfully to reset your password",
+                                        Toast.LENGTH_LONG).show()
+                                } else {
+                                    Toast.makeText(context,
+                                        task.exception!!.message.toString(),
+                                        Toast.LENGTH_LONG).show()
+                                }
+                            }
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            Button(onClick = {
-                if (viewStateForgotPassword!!.isInvalidEmail) {
-                    Toast.makeText(context, "Please enter a valid email", Toast.LENGTH_LONG).show()
-                } else {
-                    FirebaseAuth.getInstance()
-                        .sendPasswordResetEmail(viewStateForgotPassword!!.email.text.value)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                Toast.makeText(context,
-                                    "Email send successfully to reset your password",
-                                    Toast.LENGTH_LONG).show()
-                                navController.currentBackStackEntry?.arguments
-                                navController.navigate(Destinations.Login)
-                            } else {
-                                Toast.makeText(context,
-                                    task.exception!!.message.toString(),
-                                    Toast.LENGTH_LONG).show()
-                            }
-                        }
-                }
-            },
+            Box(
                 Modifier
                     .padding(end = 16.dp)
                     .align(Alignment.End)
+                    .clickable {
+                        navController.currentBackStackEntry?.arguments
+                        navController.navigate(Destinations.Login)
+                    }
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.arrow_forward),

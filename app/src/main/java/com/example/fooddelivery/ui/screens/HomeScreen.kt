@@ -1,16 +1,16 @@
 package com.example.fooddelivery.ui.screens
 
 import android.os.Bundle
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -118,8 +118,14 @@ fun HomeScreen(navController: NavController) {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Header(navController: NavController) {
+
+    var visible by remember {
+        mutableStateOf(true)
+    }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -129,7 +135,7 @@ fun Header(navController: NavController) {
     ) {
         BoxWithRes(resId = R.drawable.menu, description = "Menu")
 
-        Row(verticalAlignment = Alignment.CenterVertically)
+/*        Row(verticalAlignment = Alignment.CenterVertically)
         {
             Icon(
                 painter = painterResource(id = R.drawable.location),
@@ -146,9 +152,35 @@ fun Header(navController: NavController) {
                 modifier = Modifier.size(16.dp),
                 tint = Orange500
             )
-        }
+        }*/
 
-        BoxWithRes(resId = R.drawable.search, description = "Search")
+        Row {
+            var columnWidth = 40.dp
+            AnimatedVisibility(!visible) {
+                Box(modifier = Modifier
+                    .width(columnWidth + 200.dp)
+                    .height(40.dp)
+                    .background(Color.Transparent),
+                    contentAlignment = Alignment.CenterStart) {
+                    Text(text = "Search",
+                        color = Color(0xFFA0A0A0).copy(alpha = 0.6f))
+                }
+            }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Box(modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(
+                    CardItemBg!!)
+                .clickable { visible = !visible },
+                contentAlignment = Alignment.Center) {
+                Image(painter = painterResource(id = R.drawable.search),
+                    contentDescription = "Search", modifier = Modifier.size(24.dp))
+            }
+        }
+        //BoxWithRes(resId = R.drawable.search, description = "Search")
 
     }
 }

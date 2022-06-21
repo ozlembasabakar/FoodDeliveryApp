@@ -14,7 +14,8 @@ data class LoginViewState(
     }
 
     val isPasswordValid by derivedStateOf {
-        password.text.value.length >= 8
+        val passwordRegex = "(?=.*\\d)(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^!/.&+=]).{8,}".toRegex()
+        passwordRegex.matches(password.text.value)
     }
 
     @Composable
