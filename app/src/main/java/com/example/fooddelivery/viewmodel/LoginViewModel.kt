@@ -24,6 +24,4 @@ class LoginViewModel: ViewModel() {
             onError()
         }
     }
-
-
 }

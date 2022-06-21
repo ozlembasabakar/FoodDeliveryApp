@@ -37,6 +37,8 @@ import androidx.navigation.NavController
 import com.example.fooddelivery.viewmodel.LoginViewModel
 import com.example.fooddelivery.viewmodel.ContactViewModel
 import com.example.fooddelivery.data.User
+import com.example.fooddelivery.data.database.CustomerItem
+import com.example.fooddelivery.data.database.CustomerViewModel
 import com.example.fooddelivery.ui.theme.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -52,6 +54,8 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
     val TAG = User.TAG
 
     val loginViewModel: LoginViewModel = viewModel()
+    val contactViewModel: ContactViewModel = viewModel()
+    val customerViewModel: CustomerViewModel
 
     val viewStateLogin by loginViewModel.viewStateLogin.observeAsState()
 
@@ -144,7 +148,8 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 .background(Color.White)
         ) {
             OutlinedTextField(
-                value = viewStateLogin!!.email.text.value, onValueChange = { viewStateLogin!!.email.onTextChanged(it) },
+                value = viewStateLogin!!.email.text.value,
+                onValueChange = { viewStateLogin!!.email.onTextChanged(it) },
                 placeholder = {
                     Text(
                         text = "Email Address",
@@ -192,7 +197,8 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 .background(Color.White)
         ) {
             OutlinedTextField(
-                value = viewStateLogin!!.password.text.value, onValueChange = { viewStateLogin!!.password.onTextChanged(it) },
+                value = viewStateLogin!!.password.text.value,
+                onValueChange = { viewStateLogin!!.password.onTextChanged(it) },
                 placeholder = {
                     Text(
                         text = "Password",
@@ -250,7 +256,8 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
 
         Button(
             onClick = {
-                auth.signInWithEmailAndPassword(viewStateLogin!!.email.text.value, viewStateLogin!!.password.text.value)
+                auth.signInWithEmailAndPassword(viewStateLogin!!.email.text.value,
+                    viewStateLogin!!.password.text.value)
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             Log.d(TAG, "User logged in successfully.")

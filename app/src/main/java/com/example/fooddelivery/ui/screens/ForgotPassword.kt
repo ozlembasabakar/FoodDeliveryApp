@@ -1,6 +1,10 @@
 package com.example.fooddelivery.ui.screens
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -24,9 +29,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.navArgument
 import com.example.fooddelivery.ui.theme.*
+import com.example.fooddelivery.viewmodel.ForgotPasswordViewModel
 import com.example.fooddelivery.viewmodel.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -35,15 +43,13 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun ForgotPasswordScreen(navController: NavController) {
 
-    val loginViewModel: LoginViewModel = viewModel()
+    val forgotPasswordViewModel: ForgotPasswordViewModel = viewModel()
 
-    val viewStateLogin by loginViewModel.viewStateLogin.observeAsState()
-
-    var email by remember {
-        mutableStateOf("")
-    }
+    val viewStateForgotPassword by forgotPasswordViewModel.viewStateForgotPassword.observeAsState()
 
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
+    val activity = (LocalContext.current as? Activity)
 
     Column(
         modifier = Modifier
@@ -151,7 +157,8 @@ fun ForgotPasswordScreen(navController: NavController) {
                     )
 
                     OutlinedTextField(
-                        value = email, onValueChange = { email = it },
+                        value = viewStateForgotPassword!!.email.text.value,
+                        onValueChange = { viewStateForgotPassword!!.email.onTextChanged(it) },
                         label = {
                             Text(
                                 text = "Email Address",
@@ -209,7 +216,27 @@ fun ForgotPasswordScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            Box(
+            Button(onClick = {
+                if (viewStateForgotPassword!!.isInvalidEmail) {
+                    Toast.makeText(context, "Please enter a valid email", Toast.LENGTH_LONG).show()
+                } else {
+                    FirebaseAuth.getInstance()
+                        .sendPasswordResetEmail(viewStateForgotPassword!!.email.text.value)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(context,
+                                    "Email send successfully to reset your password",
+                                    Toast.LENGTH_LONG).show()
+                                navController.currentBackStackEntry?.arguments
+                                navController.navigate(Destinations.Login)
+                            } else {
+                                Toast.makeText(context,
+                                    task.exception!!.message.toString(),
+                                    Toast.LENGTH_LONG).show()
+                            }
+                        }
+                }
+            },
                 Modifier
                     .padding(end = 16.dp)
                     .align(Alignment.End)
