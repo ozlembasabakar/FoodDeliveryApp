@@ -28,7 +28,6 @@ class ContactViewModel : ViewModel() {
         onUserRegistered: () -> Unit,
         onError: () -> Unit
     ) {
-        val db = Firebase.firestore
         val contact = hashMapOf(
             "Name" to viewState.value!!.name.text.value,
             "Surname" to viewState.value!!.surname.text.value,
@@ -37,9 +36,22 @@ class ContactViewModel : ViewModel() {
             "Password" to viewState.value!!.password.text.value
         )
 
+        val db = Firebase.firestore
         db.collection("contacts").add(contact)
             .addOnSuccessListener { documentReference ->
                 onUserRegistered()
+
+/*
+                if (viewState.value!!.isValidData) {
+                    customerViewModel.insertCustomer((
+                            CustomerItem(viewState.value!!.name.text.value,
+                                viewState.value!!.surname.text.value,
+                                viewState.value!!.phoneNumber.text.value,
+                                viewState.value!!.email.text.value,
+                                viewState.value!!.password.text.value)
+                            ))
+                }
+*/
             }
             .addOnFailureListener { e ->
                 onError()

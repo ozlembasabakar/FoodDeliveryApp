@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -54,15 +55,10 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
     val TAG = User.TAG
 
     val loginViewModel: LoginViewModel = viewModel()
-    val contactViewModel: ContactViewModel = viewModel()
-    val customerViewModel: CustomerViewModel
 
     val viewStateLogin by loginViewModel.viewStateLogin.observeAsState()
 
     val focusManager = LocalFocusManager.current
-
-    var password by rememberSaveable { mutableStateOf("") }
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -94,13 +90,6 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                         Modifier
                             .width(134.dp)
                             .clickable {
-                                // room'a kaydetme kısmı
-/*                        if (name.isNotEmpty() and surname.isNotEmpty() and email.isNotEmpty() and phone.isNotEmpty() and password.isNotEmpty()) {
-                            customerViewModel.insertCustomer((
-                                    CustomerItem(name, surname, email, password, phone)
-                                    ))
-                        }*/
-
                                 navController.currentBackStackEntry?.arguments
                                 navController.navigate(Destinations.Login)
                             },
@@ -267,6 +256,17 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                             Log.w(TAG, "LOGIN FAILED!", it.exception)
                         }
                     }
+
+                // room'a kaydetme kısmı
+                /*
+                if (name.isNotEmpty() and surname.isNotEmpty() and email.isNotEmpty() and phone.isNotEmpty() and password.isNotEmpty()) {
+                    customerViewModel.insertCustomer((
+                            CustomerItem(name, surname, email, password, phone)
+                            ))
+                }
+*/
+
+
             },
             modifier = Modifier
                 .padding(start = 45.dp, end = 45.dp)

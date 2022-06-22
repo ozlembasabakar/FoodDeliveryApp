@@ -296,20 +296,23 @@ fun SignUpScreen(navController: NavController) {
                             }
                         )
 
-                        FirebaseAuth.getInstance()
-                            .createUserWithEmailAndPassword(viewState!!.email.text.value,
-                                viewState!!.password.text.value)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    val firebaseUser: FirebaseUser = task.result!!.user!!
+                        if (viewState!!.isValidData) {
+                            FirebaseAuth.getInstance()
+                                .createUserWithEmailAndPassword(viewState!!.email.text.value,
+                                    viewState!!.password.text.value)
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        val firebaseUser: FirebaseUser = task.result!!.user!!
 
-                                    val intent = Intent(context, MainActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    intent.putExtra("user_id", firebaseUser.uid)
-                                    intent.putExtra("email_id", viewState!!.email.text.value)
-                                    context.startActivity(intent)
+                                        val intent = Intent(context, MainActivity::class.java)
+                                        intent.flags =
+                                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                        intent.putExtra("user_id", firebaseUser.uid)
+                                        intent.putExtra("email_id", viewState!!.email.text.value)
+                                        context.startActivity(intent)
+                                    }
                                 }
-                            }
+                        }
                     },
                     modifier = Modifier
                         .size(height = 58.dp, width = 185.dp)
