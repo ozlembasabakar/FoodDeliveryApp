@@ -7,7 +7,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -19,11 +18,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.fooddelivery.R
 import com.example.fooddelivery.data.CategoryData
 import com.example.fooddelivery.data.PopularData
@@ -158,7 +155,7 @@ fun Header(navController: NavController) {
             var columnWidth = 40.dp
             AnimatedVisibility(!visible) {
                 Box(modifier = Modifier
-                    .width(columnWidth + 200.dp)
+                    .width(columnWidth + 180.dp)
                     .height(40.dp)
                     .background(Color.Transparent),
                     contentAlignment = Alignment.CenterStart) {
@@ -453,15 +450,5 @@ fun PopularItem(popularData: PopularData, navController: NavController) {
         }
 
         Spacer(modifier = Modifier.height(20.dp))
-    }
-}
-
-
-@Preview
-@Composable
-fun DefaultPreview() {
-    FoodDeliveryTheme {
-        val navController = rememberNavController()
-        HomeScreen(navController = navController)
     }
 }
