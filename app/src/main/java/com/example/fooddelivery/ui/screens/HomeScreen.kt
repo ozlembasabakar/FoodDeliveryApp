@@ -1,12 +1,16 @@
 package com.example.fooddelivery.ui.screens
 
+import android.bluetooth.BluetoothDevice
 import android.os.Bundle
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -20,23 +24,31 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.fooddelivery.Product
+import com.example.fooddelivery.ProductCard
 import com.example.fooddelivery.R
 import com.example.fooddelivery.data.CategoryData
 import com.example.fooddelivery.data.PopularData
 import com.example.fooddelivery.ui.theme.*
+import com.example.fooddelivery.viewmodel.ProductViewModel
 
 @Composable
 fun HomeScreen(navController: NavController) {
 
     val scrollState = rememberScrollState()
 
+    val productViewModel: ProductViewModel = hiltViewModel()
+    //val state by productViewModel.state.collectAsState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 30.dp, top = 40.dp, end = 17.dp)
     ) {
-        Column(modifier = Modifier.verticalScroll(scrollState)) {
+/*        Column(modifier = Modifier.verticalScroll(scrollState)) {
+
 
             Header(navController = navController)
 
@@ -73,7 +85,10 @@ fun HomeScreen(navController: NavController) {
             )
 
             Spacer(modifier = Modifier.height(30.dp))
+*/
 
+            ProductCard()
+/*
             PopularList(
                 popularList = listOf(
                     PopularData(
@@ -111,7 +126,8 @@ fun HomeScreen(navController: NavController) {
                 ),
                 navController = navController
             )
-        }
+ }
+        */
     }
 }
 
@@ -338,12 +354,12 @@ fun PopularItem(popularData: PopularData, navController: NavController) {
                     .clip(
                         RoundedCornerShape(18.dp)
                     )
-                    .clickable {
-                        navController.currentBackStackEntry?.arguments = Bundle().apply {
-                            putParcelable(Destinations.DetailArgs.foodData, popularData)
-                        }
-                        navController.navigate(Destinations.Detail)
-                    }
+                    //.clickable {
+                    // = Bundle().apply {
+                    //     putParcelable(Destinations.DetailArgs.foodData, popularData)
+                    //   }
+                    // navController.navigate(Destinations.Detail)
+                    //}
                     .background(CardItemBg)
             )
 

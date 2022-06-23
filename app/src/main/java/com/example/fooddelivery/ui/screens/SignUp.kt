@@ -96,14 +96,14 @@ fun SignUpScreen(navController: NavController) {
                     Column(
                         Modifier
                             .width(134.dp)
-                            .clickable {
-                                navController.currentBackStackEntry?.arguments =
-                                    Bundle().apply {
+                            //.clickable {
+                                //navController.currentBackStackEntry?.arguments =
+                             //       Bundle().apply {
 
-                                    }
-                                navController.navigate(Destinations.Login)
-                            },
-                        horizontalAlignment = Alignment.CenterHorizontally
+                              //      }
+                             //   navController.navigate(Destinations.Login)
+                            //}
+                        ,horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(text = "Log In")
                         Box(
@@ -119,13 +119,14 @@ fun SignUpScreen(navController: NavController) {
                     Column(
                         Modifier
                             .width(134.dp)
-                            .clickable {
-                                navController.currentBackStackEntry?.arguments =
-                                    Bundle().apply {
+                            //.clickable {
+                                //navController.currentBackStackEntry?.arguments =
+                              //      Bundle().apply {
 
-                                    }
-                                navController.navigate(Destinations.SignUp)
-                            },
+                               //     }
+                            //    navController.navigate(Destinations.SignUp)
+                           // }
+                ,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(text = "Sign Up")

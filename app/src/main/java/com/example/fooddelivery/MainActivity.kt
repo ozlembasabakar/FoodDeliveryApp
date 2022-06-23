@@ -13,7 +13,10 @@ import com.example.fooddelivery.data.database.CustomerViewModel
 import com.example.fooddelivery.data.database.CustomerViewModelFactory
 import com.example.fooddelivery.ui.screens.ScreensMain
 import com.example.fooddelivery.ui.theme.*
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
