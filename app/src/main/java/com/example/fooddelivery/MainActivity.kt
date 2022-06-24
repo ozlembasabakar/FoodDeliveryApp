@@ -4,17 +4,13 @@ import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fooddelivery.data.database.CustomerViewModel
 import com.example.fooddelivery.data.database.CustomerViewModelFactory
-import com.example.fooddelivery.ui.screens.ScreensMain
 import com.example.fooddelivery.ui.theme.*
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -33,7 +29,7 @@ class MainActivity : ComponentActivity() {
                         )
                     )
 
-                    ScreensMain(customerViewModel = customerViewModel)
+                    FoodDeliveryNavHost(customerViewModel = customerViewModel)
                 }
             }
         }

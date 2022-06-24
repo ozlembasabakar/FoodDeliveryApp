@@ -1,14 +1,13 @@
-package com.example.fooddelivery.ui.screens
+package com.example.fooddelivery
 
-import android.telecom.Call
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.fooddelivery.AssetParamType
-import com.example.fooddelivery.data.PopularData
 import com.example.fooddelivery.data.database.CustomerViewModel
+import com.example.fooddelivery.product.detail.ProductDetailScreen
+import com.example.fooddelivery.ui.screens.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -26,7 +25,10 @@ object Destinations {
 }
 
 @Composable
-fun ScreensMain(customerViewModel: CustomerViewModel) {
+fun FoodDeliveryNavHost(customerViewModel: CustomerViewModel) {
+
+    val navigationViewModel: NavigationViewModel = hiltViewModel()
+
     val navController = rememberNavController()
 
     NavHost(
@@ -47,17 +49,26 @@ fun ScreensMain(customerViewModel: CustomerViewModel) {
             }
 
             composable(Destinations.Home) {
-                HomeScreen(navController = navController)
+                HomeScreen(
+                    navController = navController,
+                    onProductSelected = { product ->
+                        navigationViewModel.onProductSelected(product)
+                    }
+                )
             }
 
             composable(Destinations.Detail) {
-                DetailScreen(navController = navController)
+                ProductDetailScreen(
+                    navController = navController,
+                    getSelectedProduct = {
+                        navigationViewModel.getSelectedProduct()
+                    }
+                )
             }
 
             composable(Destinations.ProductList) {
                 ProductList()
             }
-
 
 
         }

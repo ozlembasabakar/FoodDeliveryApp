@@ -45,6 +45,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fooddelivery.Destinations
 import com.example.fooddelivery.MainActivity
 import com.example.fooddelivery.viewmodel.ContactViewModel
 import com.firebase.ui.auth.AuthUI

@@ -1,10 +1,10 @@
 package com.example.fooddelivery.ui.screens
 
-import android.bluetooth.BluetoothDevice
-import android.os.Bundle
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -26,8 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.fooddelivery.Destinations
 import com.example.fooddelivery.Product
-import com.example.fooddelivery.ProductCard
+import com.example.fooddelivery.home.ProductInfoCard
 import com.example.fooddelivery.R
 import com.example.fooddelivery.data.CategoryData
 import com.example.fooddelivery.data.PopularData
@@ -35,99 +37,78 @@ import com.example.fooddelivery.ui.theme.*
 import com.example.fooddelivery.viewmodel.ProductViewModel
 
 @Composable
-fun HomeScreen(navController: NavController) {
-
-    val scrollState = rememberScrollState()
-
+fun HomeScreen(
+    navController: NavController,
+    onProductSelected: (Product) -> Unit,
+) {
     val productViewModel: ProductViewModel = hiltViewModel()
-    //val state by productViewModel.state.collectAsState()
+    val state by productViewModel.state.collectAsState()
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 30.dp, top = 40.dp, end = 17.dp)
     ) {
-/*        Column(modifier = Modifier.verticalScroll(scrollState)) {
 
+        LazyColumn {
 
-            Header(navController = navController)
+            item {
+                Header(navController = navController)
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
 
-            OrderNowBox()
+                OrderNowBox()
 
-            Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
-            Text(
-                text = "Categories",
-                style = Typography.body1,
-                fontSize = 22.sp,
-                color = BlackTextColor
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            CategoryList(
-                categories = listOf(
-                    CategoryData(resId = R.drawable.pizza, title = "Pizza"),
-                    CategoryData(resId = R.drawable.hamburger, title = "Burger"),
-                    CategoryData(resId = R.drawable.drinks, title = "Drinks"),
+                Text(
+                    text = "Categories",
+                    style = Typography.body1,
+                    fontSize = 22.sp,
+                    color = BlackTextColor
                 )
-            )
 
-            Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
-            Text(
-                text = "Popular",
-                style = Typography.body1,
-                fontSize = 22.sp,
-                color = BlackTextColor
-            )
-
-            Spacer(modifier = Modifier.height(30.dp))
-*/
-
-            ProductCard()
-/*
-            PopularList(
-                popularList = listOf(
-                    PopularData(
-                        R.drawable.salad_pesto_pizza,
-                        title = "Salad Pesto Salad",
-                        description = "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.",
-                        price = 10.55,
-                        calorie = 540,
-                        scheduleTime = 20,
-                        rate = 5.0,
-                        ingredients = listOf(
-                            R.drawable.ing1,
-                            R.drawable.ing2,
-                            R.drawable.ing3,
-                            R.drawable.ing4,
-                            R.drawable.ing5
-                        )
-                    ),
-                    PopularData(
-                        R.drawable.primavera_pizza,
-                        title = "Primavera Pizza",
-                        description = "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.",
-                        price = 12.55,
-                        calorie = 450,
-                        scheduleTime = 30,
-                        rate = 4.7,
-                        ingredients = listOf(
-                            R.drawable.ing1,
-                            R.drawable.ing2,
-                            R.drawable.ing3,
-                            R.drawable.ing4,
-                            R.drawable.ing5
-                        )
+                CategoryList(
+                    categories = listOf(
+                        CategoryData(resId = R.drawable.pizza, title = "Pizza"),
+                        CategoryData(resId = R.drawable.hamburger, title = "Burger"),
+                        CategoryData(resId = R.drawable.drinks, title = "Drinks"),
                     )
-                ),
-                navController = navController
-            )
- }
-        */
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Text(
+                    text = "Popular",
+                    style = Typography.body1,
+                    fontSize = 22.sp,
+                    color = BlackTextColor
+                )
+
+                Spacer(modifier = Modifier.height(30.dp))
+            }
+            if (state.isEmpty()) {
+                item {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(align = Alignment.Center)
+                    )
+
+                }
+            }
+            items(state) { product: Product ->
+                ProductInfoCard(
+                    modifier = Modifier.clickable {
+                        onProductSelected(product)
+                        navController.navigate(Destinations.Detail)
+                    },
+                    product = product
+                )
+            }
+        }
     }
 }
 
@@ -147,25 +128,6 @@ fun Header(navController: NavController) {
             .padding(end = 13.dp)
     ) {
         BoxWithRes(resId = R.drawable.menu, description = "Menu")
-
-/*        Row(verticalAlignment = Alignment.CenterVertically)
-        {
-            Icon(
-                painter = painterResource(id = R.drawable.location),
-                contentDescription = "Location",
-                modifier = Modifier.size(16.dp),
-                tint = Orange500
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "California, US")
-            Spacer(modifier = Modifier.width(8.dp))
-            Icon(
-                painter = painterResource(id = R.drawable.arrow_down),
-                contentDescription = "Arrow down",
-                modifier = Modifier.size(16.dp),
-                tint = Orange500
-            )
-        }*/
 
         Row {
             var columnWidth = 40.dp

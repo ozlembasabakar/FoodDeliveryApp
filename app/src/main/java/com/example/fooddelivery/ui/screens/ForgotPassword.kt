@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.fooddelivery.Destinations
 import com.example.fooddelivery.R
 import com.example.fooddelivery.ui.theme.*
 import com.example.fooddelivery.viewmodel.ForgotPasswordViewModel

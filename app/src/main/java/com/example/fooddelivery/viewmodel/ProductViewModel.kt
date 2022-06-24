@@ -1,12 +1,7 @@
 package com.example.fooddelivery.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fooddelivery.APIService
 import com.example.fooddelivery.Product
 import com.example.fooddelivery.data.repository.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductViewModel @Inject public constructor(
+class ProductViewModel @Inject constructor(
     productRepository: ProductRepository,
 ) : ViewModel() {
 
@@ -30,5 +25,4 @@ class ProductViewModel @Inject public constructor(
             _state.value = products
         }
     }
-
 }

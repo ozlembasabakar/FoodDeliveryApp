@@ -1,11 +1,8 @@
-package com.example.fooddelivery.ui.screens
+package com.example.fooddelivery.product.detail
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import com.example.fooddelivery.R
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -16,24 +13,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.fooddelivery.data.PopularData
+import com.example.fooddelivery.Product
+import com.example.fooddelivery.R
 import com.example.fooddelivery.ui.theme.*
-
-private fun mToast(context: Context) {
-    Toast.makeText(context, "You can order up to 10", Toast.LENGTH_LONG).show()
-}
-
+import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun DetailScreen(navController: NavController) {
+fun ProductDetailScreen(
+    navController: NavController,
+    getSelectedProduct: () -> Product?,
+) {
 
     val count = remember { mutableStateOf(0) }
-    val mContext = LocalContext.current
+    val context = LocalContext.current
+
+    val data = getSelectedProduct()
 
     Box(
         modifier = Modifier
@@ -42,9 +42,6 @@ fun DetailScreen(navController: NavController) {
             .padding(start = 30.dp, top = 40.dp, end = 30.dp),
         contentAlignment = Alignment.TopCenter
     ) {
-        val data =
-            navController.previousBackStackEntry?.arguments?.getParcelable<PopularData>(Destinations.DetailArgs.foodData)
-
         if (data != null) {
             //TODO: show only design screen
             Column(
@@ -59,81 +56,78 @@ fun DetailScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                Image(
-                    painter = painterResource(id = data.resId),
-                    contentDescription = "",
-                    modifier = Modifier.size(275.dp)
+                GlideImage(
+                    imageModel = data.image,
+                    // Crop, Fit, Inside, FillHeight, FillWidth, None
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .size(200.dp)
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
 
+                Text(
+                    text = data.title,
+                    color = BlackTextColor,
+                    style = Typography.body1,
+                    fontSize = 22.sp
+                )
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(80.dp)
+                    modifier = Modifier.fillMaxWidth()
                 )
                 {
-                    Column(verticalArrangement = Arrangement.SpaceBetween) {
-                        Text(
-                            text = data.title,
-                            color = BlackTextColor,
-                            style = Typography.body1,
-                            fontSize = 22.sp
-                        )
+                    Text(
+                        text = "$",
+                        style = Typography.body1,
+                        fontSize = 14.sp,
+                        color = Orange500
+                    )
 
-                        Row(verticalAlignment = Alignment.CenterVertically)
-                        {
-                            Text(
-                                text = "$",
-                                style = Typography.body1,
-                                fontSize = 14.sp,
-                                color = Orange500
-                            )
+                    Text(
+                        text = data.price.toString(),
+                        style = Typography.body1,
+                        fontSize = 20.sp,
+                        color = BlackTextColor
+                    )
 
-                            Text(
-                                text = data.price.toString(),
-                                style = Typography.body1,
-                                fontSize = 20.sp,
-                                color = BlackTextColor
-                            )
-                        }
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    BoxWithResCalc(
+                        resId = R.drawable.minus,
+                        description = "Minus",
+                        iconColor = BlackTextColor,
+                        boxSize = 36,
+                        iconSize = 14
+                    ) {
+                        if (count.value >= 1) count.value--
                     }
 
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Spacer(modifier = Modifier.width(14.dp))
 
-                        BoxWithResCalc(
-                            resId = R.drawable.minus,
-                            description = "Minus",
-                            iconColor = BlackTextColor,
-                            boxSize = 36,
-                            iconSize = 14
-                        ) {
-                            if (count.value >= 1) count.value--
-                        }
+                    Text(
+                        text = "${count.value}",
+                        style = Typography.body2,
+                        color = TextColor,
+                        fontSize = 18.sp,
+                    )
 
-                        Spacer(modifier = Modifier.width(14.dp))
+                    Spacer(modifier = Modifier.width(14.dp))
 
-                        Text(
-                            text = "${count.value}",
-                            style = Typography.body2,
-                            color = TextColor,
-                            fontSize = 18.sp,
-                        )
+                    BoxWithResCalc(
+                        resId = R.drawable.add,
+                        description = "Add",
+                        boxSize = 36,
+                        iconSize = 24,
+                        iconColor = Color.White,
+                        bgColor = Yellow500
+                    ) {
+                        if (count.value <= 9) count.value++ else Toast.makeText(context,
+                            "You can order up to 10",
+                            Toast.LENGTH_LONG).show()
 
-                        Spacer(modifier = Modifier.width(14.dp))
-
-                        BoxWithResCalc(
-                            resId = R.drawable.add,
-                            description = "Add",
-                            boxSize = 36,
-                            iconSize = 24,
-                            iconColor = Color.White,
-                            bgColor = Yellow500
-                        ) {
-                            if (count.value <= 9) count.value++ else mToast(context = mContext)
-                        }
                     }
                 }
 
@@ -153,41 +147,6 @@ fun DetailScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Text(
-                    text = "Ingredients",
-                    style = Typography.body1,
-                    fontSize = 22.sp,
-                    color = BlackTextColor,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    items(data.ingredients.size) { index ->
-                        Box(
-                            modifier = Modifier
-                                .size(56.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(
-                                    CardItemBg
-                                ), contentAlignment = Alignment.Center
-                        ) {
-                            Image(
-                                painter = painterResource(id = data.ingredients[index]),
-                                contentDescription = "Onion",
-                                modifier = Modifier.size(width = 30.dp, height = 24.dp)
-                            )
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
                 Box(
                     modifier = Modifier
                         .size(width = 203.dp, height = 56.dp)
@@ -202,7 +161,6 @@ fun DetailScreen(navController: NavController) {
         }
     }
 }
-
 
 @Composable
 fun DetailHeader(navController: NavController) {
@@ -258,7 +216,7 @@ fun DetailHeader(navController: NavController) {
 }
 
 @Composable
-fun FoodDetailBox(data: PopularData) {
+fun FoodDetailBox(data: Product) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -282,7 +240,7 @@ fun FoodDetailBox(data: PopularData) {
                 Spacer(modifier = Modifier.width(10.dp))
 
                 Text(
-                    text = "${data.calorie} Kcal",
+                    text = "59585858 Kcal",
                     style = Typography.body2,
                     color = BlackTextColor
                 )
@@ -324,11 +282,10 @@ fun FoodDetailBox(data: PopularData) {
                 Spacer(modifier = Modifier.width(10.dp))
 
                 Text(
-                    text = "${data.scheduleTime} Min.",
+                    text = "300 Min.",
                     style = Typography.body2,
                     color = BlackTextColor
                 )
-
             }
         }
     }
@@ -342,7 +299,7 @@ fun BoxWithResCalc(
     iconColor: Color? = IconColor,
     boxSize: Int? = 40,
     iconSize: Int? = 24,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
 
     Button(
@@ -374,7 +331,7 @@ fun BoxWithRes(
     iconColor: Color? = IconColor,
     boxSize: Int? = 40,
     iconSize: Int? = 24,
-    navController: NavController? = null
+    navController: NavController? = null,
 ) {
     Box(
         modifier = Modifier
@@ -395,3 +352,4 @@ fun BoxWithRes(
         )
     }
 }
+

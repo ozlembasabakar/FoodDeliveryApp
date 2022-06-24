@@ -2,7 +2,6 @@ package com.example.fooddelivery
 
 
 import android.os.Parcelable
-import androidx.annotation.DrawableRes
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
