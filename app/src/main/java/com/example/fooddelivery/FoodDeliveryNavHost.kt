@@ -36,10 +36,6 @@ fun FoodDeliveryNavHost(customerViewModel: CustomerViewModel) {
 
     val navigationViewModel: NavigationViewModel = hiltViewModel()
 
-
-    val loginViewModel: LoginViewModel = viewModel()
-    val viewStateLogin by loginViewModel.viewStateLogin.observeAsState()
-
     val navController = rememberNavController()
 
     NavHost(

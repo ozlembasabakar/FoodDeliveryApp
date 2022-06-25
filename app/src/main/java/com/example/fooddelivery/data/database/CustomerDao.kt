@@ -10,8 +10,11 @@ import androidx.room.*
 interface CustomerDao {
 
     @Query("SELECT * FROM customers")
-    fun getAllCustomers(): LiveData<List<CustomerItem>>
+    suspend fun getAllCustomers(): List<CustomerItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCustomer(customer: CustomerItem)
+
+    @Query("DELETE FROM customers")
+    suspend fun deleteTable()
 }

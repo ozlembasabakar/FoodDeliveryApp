@@ -31,7 +31,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.fooddelivery.Destinations
 import com.example.fooddelivery.R
@@ -51,7 +51,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
 
     val TAG = User.TAG
 
-    val loginViewModel: LoginViewModel = viewModel()
+    val loginViewModel: LoginViewModel = hiltViewModel()
 
     val viewStateLogin by loginViewModel.viewStateLogin.observeAsState()
 
@@ -247,6 +247,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             Log.d(TAG, "User logged in successfully.")
+                            loginViewModel.saveUserToDb(it.result!!.user!!.email!!)
                             navController.currentBackStackEntry?.arguments
                             navController.navigate(Destinations.Home)
                         } else {

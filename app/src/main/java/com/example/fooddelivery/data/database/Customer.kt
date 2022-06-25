@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey
 data class Customer(
     val name: String = "",
     val surname: String = "",
-    val email: String = "",
-    val phoneNumber: String = "",
-    val password: String = ""
+    @PrimaryKey val email: String = "",
+    val phoneNumber: String = ""
 )
