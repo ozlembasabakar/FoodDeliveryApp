@@ -12,18 +12,20 @@ class ProductRepository @Inject constructor(private val productAPI: ProductAPI) 
         return productAPI.getProduct()
     }
 
-    suspend fun postProducts(): Response<Responseoglu> {
-        return productAPI.postProduct(
-            user = "OzlemB",
-            title = "aab",
-            price = 79.90,
-            description = "bb",
-            category = "cc",
-            image = "dd",
-            rate = 4.5,
-            count = 100,
-            saleState = 0
-        )
+    suspend fun postProducts(product: Product): Response<Responseoglu> {
+        with(product) {
+            return productAPI.postProduct(
+                user = "OzlemB",
+                title = title,
+                price = price,
+                description = description,
+                category = category,
+                image = image,
+                rate = rate,
+                count = 1,
+                saleState = saleState
+            )
+        }
     }
 }
 

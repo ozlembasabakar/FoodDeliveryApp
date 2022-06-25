@@ -1,5 +1,6 @@
-package com.example.fooddelivery.viewmodel
+package com.example.fooddelivery.product.detail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fooddelivery.Product
@@ -11,18 +12,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductViewModel @Inject constructor(
+class ProductDetailViewModel @Inject constructor(
     private val productRepository: ProductRepository,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(emptyList<Product>())
-    val state: StateFlow<List<Product>>
-        get() = _state
-
-    init {
+    fun addProductToBag(product: Product) {
         viewModelScope.launch {
-            val products = productRepository.getProducts()
-            _state.value = products
+            try {
+                val result = productRepository.postProducts(product)
+                Log.d("Ozlemwasheres", result.toString())
+            } catch (exception: Exception) {
+                Log.d("Ozlemwasheree", exception.message.toString())
+            }
         }
     }
 }

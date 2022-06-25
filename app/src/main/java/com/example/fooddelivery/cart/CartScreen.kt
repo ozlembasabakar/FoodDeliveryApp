@@ -95,7 +95,7 @@ fun AddToCard(
                             )
 
                             Text(
-                                text = data.price,
+                                text = data.price.toString(),
                                 fontSize = 14.sp,
                                 color = BlackTextColor,
                                 style = Typography.h1,

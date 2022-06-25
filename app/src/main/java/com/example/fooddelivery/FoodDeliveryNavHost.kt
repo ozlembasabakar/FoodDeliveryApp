@@ -73,8 +73,7 @@ fun FoodDeliveryNavHost(customerViewModel: CustomerViewModel) {
                     navController = navController,
                     getSelectedProduct = {
                         navigationViewModel.getSelectedProduct()
-                    },
-                    addProductToBag = navigationViewModel::addProductToBag//viewStateLogin!!.email.text.value)
+                    }
                 )
             }
 

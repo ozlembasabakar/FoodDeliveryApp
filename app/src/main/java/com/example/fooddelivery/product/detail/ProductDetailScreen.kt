@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.fooddelivery.*
 import com.example.fooddelivery.R
@@ -28,14 +29,14 @@ import com.skydoves.landscapist.glide.GlideImage
 fun ProductDetailScreen(
     navController: NavController,
     getSelectedProduct: () -> Product?,
-    // gecici
-    addProductToBag: () -> Unit
 ) {
+
+    val productDetailViewModel: ProductDetailViewModel = hiltViewModel()
 
     val count = remember { mutableStateOf(0) }
     val context = LocalContext.current
 
-    val data = getSelectedProduct()
+    val product = getSelectedProduct()
 
     Box(
         modifier = Modifier
@@ -44,7 +45,7 @@ fun ProductDetailScreen(
             .padding(start = 30.dp, top = 40.dp, end = 30.dp),
         contentAlignment = Alignment.TopCenter
     ) {
-        if (data != null) {
+        if (product != null) {
             //TODO: show only design screen
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,7 +60,7 @@ fun ProductDetailScreen(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 GlideImage(
-                    imageModel = data.image,
+                    imageModel = product.image,
                     // Crop, Fit, Inside, FillHeight, FillWidth, None
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -70,7 +71,7 @@ fun ProductDetailScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = data.title,
+                    text = product.title,
                     color = BlackTextColor,
                     style = Typography.body1,
                     fontSize = 22.sp
@@ -89,7 +90,7 @@ fun ProductDetailScreen(
                     )
 
                     Text(
-                        text = data.price.toString(),
+                        text = product.price.toString(),
                         style = Typography.body1,
                         fontSize = 20.sp,
                         color = BlackTextColor
@@ -136,7 +137,7 @@ fun ProductDetailScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
-                    text = data.description,
+                    text = product.description,
                     style = Typography.h5,
                     color = TextColor,
                     fontSize = 16.sp,
@@ -145,7 +146,7 @@ fun ProductDetailScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                FoodDetailBox(data = data)
+                FoodDetailBox(data = product)
 
                 Spacer(modifier = Modifier.height(20.dp))
 
@@ -157,9 +158,7 @@ fun ProductDetailScreen(
                             Yellow500
                         )
                         .clickable {
-                            //navController.navigate(Destinations.AddCart)
-                            // APIService.apiService!!.call()
-                            addProductToBag()
+                            productDetailViewModel.addProductToBag(product)
                         },
                     contentAlignment = Alignment.Center
                 ) {

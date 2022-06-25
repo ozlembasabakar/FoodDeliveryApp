@@ -10,9 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NavigationViewModel @Inject constructor(
-    val productRepository: ProductRepository,
-) : ViewModel() {
+class NavigationViewModel @Inject constructor() : ViewModel() {
 
     private val selectedProduct = MutableStateFlow<Product?>(null)
 
@@ -24,16 +22,4 @@ class NavigationViewModel @Inject constructor(
     fun getSelectedProduct() : Product? {
         return selectedProduct.value
     }
-
-    fun addProductToBag() {
-        viewModelScope.launch {
-            try {
-                val result = productRepository.postProducts()
-                Log.d("Ozlemwashere", result.toString())
-            } catch (exception: Exception) {
-                Log.d("Ozlemwashere", exception.message.toString())
-            }
-        }
-    }
-
 }

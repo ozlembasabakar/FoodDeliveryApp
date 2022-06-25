@@ -29,7 +29,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddelivery.Destinations
 import com.example.fooddelivery.Product
-import com.example.fooddelivery.home.ProductInfoCard
 import com.example.fooddelivery.R
 import com.example.fooddelivery.data.CategoryData
 import com.example.fooddelivery.data.PopularData
