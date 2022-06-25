@@ -55,7 +55,21 @@ fun ProductDetailScreen(
                         rememberScrollState()
                     )
             ) {
-                DetailHeader(navController = navController)
+                DetailHeader(navController = navController,
+                    productDetailViewModel = productDetailViewModel,
+                    product = product
+                    /*Product(
+                        category = product.category,
+                        product.count,
+                        product.description,
+                        product.id,
+                        product.image,
+                        product.price,
+                        product.rate,
+                        product.saleState,
+                        product.title,
+                        product.user)*/
+                )
 
                 Spacer(modifier = Modifier.height(32.dp))
 
@@ -170,7 +184,11 @@ fun ProductDetailScreen(
 }
 
 @Composable
-fun DetailHeader(navController: NavController) {
+fun DetailHeader(
+    navController: NavController,
+    productDetailViewModel: ProductDetailViewModel, product: Product,
+) {
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -197,28 +215,16 @@ fun DetailHeader(navController: NavController) {
                     .size(24.dp)
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.bag),
+                    painter = painterResource(id = R.drawable.favorite),
                     contentDescription = "",
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            productDetailViewModel.saveToDb(
+                                product = product)
+                        },
                     tint = IconColor
                 )
-
-                Box(
-                    modifier = Modifier
-                        .padding(top = 5.dp, end = 5.dp)
-                        .size(8.dp)
-                        .clip(CircleShape)
-                        .background(Color.White)
-                        .align(Alignment.TopEnd),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(6.dp)
-                            .clip(CircleShape)
-                            .background(Yellow500)
-                    )
-                }
             }
         }
     }

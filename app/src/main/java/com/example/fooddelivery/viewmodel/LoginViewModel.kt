@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fooddelivery.data.database.CustomerItem
-import com.example.fooddelivery.data.database.CustomerRepository
+import com.example.fooddelivery.data.customer.CustomerItem
+import com.example.fooddelivery.data.customer.CustomerRepository
 import com.example.fooddelivery.view.LoginViewState
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore

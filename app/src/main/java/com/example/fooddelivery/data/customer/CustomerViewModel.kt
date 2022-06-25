@@ -1,8 +1,7 @@
-package com.example.fooddelivery.data.database
+package com.example.fooddelivery.data.customer
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
-import androidx.room.Room
 
 class CustomerViewModel(application: Application) : ViewModel() {
 

@@ -131,6 +131,10 @@ fun Header(navController: NavController) {
             navController.navigate(Destinations.AddCart)
         })
 
+        BoxWithRes(resId = R.drawable.favorite_border, description = "Favorite", modifier = Modifier.clickable {
+            navController.navigate(Destinations.AddFavorite)
+        })
+
         Row {
             var columnWidth = 40.dp
             AnimatedVisibility(!visible) {

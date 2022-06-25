@@ -7,8 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.fooddelivery.data.database.CustomerViewModel
-import com.example.fooddelivery.data.database.CustomerViewModelFactory
+import com.example.fooddelivery.data.customer.CustomerViewModel
+import com.example.fooddelivery.data.customer.CustomerViewModelFactory
 import com.example.fooddelivery.ui.theme.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,9 +18,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FoodDeliveryTheme {
-                val owner = LocalViewModelStoreOwner.current
+                val customerOwner = LocalViewModelStoreOwner.current
 
-                owner?.let {
+                customerOwner?.let {
                     val customerViewModel: CustomerViewModel = viewModel(
                         it,
                         "CustomerViewModel",

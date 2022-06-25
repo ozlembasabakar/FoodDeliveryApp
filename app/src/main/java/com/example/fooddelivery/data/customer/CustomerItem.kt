@@ -1,4 +1,4 @@
-package com.example.fooddelivery.data.database
+package com.example.fooddelivery.data.customer
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

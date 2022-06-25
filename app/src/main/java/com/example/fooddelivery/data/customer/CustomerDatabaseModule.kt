@@ -1,4 +1,4 @@
-package com.example.fooddelivery.data.database
+package com.example.fooddelivery.data.customer
 
 import android.content.Context
 import androidx.room.Room
