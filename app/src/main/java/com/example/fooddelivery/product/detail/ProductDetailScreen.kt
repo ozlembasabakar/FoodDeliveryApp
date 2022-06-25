@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.fooddelivery.Product
+import com.example.fooddelivery.*
 import com.example.fooddelivery.R
 import com.example.fooddelivery.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
@@ -28,6 +28,8 @@ import com.skydoves.landscapist.glide.GlideImage
 fun ProductDetailScreen(
     navController: NavController,
     getSelectedProduct: () -> Product?,
+    // gecici
+    addProductToBag: () -> Unit
 ) {
 
     val count = remember { mutableStateOf(0) }
@@ -153,7 +155,13 @@ fun ProductDetailScreen(
                         .clip(RoundedCornerShape(topEnd = 18.dp, topStart = 18.dp))
                         .background(
                             Yellow500
-                        ), contentAlignment = Alignment.Center
+                        )
+                        .clickable {
+                            //navController.navigate(Destinations.AddCart)
+                            // APIService.apiService!!.call()
+                            addProductToBag()
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(text = "Add to card", style = Typography.body1, color = Color.White)
                 }
@@ -306,10 +314,10 @@ fun BoxWithResCalc(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(backgroundColor = bgColor!!),
         contentPadding = PaddingValues(
-            start = 10.dp,
-            top = 10.dp,
-            end = 10.dp,
-            bottom = 10.dp
+            start = 8.dp,
+            top = 8.dp,
+            end = 8.dp,
+            bottom = 8.dp
         ),
         modifier = Modifier.size(boxSize!!.dp)
 

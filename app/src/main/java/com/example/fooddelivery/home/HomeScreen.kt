@@ -1,4 +1,4 @@
-package com.example.fooddelivery.ui.screens
+package com.example.fooddelivery.home
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -33,6 +33,7 @@ import com.example.fooddelivery.home.ProductInfoCard
 import com.example.fooddelivery.R
 import com.example.fooddelivery.data.CategoryData
 import com.example.fooddelivery.data.PopularData
+import com.example.fooddelivery.product.detail.BoxWithRes
 import com.example.fooddelivery.ui.theme.*
 import com.example.fooddelivery.viewmodel.ProductViewModel
 
@@ -127,7 +128,7 @@ fun Header(navController: NavController) {
             .fillMaxWidth()
             .padding(end = 13.dp)
     ) {
-        BoxWithRes(resId = R.drawable.menu, description = "Menu")
+        BoxWithRes(resId = R.drawable.bag, description = "Menu")
 
         Row {
             var columnWidth = 40.dp

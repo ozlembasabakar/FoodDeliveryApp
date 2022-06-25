@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
-    productRepository: ProductRepository,
+    val productRepository: ProductRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(emptyList<Product>())
