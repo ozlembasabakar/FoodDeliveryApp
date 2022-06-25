@@ -180,7 +180,9 @@ fun DetailHeader(navController: NavController) {
         BoxWithRes(
             resId = R.drawable.arrow_left,
             description = "Back",
-            navController = navController
+            modifier = Modifier.clickable {
+                navController.navigateUp()
+            }
         )
 
         Box(
@@ -332,21 +334,18 @@ fun BoxWithResCalc(
 
 @Composable
 fun BoxWithRes(
+    modifier: Modifier = Modifier,
     resId: Int,
     description: String,
     bgColor: Color? = CardItemBg,
     iconColor: Color? = IconColor,
     boxSize: Int? = 40,
     iconSize: Int? = 24,
-    navController: NavController? = null,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(boxSize!!.dp)
             .clip(RoundedCornerShape(10.dp))
-            .clickable {
-                navController?.navigateUp()
-            }
             .background(bgColor!!),
         contentAlignment = Alignment.Center
     )

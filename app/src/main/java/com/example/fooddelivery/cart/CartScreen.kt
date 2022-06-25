@@ -7,11 +7,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,7 +20,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.fooddelivery.Destinations
 import com.example.fooddelivery.Product
 import com.example.fooddelivery.R
 import com.example.fooddelivery.product.detail.BoxWithRes
@@ -39,23 +40,30 @@ fun AddToCard(
     navController: NavController,
     getSelectedProduct: () -> Product?,
 ) {
+
+    val cartViewModel: CartViewModel = hiltViewModel()
+    val state by cartViewModel.state.collectAsState()
+
+    val product = getSelectedProduct()
+
     val context = LocalContext.current
     val count = remember { mutableStateOf(0) }
 
-    val data = getSelectedProduct()
+    Column {
+        AddToCartHeader(navController = navController)
 
-    LazyColumn {
-        items(5) {
-            Column(
-                modifier = Modifier
-                    .padding(start = 30.dp, top = 40.dp, end = 30.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                if (data != null) {
+        Spacer(modifier = Modifier.height(32.dp))
+
+        LazyColumn {
+            items(state) { product: Product ->
+
+                Column(
+                    modifier = Modifier
+                        .padding(start = 30.dp, top = 40.dp, end = 30.dp),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
                     //TODO: show only design screen
-                    AddToCartHeader(navController = navController)
 
-                    Spacer(modifier = Modifier.height(32.dp))
 
                     Row(
                         modifier = Modifier
@@ -67,7 +75,7 @@ fun AddToCard(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         GlideImage(
-                            imageModel = data.image,
+                            imageModel = product.image,
                             // Crop, Fit, Inside, FillHeight, FillWidth, None
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -76,17 +84,17 @@ fun AddToCard(
                         )
 
 /*
-                Image(
-                    painter = painterResource(id = R.drawable.man),
-                    contentDescription = "",
-                    modifier = Modifier.size(70.dp))
+            Image(
+                painter = painterResource(id = R.drawable.man),
+                contentDescription = "",
+                modifier = Modifier.size(70.dp))
 */
 
                         Spacer(modifier = Modifier.size(12.dp))
 
                         Column {
                             Text(
-                                text = data.title,
+                                text = product.title,
                                 color = BlackTextColor,
                                 fontSize = 16.sp,
                                 modifier = Modifier
@@ -95,7 +103,7 @@ fun AddToCard(
                             )
 
                             Text(
-                                text = data.price.toString(),
+                                text = product.price.toString(),
                                 fontSize = 14.sp,
                                 color = BlackTextColor,
                                 style = Typography.h1,
@@ -149,7 +157,7 @@ fun AddToCard(
                                 color = BlackTextColor
                             )
                             Text(
-                                text = if (count.value > 0) "data.price * ${count.value}" else "",
+                                text = if (count.value > 0) "product.price * ${count.value}" else "",
                                 fontSize = 10.sp,
                                 color = BlackTextColor
                             )
@@ -167,7 +175,9 @@ fun AddToCard(
                         ) {
                             Image(
                                 painter = painterResource(id = R.drawable.remove),
-                                contentDescription = "",
+                                contentDescription = "", modifier = Modifier.clickable {
+                                    cartViewModel.deleteProducts(product.id.toInt())
+                                }
                             )
                         }
                     }
@@ -189,7 +199,9 @@ fun AddToCartHeader(navController: NavController) {
         BoxWithRes(
             resId = R.drawable.arrow_left,
             description = "Back",
-            navController = navController
+            modifier = Modifier.clickable {
+                navController.navigateUp()
+            }
         )
     }
 }

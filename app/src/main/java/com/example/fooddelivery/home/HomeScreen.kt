@@ -127,7 +127,9 @@ fun Header(navController: NavController) {
             .fillMaxWidth()
             .padding(end = 13.dp)
     ) {
-        BoxWithRes(resId = R.drawable.bag, description = "Menu")
+        BoxWithRes(resId = R.drawable.bag, description = "Menu", modifier = Modifier.clickable {
+            navController.navigate(Destinations.AddCart)
+        })
 
         Row {
             var columnWidth = 40.dp

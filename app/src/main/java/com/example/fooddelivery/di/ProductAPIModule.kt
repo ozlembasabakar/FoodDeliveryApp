@@ -35,7 +35,7 @@ object ProductAPIModule {
 
     @Provides
     @Singleton
-    fun provideAPI(builder: Retrofit.Builder): ProductAPI{
+    fun productAPI(builder: Retrofit.Builder): ProductAPI{
         return builder.build().create(ProductAPI::class.java)
     }
 }
