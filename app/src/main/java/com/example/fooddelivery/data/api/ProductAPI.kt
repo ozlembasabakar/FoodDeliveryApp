@@ -8,12 +8,15 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
+const val END_POINT_GET = "get_products.php"
+const val END_POINT_POST = "add_to_bag.php"
+
 interface ProductAPI {
 
-    @GET(APIConstants.END_POINT_GET)
+    @GET(END_POINT_GET)
     suspend fun getProduct(): List<Product>
 
-    @POST(APIConstants.END_POINT_POST)
+    @POST(END_POINT_POST)
     @FormUrlEncoded
     suspend fun postProduct(
         @Field("user") user: String,

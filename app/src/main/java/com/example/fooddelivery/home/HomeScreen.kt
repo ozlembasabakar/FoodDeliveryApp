@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.fooddelivery.Destinations
 import com.example.fooddelivery.Product
 import com.example.fooddelivery.R
@@ -72,10 +71,12 @@ fun HomeScreen(
 
                 CategoryList(
                     categories = listOf(
-                        CategoryData(resId = R.drawable.pizza, title = "Pizza"),
+                        CategoryData(resId = R.drawable.pizza, title = "Jewelery"),
                         CategoryData(resId = R.drawable.hamburger, title = "Burger"),
                         CategoryData(resId = R.drawable.drinks, title = "Drinks"),
-                    )
+                    ),
+                    selectedCategory = state.selectedCategory,
+                    onCategoryItemSelected = productViewModel::onCategoryItemSelected
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -89,7 +90,7 @@ fun HomeScreen(
 
                 Spacer(modifier = Modifier.height(30.dp))
             }
-            if (state.isEmpty()) {
+            if (state.listByCategory.isEmpty()) {
                 item {
                     CircularProgressIndicator(
                         modifier = Modifier
@@ -99,7 +100,7 @@ fun HomeScreen(
 
                 }
             }
-            items(state) { product: Product ->
+            items(state.listByCategory) { product: Product ->
                 ProductInfoCard(
                     modifier = Modifier.clickable {
                         onProductSelected(product)
@@ -131,9 +132,11 @@ fun Header(navController: NavController) {
             navController.navigate(Destinations.AddCart)
         })
 
-        BoxWithRes(resId = R.drawable.favorite_border, description = "Favorite", modifier = Modifier.clickable {
-            navController.navigate(Destinations.AddFavorite)
-        })
+        BoxWithRes(resId = R.drawable.favorite_border,
+            description = "Favorite",
+            modifier = Modifier.clickable {
+                navController.navigate(Destinations.AddFavorite)
+            })
 
         Row {
             var columnWidth = 40.dp
@@ -238,11 +241,11 @@ fun OrderNowBox() {
 }
 
 @Composable
-fun CategoryList(categories: List<CategoryData>) {
-
-    val selectedIndex = remember {
-        mutableStateOf(0)
-    }
+fun CategoryList(
+    categories: List<CategoryData>,
+    selectedCategory: String,
+    onCategoryItemSelected: (String) -> Unit,
+) {
 
     LazyRow(
         modifier = Modifier
@@ -250,28 +253,31 @@ fun CategoryList(categories: List<CategoryData>) {
             .padding(end = 13.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        items(categories.size) { index ->
+        items(categories) { category ->
             CategoryItem(
-                categoryData = categories[index],
-                selectedIndex = selectedIndex,
-                index = index
+                modifier = Modifier.clickable {
+                    onCategoryItemSelected(category.title)
+                },
+                categoryData = category,
+                isSelected = category.title == selectedCategory
             )
         }
     }
 }
 
 @Composable
-fun CategoryItem(categoryData: CategoryData, selectedIndex: MutableState<Int>, index: Int) {
+fun CategoryItem(
+    modifier: Modifier = Modifier,
+    categoryData: CategoryData,
+    isSelected: Boolean = false
+) {
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(width = 106.dp, height = 146.dp)
             .clip(RoundedCornerShape(16.dp))
-            .clickable {
-                selectedIndex.value = index
-            }
             .background(
-                if (selectedIndex.value == index) Yellow500 else CardItemBg
+                if (isSelected) Yellow500 else CardItemBg
             ), contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -279,14 +285,14 @@ fun CategoryItem(categoryData: CategoryData, selectedIndex: MutableState<Int>, i
                 painter = painterResource(id = categoryData.resId),
                 contentDescription = categoryData.title,
                 modifier = Modifier.size(48.dp),
-                tint = if (selectedIndex.value == index) Color.White else BlackTextColor
+                tint = if (isSelected) Color.White else BlackTextColor
 
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = categoryData.title,
                 style = Typography.body2,
-                color = if (selectedIndex.value == index) Color.White else BlackTextColor
+                color = if (isSelected) Color.White else BlackTextColor
             )
         }
     }
