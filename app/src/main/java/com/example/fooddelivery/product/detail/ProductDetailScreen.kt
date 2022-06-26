@@ -97,7 +97,7 @@ fun ProductDetailScreen(
                 )
                 {
                     Text(
-                        text = "$",
+                        text = "€",
                         style = Typography.body1,
                         fontSize = 14.sp,
                         color = Orange500
@@ -172,7 +172,7 @@ fun ProductDetailScreen(
                             Yellow500
                         )
                         .clickable {
-                            productDetailViewModel.addProductToBag(product)
+                            productDetailViewModel.addProductToBag(product, quantity = count.value)
                         },
                     contentAlignment = Alignment.Center
                 ) {

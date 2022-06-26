@@ -71,7 +71,7 @@ fun HomeScreen(
 
                 CategoryList(
                     categories = listOf(
-                        CategoryData(resId = R.drawable.pizza, title = "Jewelery"),
+                        CategoryData(resId = R.drawable.pizza, title = "Pizza"),
                         CategoryData(resId = R.drawable.hamburger, title = "Burger"),
                         CategoryData(resId = R.drawable.drinks, title = "Drinks"),
                     ),

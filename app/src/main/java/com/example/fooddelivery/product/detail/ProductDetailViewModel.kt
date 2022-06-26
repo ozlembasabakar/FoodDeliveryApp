@@ -15,12 +15,12 @@ import javax.inject.Inject
 class ProductDetailViewModel @Inject constructor(
     private val productRepository: ProductRepository,
     val favoriteRepository: FavoriteRepository
-) : ViewModel() {
+    ) : ViewModel() {
 
-    fun addProductToBag(product: Product) {
+    fun addProductToBag(product: Product, quantity: Int) {
         viewModelScope.launch {
             try {
-                val result = productRepository.postProducts(product)
+                val result = productRepository.postProducts(product = product, quantity = quantity)
                 Log.d("Ozlemwasheres", result.toString())
             } catch (exception: Exception) {
                 Log.d("Ozlemwasheree", exception.message.toString())

@@ -44,10 +44,7 @@ fun AddToCard(
     val cartViewModel: CartViewModel = hiltViewModel()
     val state by cartViewModel.state.collectAsState()
 
-    val product = getSelectedProduct()
-
     val context = LocalContext.current
-    val count = remember { mutableStateOf(0) }
 
     Column {
         AddToCartHeader(navController = navController)
@@ -111,66 +108,21 @@ fun AddToCard(
                             )
 
                             Spacer(modifier = Modifier.size(12.dp))
-
-                            Row {
-                                BoxWithResCalc(
-                                    resId = R.drawable.minus,
-                                    description = "Minus",
-                                    iconColor = BlackTextColor,
-                                    boxSize = 20
-                                ) {
-                                    if (count.value >= 1) count.value--
-                                }
-
-                                Spacer(modifier = Modifier.width(14.dp))
-
-                                Text(
-                                    text = "${count.value}",
-                                    style = Typography.body2,
-                                    color = TextColor,
-                                    fontSize = 14.sp,
-                                )
-
-                                Spacer(modifier = Modifier.width(14.dp))
-
-                                BoxWithResCalc(
-                                    resId = R.drawable.add,
-                                    description = "Add",
-                                    boxSize = 20,
-                                    iconColor = Color.White,
-                                    bgColor = Yellow500
-                                ) {
-                                    if (count.value <= 9) count.value++ else Toast.makeText(context,
-                                        "You can order up to 10",
-                                        Toast.LENGTH_LONG).show()
-
-                                }
-                            }
                         }
 
                         Spacer(modifier = Modifier.weight(1f))
 
-                        Column {
-                            Text(
-                                text = "total amount",
-                                fontSize = 14.sp,
-                                color = BlackTextColor
-                            )
-                            Text(
-                                text = if (count.value > 0) "product.price * ${count.value}" else "",
-                                fontSize = 10.sp,
-                                color = BlackTextColor
-                            )
-                        }
+                        Text(
+                            text = if (product.count > 1) "${product.price} * ${product.count}" else "${product.price}",
+                            fontSize = 10.sp,
+                            color = BlackTextColor
+                        )
 
                         //Spacer(modifier = Modifier.weight(1f))
 
                         Box(
                             modifier = Modifier
-                                .size(36.dp)
-                                .clickable {
-                                    count.value = 0
-                                },
+                                .size(36.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Image(

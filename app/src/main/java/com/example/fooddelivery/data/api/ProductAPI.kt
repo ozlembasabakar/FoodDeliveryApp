@@ -10,6 +10,7 @@ import retrofit2.http.*
 
 const val END_POINT_GET = "get_products.php"
 const val END_POINT_POST = "add_to_bag.php"
+const val END_POINT_GET_PRODUCT_BY_USER = "get_products_by_user.php"
 
 interface ProductAPI {
 
@@ -27,11 +28,18 @@ interface ProductAPI {
         @Field("image") image: String,
         @Field("rate") rate: Double,
         @Field("count") count: Int,
-        @Field("sale_state") saleState: Int
+        @Field("sale_state") saleState: Int,
     ): Response<Responseoglu>
+
+    @POST(END_POINT_GET_PRODUCT_BY_USER)
+    @FormUrlEncoded
+    suspend fun getProductsByUser(
+        @Field("user") user: String,
+    ): List<Product>
+
 }
 
 class Responseoglu(
     val status: String,
-    val message: String
+    val message: String,
 )

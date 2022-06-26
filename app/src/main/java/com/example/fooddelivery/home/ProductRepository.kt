@@ -13,7 +13,7 @@ class ProductRepository @Inject constructor(private val productAPI: ProductAPI, 
         return productAPI.getProduct()
     }
 
-    suspend fun postProducts(product: Product): Response<Responseoglu> {
+    suspend fun postProducts(product: Product, quantity: Int): Response<Responseoglu> {
         with(product) {
             return productAPI.postProduct(
                 user = customerDao.getCustomerEmail().first(),
@@ -23,7 +23,7 @@ class ProductRepository @Inject constructor(private val productAPI: ProductAPI, 
                 category = category,
                 image = image,
                 rate = rate,
-                count = 1,
+                count = quantity,
                 saleState = saleState
             )
         }
