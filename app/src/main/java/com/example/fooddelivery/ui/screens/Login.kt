@@ -209,7 +209,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                     fontSize = 16.sp,
                     fontFamily = nunito
                 ),
-                isError = !viewStateLogin!!.isPasswordValid,
+                isError = !viewStateLogin!!.isPasswordValid and viewStateLogin!!.password.text.value.isNotBlank(),
                 trailingIcon = {
                     IconButton(onClick = { loginViewModel.togglePasswordVisibilityLogin() }) {
                         Icon(
@@ -281,38 +281,5 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
         }
 
         Spacer(modifier = Modifier.height(15.dp))
-
-        Text(
-            text = "Or",
-            modifier = Modifier.size(height = 27.dp, width = 22.dp),
-            style = Typography.body1
-        )
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        Row {
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.facebook),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(50.dp)
-                )
-
-                Spacer(modifier = Modifier.width(40.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.google),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(50.dp)
-                )
-            }
-        }
     }
 }

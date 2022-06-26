@@ -50,7 +50,7 @@ fun ProductDetailScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .verticalScroll(
                         rememberScrollState()
                     )
@@ -90,6 +90,8 @@ fun ProductDetailScreen(
                     style = Typography.body1,
                     fontSize = 22.sp
                 )
+                
+                Spacer(modifier = Modifier.size(20.dp))
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -148,7 +150,7 @@ fun ProductDetailScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
                 Text(
                     text = product.description,
@@ -158,11 +160,7 @@ fun ProductDetailScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
-
-                FoodDetailBox(data = product)
-
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.weight(1f))
 
                 Box(
                     modifier = Modifier

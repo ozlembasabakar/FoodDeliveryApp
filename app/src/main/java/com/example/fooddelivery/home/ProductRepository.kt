@@ -8,7 +8,10 @@ import com.google.firebase.auth.FirebaseUser
 import retrofit2.Response
 import javax.inject.Inject
 
-class ProductRepository @Inject constructor(private val productAPI: ProductAPI, val customerDao: CustomerDao) {
+class ProductRepository @Inject constructor(
+    private val productAPI: ProductAPI,
+    val customerDao: CustomerDao,
+) {
     suspend fun getProducts(): List<Product> {
         return productAPI.getProduct()
     }
@@ -28,6 +31,13 @@ class ProductRepository @Inject constructor(private val productAPI: ProductAPI, 
             )
         }
     }
+
+    suspend fun getProductsByUser(): List<Product> {
+        return productAPI.getProductsByUser(
+            user = "ozlembasabakar"
+        )
+    }
 }
+
 
 

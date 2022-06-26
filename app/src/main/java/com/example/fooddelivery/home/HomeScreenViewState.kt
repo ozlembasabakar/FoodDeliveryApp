@@ -6,15 +6,22 @@ import com.example.fooddelivery.Product
 
 data class HomeScreenViewState(
     val products: List<Product>,
-    val selectedCategory: String = ""
+    val selectedCategory: String = "",
 ) {
     val listByCategory by derivedStateOf {
-        if(selectedCategory != "") {
-            products.filter {
-                it.category == selectedCategory
+        if (selectedCategory != "") {
+            if (selectedCategory == "Popular") {
+                products.sortedByDescending {
+                    it.rate
+                }.take(10)
+                // products.take(10)
+            } else {
+                products.filter {
+                    it.category == selectedCategory
+                }
             }
         } else {
-            products
+            products.take(10)
         }
     }
 }

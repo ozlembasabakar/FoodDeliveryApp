@@ -28,7 +28,7 @@ class ProductViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val products = productRepository.getProducts()
+            val products = productRepository.getProductsByUser()
             _state.value = state.value.copy(products = products)
         }
     }

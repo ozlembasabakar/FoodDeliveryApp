@@ -13,6 +13,10 @@ data class LoginViewState(
         Patterns.EMAIL_ADDRESS.matcher(email.text.value).matches()
     }
 
+    val isValidPassport by derivedStateOf {
+        password.text.value == password.text.value
+    }
+
     val isPasswordValid by derivedStateOf {
         val passwordRegex = "(?=.*\\d)(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^!/.&+=]).{8,}".toRegex()
         passwordRegex.matches(password.text.value)

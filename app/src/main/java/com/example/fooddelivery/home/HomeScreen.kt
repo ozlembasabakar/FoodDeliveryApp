@@ -71,6 +71,7 @@ fun HomeScreen(
 
                 CategoryList(
                     categories = listOf(
+                        CategoryData(resId = R.drawable.crown_outlined, title = "Popular"),
                         CategoryData(resId = R.drawable.pizza, title = "Pizza"),
                         CategoryData(resId = R.drawable.hamburger, title = "Burger"),
                         CategoryData(resId = R.drawable.drinks, title = "Drinks"),
@@ -81,14 +82,6 @@ fun HomeScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Text(
-                    text = "Popular",
-                    style = Typography.body1,
-                    fontSize = 22.sp,
-                    color = BlackTextColor
-                )
-
-                Spacer(modifier = Modifier.height(30.dp))
             }
             if (state.listByCategory.isEmpty()) {
                 item {
@@ -180,7 +173,8 @@ fun OrderNowBox() {
             .background(
                 Yellow200
             )
-            .padding(24.dp)
+            .padding(24.dp),
+        contentAlignment = Alignment.Center
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -210,25 +204,11 @@ fun OrderNowBox() {
                             "Food"
                         )
                     }
-                })
-
-                Box(
-                    modifier = Modifier
-                        .size(width = 126.dp, height = 40.dp)
-                        .clip(
-                            RoundedCornerShape(10.dp)
-                        )
-                        .background(Yellow500),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Order Now",
-                        style = Typography.body1,
-                        fontSize = 14.sp,
-                        color = Color.White
-                    )
                 }
+                )
             }
+            
+            Spacer(modifier = Modifier.weight(1f))
 
             Image(
                 painter = painterResource(id = R.drawable.man),
@@ -261,6 +241,8 @@ fun CategoryList(
                 categoryData = category,
                 isSelected = category.title == selectedCategory
             )
+
+            Spacer(modifier = Modifier.width(13.dp))
         }
     }
 }
@@ -269,7 +251,7 @@ fun CategoryList(
 fun CategoryItem(
     modifier: Modifier = Modifier,
     categoryData: CategoryData,
-    isSelected: Boolean = false
+    isSelected: Boolean = false,
 ) {
 
     Box(

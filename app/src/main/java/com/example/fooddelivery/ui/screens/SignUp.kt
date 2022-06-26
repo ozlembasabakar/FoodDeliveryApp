@@ -84,93 +84,23 @@ fun SignUpScreen(navController: NavController) {
                     RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
                 )
                 .background(Color.White)
+                .padding(start = 25.dp)
         ) {
-            Column {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 45.dp, end = 45.dp, top = 45.dp)
-                ) {
-
-                    Column(
-                        Modifier
-                            .width(134.dp)
-                            //.clickable {
-                                //navController.currentBackStackEntry?.arguments =
-                             //       Bundle().apply {
-
-                              //      }
-                             //   navController.navigate(Destinations.Login)
-                            //}
-                        ,horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(text = "Log In")
-                        Box(
-                            Modifier
-                                .clip(RoundedCornerShape(30.dp))
-
-                                .background(Yellow500)
-                                .height(3.dp)
-                                .fillMaxWidth()
-                        )
-                    }
-
-                    Column(
-                        Modifier
-                            .width(134.dp)
-                            //.clickable {
-                                //navController.currentBackStackEntry?.arguments =
-                              //      Bundle().apply {
-
-                               //     }
-                            //    navController.navigate(Destinations.SignUp)
-                           // }
-                ,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(text = "Sign Up")
-                        Box(
-                            Modifier
-                                .clip(RoundedCornerShape(30.dp))
-                                .background(Yellow500)
-                                .height(3.dp)
-                                .fillMaxWidth()
-                        )
-                    }
-                }
-            }
-        }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.padding(top = 20.dp)
-        ) {
-            Text(
-                text = "Register",
-                color = Yellow500,
-                style = Typography.h6,
-                modifier = Modifier.padding(end = 40.dp)
-            )
-
-            Row {
-                Image(
-                    painter = painterResource(id = R.drawable.facebook),
-                    contentDescription = "",
-                    modifier = Modifier.size(40.dp)
-                )
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.google),
-                    contentDescription = "",
-                    modifier = Modifier.size(40.dp)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(top = 20.dp)
+            ) {
+                Text(
+                    text = "Register",
+                    color = Yellow500,
+                    style = Typography.h6,
+                    modifier = Modifier.padding(end = 40.dp)
                 )
             }
         }
+
+
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -340,10 +270,6 @@ fun SignUpScreen(navController: NavController) {
                     ) {
                         append("Already a \nMember? ")
                     }
-                    pushStringAnnotation(
-                        tag = "URL",
-                        annotation = "https://developer.android.com"
-                    )
                     withStyle(
                         style = SpanStyle(
                             fontWeight = FontWeight.ExtraBold,
@@ -358,17 +284,7 @@ fun SignUpScreen(navController: NavController) {
 
                 ClickableText(
                     text = annotatedText,
-                    onClick = { offset ->
-                        // We check if there is an *URL* annotation attached to the text
-                        // at the clicked position
-                        annotatedText.getStringAnnotations(
-                            tag = "URL", start = offset,
-                            end = offset
-                        )
-                            .firstOrNull()?.let { annotation ->
-                                // If yes, we log its value
-                                Log.d("Clicked URL", annotation.item)
-                            }
+                    onClick = { navController.navigate(Destinations.Login)
                     },
                 )
             }
