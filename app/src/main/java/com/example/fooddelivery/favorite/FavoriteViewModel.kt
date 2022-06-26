@@ -29,11 +29,4 @@ class FavoriteViewModel @Inject constructor(
             _state.value = products
         }
     }
-
-    /*fun deleteProducts(id: Int) {
-        viewModelScope.launch {
-            val result = favoriteRepository.deleteProducts(id)
-            fetchProducts()
-        }
-    }*/
 }

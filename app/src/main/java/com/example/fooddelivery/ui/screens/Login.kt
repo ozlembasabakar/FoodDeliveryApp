@@ -248,6 +248,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                         if (it.isSuccessful) {
                             Log.d(TAG, "User logged in successfully.")
                             loginViewModel.saveUserToDb(it.result!!.user!!.email!!)
+                            loginViewModel.resetFavorites()
                             navController.currentBackStackEntry?.arguments
                             navController.navigate(Destinations.Home)
                         } else {

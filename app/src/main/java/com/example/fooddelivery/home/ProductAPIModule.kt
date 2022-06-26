@@ -1,4 +1,4 @@
-package com.example.fooddelivery.di
+package com.example.fooddelivery.home
 
 import com.example.fooddelivery.data.api.APIConstants
 import com.example.fooddelivery.data.api.ProductAPI

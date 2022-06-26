@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CustomerDao {
@@ -16,4 +17,7 @@ interface CustomerDao {
 
     @Query("DELETE FROM customers")
     suspend fun deleteTable()
+
+    @Query("SELECT email FROM customers")
+    suspend fun getCustomerEmail(): List<String>
 }

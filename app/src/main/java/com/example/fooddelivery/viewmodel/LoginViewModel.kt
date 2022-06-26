@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fooddelivery.data.customer.CustomerItem
 import com.example.fooddelivery.data.customer.CustomerRepository
+import com.example.fooddelivery.favorite.FavoriteRepository
 import com.example.fooddelivery.view.LoginViewState
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     val customerRepository: CustomerRepository,
+    val favoriteRepository: FavoriteRepository
 ) : ViewModel() {
     private val _viewStateLogin = MutableLiveData<LoginViewState>(LoginViewState())
     val viewStateLogin: LiveData<LoginViewState> = _viewStateLogin
@@ -73,4 +75,9 @@ class LoginViewModel @Inject constructor(
         customerRepository.insertCustomer(customerItem)
     }
 
+    fun resetFavorites() {
+        viewModelScope.launch {
+            favoriteRepository.deleteFavorites()
+        }
+    }
 }

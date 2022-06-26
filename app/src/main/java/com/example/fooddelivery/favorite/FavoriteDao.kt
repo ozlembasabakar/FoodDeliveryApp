@@ -14,7 +14,7 @@ interface FavoriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavorite(favoriteItem: FavoriteItem)
 
-    //@Query("DELETE FROM favorites")
-    //suspend fun deleteFavorite()
+    @Query("DELETE FROM favorites")
+    suspend fun deleteFavorites()
 
 }

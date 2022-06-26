@@ -3,7 +3,7 @@ package com.example.fooddelivery.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fooddelivery.Product
-import com.example.fooddelivery.data.repository.ProductRepository
+import com.example.fooddelivery.home.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

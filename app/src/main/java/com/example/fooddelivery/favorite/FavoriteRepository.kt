@@ -20,4 +20,8 @@ class FavoriteRepository @Inject constructor(private val favoriteDao: FavoriteDa
     suspend fun getFavorite(): List<FavoriteItem> {
         return favoriteDao.getAllFavorites()
     }
+
+    suspend fun deleteFavorites() {
+        favoriteDao.deleteFavorites()
+    }
 }

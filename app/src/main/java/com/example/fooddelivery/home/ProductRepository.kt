@@ -1,13 +1,14 @@
-package com.example.fooddelivery.data.repository
+package com.example.fooddelivery.home
 
 import com.example.fooddelivery.Product
 import com.example.fooddelivery.data.api.ProductAPI
 import com.example.fooddelivery.data.api.Responseoglu
+import com.example.fooddelivery.data.customer.CustomerDao
 import com.google.firebase.auth.FirebaseUser
 import retrofit2.Response
 import javax.inject.Inject
 
-class ProductRepository @Inject constructor(private val productAPI: ProductAPI) {
+class ProductRepository @Inject constructor(private val productAPI: ProductAPI, val customerDao: CustomerDao) {
     suspend fun getProducts(): List<Product> {
         return productAPI.getProduct()
     }
@@ -15,7 +16,7 @@ class ProductRepository @Inject constructor(private val productAPI: ProductAPI) 
     suspend fun postProducts(product: Product): Response<Responseoglu> {
         with(product) {
             return productAPI.postProduct(
-                user = "OzlemB",
+                user = customerDao.getCustomerEmail().first(),
                 title = title,
                 price = price,
                 description = description,
