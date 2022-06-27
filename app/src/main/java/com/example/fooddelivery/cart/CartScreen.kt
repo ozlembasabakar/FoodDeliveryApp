@@ -1,7 +1,6 @@
 package com.example.fooddelivery.cart
 
 import android.annotation.SuppressLint
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,11 +22,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.fooddelivery.Destinations
-import com.example.fooddelivery.Product
+import com.example.fooddelivery.product.Product
 import com.example.fooddelivery.R
-import com.example.fooddelivery.favorite.AddToFavoriteHeader
 import com.example.fooddelivery.product.detail.BoxWithRes
-import com.example.fooddelivery.product.detail.BoxWithResCalc
 import com.example.fooddelivery.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
 
@@ -42,7 +39,7 @@ fun AddToCard(
     val cartViewModel: CartViewModel = hiltViewModel()
     val state by cartViewModel.state.collectAsState()
 
-    val context = LocalContext.current
+    val totalAmount: Int by mutableStateOf(0)
 
     Column(
         modifier = Modifier.padding(start = 30.dp, top = 40.dp, end = 17.dp)
@@ -131,20 +128,26 @@ fun AddToCard(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Box(
-            modifier = Modifier
-                .size(width = 133.dp, height = 40.dp)
-                .clip(RoundedCornerShape(topEnd = 18.dp, topStart = 18.dp))
-                .align(Alignment.End)
-                .background(
-                    Yellow500
-                )
-                .clickable {
-                    navController.navigate(Destinations.CheckoutScreen)
-                },
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = "Checkout", style = Typography.body1, color = Color.White)
+        Row {
+
+            //Text(text = "Total Amount: ", )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Box(
+                modifier = Modifier
+                    .size(width = 133.dp, height = 40.dp)
+                    .clip(RoundedCornerShape(topEnd = 18.dp, topStart = 18.dp))
+                    .background(
+                        Yellow500
+                    )
+                    .clickable {
+                        navController.navigate(Destinations.CheckoutScreen)
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "Checkout", style = Typography.body1, color = Color.White)
+            }
         }
     }
 }

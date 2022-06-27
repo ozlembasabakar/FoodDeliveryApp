@@ -3,7 +3,6 @@ package com.example.fooddelivery.product.detail
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -20,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.fooddelivery.*
 import com.example.fooddelivery.R
+import com.example.fooddelivery.product.Product
 import com.example.fooddelivery.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
 
@@ -55,21 +54,10 @@ fun ProductDetailScreen(
                         rememberScrollState()
                     )
             ) {
-                DetailHeader(navController = navController,
+                DetailHeader(
+                    navController = navController,
                     productDetailViewModel = productDetailViewModel,
-                    product = product
-                    /*Product(
-                        category = product.category,
-                        product.count,
-                        product.description,
-                        product.id,
-                        product.image,
-                        product.price,
-                        product.rate,
-                        product.saleState,
-                        product.title,
-                        product.user)*/
-                )
+                    product = product)
 
                 Spacer(modifier = Modifier.height(32.dp))
 
@@ -121,7 +109,7 @@ fun ProductDetailScreen(
                         boxSize = 36,
                         iconSize = 14
                     ) {
-                        if (count.value >= 1) count.value--
+                        if (count.value >= 2) count.value--
                     }
 
                     Spacer(modifier = Modifier.width(14.dp))
@@ -213,7 +201,7 @@ fun DetailHeader(
                     .size(24.dp)
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.favorite),
+                    painter = painterResource(id = R.drawable.favorite_border),
                     contentDescription = "",
                     modifier = Modifier
                         .size(24.dp)
@@ -222,82 +210,6 @@ fun DetailHeader(
                                 product = product)
                         },
                     tint = IconColor
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun FoodDetailBox(data: Product) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(72.dp)
-            .clip(RoundedCornerShape(14.dp))
-            .background(CardItemBg)
-            .padding(15.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-
-            Row {
-                Image(
-                    painter = painterResource(id = R.drawable.calori),
-                    contentDescription = "Calorie",
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-
-                Text(
-                    text = "59585858 Kcal",
-                    style = Typography.body2,
-                    color = BlackTextColor
-                )
-            }
-
-            Divider(
-                color = DividerColor, modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
-
-            Row {
-                Image(
-                    painter = painterResource(id = R.drawable.star),
-                    contentDescription = "Star",
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-
-                Text(
-                    text = data.rate.toString(),
-                    style = Typography.body2,
-                    color = BlackTextColor
-                )
-            }
-
-            Divider(
-                color = DividerColor, modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
-
-            Row {
-                Image(
-                    painter = painterResource(id = R.drawable.schedule),
-                    contentDescription = "Time",
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-
-                Text(
-                    text = "300 Min.",
-                    style = Typography.body2,
-                    color = BlackTextColor
                 )
             }
         }

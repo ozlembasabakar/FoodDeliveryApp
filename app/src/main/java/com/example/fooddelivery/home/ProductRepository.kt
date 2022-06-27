@@ -1,10 +1,9 @@
 package com.example.fooddelivery.home
 
-import com.example.fooddelivery.Product
-import com.example.fooddelivery.data.api.ProductAPI
-import com.example.fooddelivery.data.api.Responseoglu
-import com.example.fooddelivery.data.customer.CustomerDao
-import com.google.firebase.auth.FirebaseUser
+import com.example.fooddelivery.product.Product
+import com.example.fooddelivery.product.ProductAPI
+import com.example.fooddelivery.product.Responseoglu
+import com.example.fooddelivery.customer.CustomerDao
 import retrofit2.Response
 import javax.inject.Inject
 

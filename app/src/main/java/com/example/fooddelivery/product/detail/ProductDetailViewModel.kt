@@ -3,7 +3,7 @@ package com.example.fooddelivery.product.detail
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fooddelivery.Product
+import com.example.fooddelivery.product.Product
 import com.example.fooddelivery.home.ProductRepository
 import com.example.fooddelivery.favorite.FavoriteItem
 import com.example.fooddelivery.favorite.FavoriteRepository

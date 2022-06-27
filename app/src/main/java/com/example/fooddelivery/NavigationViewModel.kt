@@ -2,6 +2,7 @@ package com.example.fooddelivery
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.fooddelivery.product.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject

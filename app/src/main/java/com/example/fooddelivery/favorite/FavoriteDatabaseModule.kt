@@ -1,6 +1,6 @@
 package com.example.fooddelivery.favorite
 
-import com.example.fooddelivery.data.customer.CustomerDatabase
+import com.example.fooddelivery.customer.CustomerDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

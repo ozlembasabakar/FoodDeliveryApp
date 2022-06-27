@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddelivery.cart.AddToCard
-import com.example.fooddelivery.data.customer.CustomerViewModel
+import com.example.fooddelivery.customer.CustomerViewModel
 import com.example.fooddelivery.favorite.AddToFavorite
 import com.example.fooddelivery.home.HomeScreen
 import com.example.fooddelivery.product.detail.ProductDetailScreen

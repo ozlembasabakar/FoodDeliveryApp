@@ -1,7 +1,6 @@
 package com.example.fooddelivery.cart
 
-import com.example.fooddelivery.Product
-import com.example.fooddelivery.data.api.ProductAPI
+import com.example.fooddelivery.product.Product
 import retrofit2.Response
 import javax.inject.Inject
 

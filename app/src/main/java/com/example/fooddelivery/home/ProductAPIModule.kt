@@ -1,7 +1,7 @@
 package com.example.fooddelivery.home
 
-import com.example.fooddelivery.data.api.APIConstants
-import com.example.fooddelivery.data.api.ProductAPI
+import com.example.fooddelivery.product.APIConstants
+import com.example.fooddelivery.product.ProductAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +35,7 @@ object ProductAPIModule {
 
     @Provides
     @Singleton
-    fun productAPI(builder: Retrofit.Builder): ProductAPI{
+    fun productAPI(builder: Retrofit.Builder): ProductAPI {
         return builder.build().create(ProductAPI::class.java)
     }
 }

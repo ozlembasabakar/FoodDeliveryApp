@@ -1,6 +1,5 @@
 package com.example.fooddelivery.cart
 
-import com.example.fooddelivery.data.api.ProductAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
