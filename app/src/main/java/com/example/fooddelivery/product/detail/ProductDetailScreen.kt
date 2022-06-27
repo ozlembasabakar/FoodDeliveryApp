@@ -33,7 +33,7 @@ fun ProductDetailScreen(
 
     val productDetailViewModel: ProductDetailViewModel = hiltViewModel()
 
-    val count = remember { mutableStateOf(0) }
+    val count = remember { mutableStateOf(1) }
     val context = LocalContext.current
 
     val product = getSelectedProduct()

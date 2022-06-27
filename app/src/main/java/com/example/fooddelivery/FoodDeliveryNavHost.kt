@@ -20,7 +20,7 @@ object Destinations {
     const val Login = "Login"
     const val SignUp = "SignUp"
     const val ForgotPassword = "ForgotPassword"
-    const val ProductList = "ProductList"
+    const val CheckoutScreen = "CheckoutScreen"
     const val AddCart = "AddCart"
     const val AddFavorite = "AddFavorite"
 
@@ -84,6 +84,10 @@ fun FoodDeliveryNavHost(customerViewModel: CustomerViewModel) {
                         navigationViewModel.getSelectedProduct()
                     }
                 )
+            }
+
+            composable(Destinations.CheckoutScreen){
+                CheckoutScreen(navController = navController)
             }
         }
     )

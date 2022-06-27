@@ -73,7 +73,7 @@ fun HomeScreen(
                     categories = listOf(
                         CategoryData(resId = R.drawable.crown_outlined, title = "Popular"),
                         CategoryData(resId = R.drawable.pizza, title = "Pizza"),
-                        CategoryData(resId = R.drawable.hamburger, title = "Burger"),
+                        CategoryData(resId = R.drawable.hamburger, title = "Burgers"),
                         CategoryData(resId = R.drawable.drinks, title = "Drinks"),
                     ),
                     selectedCategory = state.selectedCategory,

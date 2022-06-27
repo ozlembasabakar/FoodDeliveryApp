@@ -51,7 +51,9 @@ fun AddToCard(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier
+            .fillMaxSize()
+            .weight(1f)) {
             items(state) { product: Product ->
 
                 Row(
@@ -83,7 +85,7 @@ fun AddToCard(
                             fontSize = 16.sp,
                             modifier = Modifier
                                 .padding(bottom = 4.dp)
-                                .wrapContentSize()
+                                .width(180.dp)
                         )
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -96,7 +98,7 @@ fun AddToCard(
                             )
 
                             Text(
-                                text = product.price.toString(),
+                                text = if (product.count > 1) "${product.price} x ${product.count}" else "${product.price}",
                                 fontSize = 14.sp,
                                 color = BlackTextColor,
                                 modifier = Modifier
@@ -106,29 +108,43 @@ fun AddToCard(
 
                         Spacer(modifier = Modifier.size(12.dp))
                     }
-                    
+
                     Spacer(modifier = Modifier.weight(1f))
 
-                    Text(
-                        text = if (product.count > 1) "${product.price} x ${product.count}" else "${product.price}",
-                        fontSize = 16.sp,
-                        color = BlackTextColor
-                    )
-
                     Box(
-                        modifier = Modifier
-                            .size(36.dp),
+                        modifier = Modifier.padding(end = 16.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.remove),
-                            contentDescription = "", modifier = Modifier.clickable {
-                                cartViewModel.deleteProducts(product.id.toInt())
-                            }
+                            contentDescription = "", modifier = Modifier
+                                .size(26.dp)
+                                .clickable {
+                                    cartViewModel.deleteProducts(product.id.toInt())
+                                }
                         )
                     }
                 }
+
             }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Box(
+            modifier = Modifier
+                .size(width = 133.dp, height = 40.dp)
+                .clip(RoundedCornerShape(topEnd = 18.dp, topStart = 18.dp))
+                .align(Alignment.End)
+                .background(
+                    Yellow500
+                )
+                .clickable {
+                    navController.navigate(Destinations.CheckoutScreen)
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = "Checkout", style = Typography.body1, color = Color.White)
         }
     }
 }

@@ -52,29 +52,15 @@ fun ProductInfoCard(
             modifier = Modifier
                 .padding(top = 20.dp, start = 20.dp)
         ) {
-            Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(id = R.drawable.crown),
-                        contentDescription = "Crown",
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(11.dp))
-
-                    Text(
-                        text = "Best Selling",
-                        style = Typography.h1,
-                        fontSize = 14.sp,
-                        color = TextColor
-                    )
-                }
-            }
-            Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
+            Box(modifier = Modifier
+                .height(40.dp)
+                .width(150.dp),
+                contentAlignment = Alignment.CenterStart) {
                 Text(
                     text = "${product.title}",
                     color = BlackTextColor,
                     style = Typography.body1,
-                    fontSize = 18.sp
+                    fontSize = 17.sp
                 )
             }
             Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
@@ -82,7 +68,7 @@ fun ProductInfoCard(
                     Text(
                         text = "$",
                         style = Typography.body1,
-                        fontSize = 14.sp,
+                        fontSize = 13.sp,
                         color = Orange500
                     )
 
@@ -91,12 +77,14 @@ fun ProductInfoCard(
                     Text(
                         text = "${product.price}",
                         style = Typography.body1,
-                        fontSize = 20.sp,
+                        fontSize = 17.sp,
                         color = BlackTextColor
                     )
                 }
             }
         }
+
+        Spacer(modifier = Modifier.width(8.dp))
 
         Box(
             modifier = Modifier
@@ -105,10 +93,9 @@ fun ProductInfoCard(
                 .align(Alignment.BottomStart)
         )
         {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(horizontalAlignment = Alignment.Start) {
 
-                Row(verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween) {
+                Row(horizontalArrangement = Arrangement.Start) {
                     Icon(
                         painter = painterResource(id = R.drawable.star),
                         contentDescription = "Rating Star",
@@ -123,6 +110,28 @@ fun ProductInfoCard(
                         color = BlackTextColor
                     )
                 }
+
+                Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.CenterStart) {
+                    if (product.rate > 4.7) {
+
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(id = R.drawable.crown),
+                                contentDescription = "Crown",
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(11.dp))
+
+                            Text(
+                                text = "Best Selling",
+                                style = Typography.h1,
+                                fontSize = 14.sp,
+                                color = TextColor
+                            )
+                        }
+                    }
+                }
+
             }
         }
         //val imagePainter = rememberAsyncImagePainter(product.image)
