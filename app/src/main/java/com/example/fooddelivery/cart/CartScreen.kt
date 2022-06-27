@@ -39,8 +39,6 @@ fun AddToCard(
     val cartViewModel: CartViewModel = hiltViewModel()
     val state by cartViewModel.state.collectAsState()
 
-    val totalAmount: Int by mutableStateOf(0)
-
     Column(
         modifier = Modifier.padding(start = 30.dp, top = 40.dp, end = 17.dp)
     ) {
