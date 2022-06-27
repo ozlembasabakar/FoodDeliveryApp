@@ -132,6 +132,7 @@ fun Header(navController: NavController) {
                 navController.navigate(Destinations.AddFavorite)
             })
 
+/*
         Row {
             var columnWidth = 40.dp
             AnimatedVisibility(!visible) {
@@ -158,6 +159,7 @@ fun Header(navController: NavController) {
                     contentDescription = "Search", modifier = Modifier.size(24.dp))
             }
         }
+*/
         //BoxWithRes(resId = R.drawable.search, description = "Search")
 
     }
