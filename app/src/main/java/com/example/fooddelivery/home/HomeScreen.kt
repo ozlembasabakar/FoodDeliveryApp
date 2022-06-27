@@ -123,7 +123,8 @@ fun Header(navController: NavController) {
     ) {
         BoxWithRes(resId = R.drawable.bag, description = "Menu", modifier = Modifier.clickable {
             navController.navigate(Destinations.AddCart)
-        })
+        }
+        )
 
         BoxWithRes(resId = R.drawable.favorite_border,
             description = "Favorite",
@@ -207,7 +208,7 @@ fun OrderNowBox() {
                 }
                 )
             }
-            
+
             Spacer(modifier = Modifier.weight(1f))
 
             Image(
@@ -351,7 +352,7 @@ fun PopularItem(popularData: PopularData, navController: NavController) {
                 Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text = "$",
+                            text = "€",
                             style = Typography.body1,
                             fontSize = 14.sp,
                             color = Orange500

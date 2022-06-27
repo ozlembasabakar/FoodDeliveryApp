@@ -86,6 +86,8 @@ fun ProductInfoCard(
                         color = Orange500
                     )
 
+                    Spacer(modifier = Modifier.width(4.dp))
+
                     Text(
                         text = "${product.price}",
                         style = Typography.body1,
@@ -98,28 +100,12 @@ fun ProductInfoCard(
 
         Box(
             modifier = Modifier
+                .padding(start = 20.dp, bottom = 10.dp)
                 .fillMaxWidth()
                 .align(Alignment.BottomStart)
         )
         {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier
-                        .size(width = 60.dp, height = 40.dp)
-                        .clip(
-                            RoundedCornerShape(bottomStart = 18.dp, topEnd = 18.dp)
-                        )
-                        .background(Yellow500),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.add),
-                        contentDescription = "Add Button",
-                        modifier = Modifier.size(24.dp),
-                        tint = Color.White
-                    )
-                }
-                Spacer(modifier = Modifier.width(48.dp))
 
                 Row(verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween) {

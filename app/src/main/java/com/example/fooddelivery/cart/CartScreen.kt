@@ -25,12 +25,10 @@ import androidx.navigation.NavController
 import com.example.fooddelivery.Destinations
 import com.example.fooddelivery.Product
 import com.example.fooddelivery.R
+import com.example.fooddelivery.favorite.AddToFavoriteHeader
 import com.example.fooddelivery.product.detail.BoxWithRes
 import com.example.fooddelivery.product.detail.BoxWithResCalc
-import com.example.fooddelivery.ui.theme.BlackTextColor
-import com.example.fooddelivery.ui.theme.TextColor
-import com.example.fooddelivery.ui.theme.Typography
-import com.example.fooddelivery.ui.theme.Yellow500
+import com.example.fooddelivery.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
 
 
@@ -46,92 +44,88 @@ fun AddToCard(
 
     val context = LocalContext.current
 
-    Column {
+    Column(
+        modifier = Modifier.padding(start = 30.dp, top = 40.dp, end = 17.dp)
+    ) {
         AddToCartHeader(navController = navController)
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
-        LazyColumn {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(state) { product: Product ->
 
-                Column(
+                Row(
                     modifier = Modifier
-                        .padding(start = 30.dp, top = 40.dp, end = 30.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
+                        .padding(start = 4.dp, top = 4.dp, bottom = 4.dp, end = 4.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(Color.White),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    //TODO: show only design screen
-
-
-                    Row(
+                    GlideImage(
+                        imageModel = product.image,
+                        // Crop, Fit, Inside, FillHeight, FillWidth, None
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .padding(start = 4.dp, top = 4.dp, bottom = 4.dp, end = 4.dp)
-                            .fillMaxWidth()
+                            .padding(4.dp)
+                            .size(70.dp)
                             .clip(RoundedCornerShape(10.dp))
-                            .background(Color.White),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        GlideImage(
-                            imageModel = product.image,
-                            // Crop, Fit, Inside, FillHeight, FillWidth, None
-                            contentScale = ContentScale.Crop,
+
+                    )
+
+                    Spacer(modifier = Modifier.size(12.dp))
+
+                    Column {
+                        Text(
+                            text = product.title,
+                            color = BlackTextColor,
+                            fontSize = 16.sp,
                             modifier = Modifier
-                                .size(70.dp)
-                                .clip(RoundedCornerShape(10.dp))
+                                .padding(bottom = 4.dp)
+                                .wrapContentSize()
                         )
 
-/*
-            Image(
-                painter = painterResource(id = R.drawable.man),
-                contentDescription = "",
-                modifier = Modifier.size(70.dp))
-*/
-
-                        Spacer(modifier = Modifier.size(12.dp))
-
-                        Column {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = product.title,
-                                color = BlackTextColor,
-                                fontSize = 16.sp,
+                                text = "€",
+                                fontSize = 12.sp,
+                                color = Orange500,
                                 modifier = Modifier
-                                    .padding(bottom = 4.dp)
-                                    .size(width = 20.dp, height = 14.dp)
+                                    .padding(bottom = 4.dp, end = 4.dp)
                             )
 
                             Text(
                                 text = product.price.toString(),
                                 fontSize = 14.sp,
                                 color = BlackTextColor,
-                                style = Typography.h1,
-                                modifier = Modifier.size(width = 14.dp, height = 12.dp)
+                                modifier = Modifier
+                                    .padding(bottom = 4.dp)
                             )
-
-                            Spacer(modifier = Modifier.size(12.dp))
                         }
 
-                        Spacer(modifier = Modifier.weight(1f))
+                        Spacer(modifier = Modifier.size(12.dp))
+                    }
+                    
+                    Spacer(modifier = Modifier.weight(1f))
 
-                        Text(
-                            text = if (product.count > 1) "${product.price} * ${product.count}" else "${product.price}",
-                            fontSize = 10.sp,
-                            color = BlackTextColor
+                    Text(
+                        text = if (product.count > 1) "${product.price} x ${product.count}" else "${product.price}",
+                        fontSize = 16.sp,
+                        color = BlackTextColor
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.remove),
+                            contentDescription = "", modifier = Modifier.clickable {
+                                cartViewModel.deleteProducts(product.id.toInt())
+                            }
                         )
-
-                        //Spacer(modifier = Modifier.weight(1f))
-
-                        Box(
-                            modifier = Modifier
-                                .size(36.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.remove),
-                                contentDescription = "", modifier = Modifier.clickable {
-                                    cartViewModel.deleteProducts(product.id.toInt())
-                                }
-                            )
-                        }
                     }
                 }
             }
