@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +35,7 @@ import kotlin.math.absoluteValue
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun AddToCard(
-    navController: NavController
+    navController: NavController,
 ) {
 
     val cartViewModel: CartViewModel = hiltViewModel()
@@ -107,16 +109,25 @@ fun AddToCard(
                     Spacer(modifier = Modifier.weight(1f))
 
                     Box(
-                        modifier = Modifier.padding(end = 16.dp),
+                        modifier = Modifier
+                            .padding(end = 16.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication =
+                                rememberRipple(bounded = true),
+                                onClick = {
+                                    cartViewModel.deleteProducts(product.id.toInt())
+                                }
+                            ),
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.remove),
                             contentDescription = "", modifier = Modifier
                                 .size(26.dp)
-                                .clickable {
-                                    cartViewModel.deleteProducts(product.id.toInt())
-                                }
+                                .padding(4.dp)
+
                         )
                     }
                 }
@@ -138,9 +149,14 @@ fun AddToCard(
                     .background(
                         Yellow500
                     )
-                    .clickable {
-                        navController.navigate(Destinations.CheckoutScreen)
-                    },
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication =
+                        rememberRipple(bounded = true),
+                        onClick = {
+                            navController.navigate(Destinations.CheckoutScreen)
+                        }
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Text(text = "Checkout", style = Typography.body1, color = Color.White)
@@ -161,9 +177,16 @@ fun AddToCartHeader(navController: NavController) {
         BoxWithRes(
             resId = R.drawable.arrow_left,
             description = "Back",
-            modifier = Modifier.clickable {
-                navController.navigateUp()
-            }
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication =
+                    rememberRipple(bounded = true),
+                    onClick = {
+                        navController.navigateUp()
+                    }
+                )
         )
     }
 }

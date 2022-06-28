@@ -64,7 +64,6 @@ fun SignUpScreen(navController: NavController) {
     ) {
         Box(
             modifier = Modifier
-                //.height(200.dp)
                 .fillMaxWidth()
                 .clip(
                     RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
@@ -85,8 +84,6 @@ fun SignUpScreen(navController: NavController) {
                 )
             }
         }
-
-
 
         Spacer(modifier = Modifier.height(8.dp))
 

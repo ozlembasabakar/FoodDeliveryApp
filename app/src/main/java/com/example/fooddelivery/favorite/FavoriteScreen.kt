@@ -3,12 +3,14 @@ package com.example.fooddelivery.favorite
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -142,9 +144,16 @@ fun AddToFavoriteHeader(navController: NavController) {
         BoxWithRes(
             resId = R.drawable.arrow_left,
             description = "Back",
-            modifier = Modifier.clickable {
-                navController.navigateUp()
-            }
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication =
+                rememberRipple(bounded = true),
+                onClick = {
+                    navController.navigateUp()
+                }
+            )
         )
     }
 }

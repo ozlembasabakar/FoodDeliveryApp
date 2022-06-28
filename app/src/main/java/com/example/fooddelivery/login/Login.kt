@@ -3,6 +3,7 @@ package com.example.fooddelivery.ui.screens
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -12,9 +13,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -77,10 +80,16 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                     Column(
                         Modifier
                             .width(134.dp)
-                            .clickable {
-                                navController.currentBackStackEntry?.arguments
-                                navController.navigate(Destinations.Login)
-                            },
+                            .clip(RoundedCornerShape(10.dp))
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication =
+                                rememberRipple(bounded = true),
+                                onClick = {
+                                    navController.currentBackStackEntry?.arguments
+                                    navController.navigate(Destinations.Login)
+                                }
+                            ),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(text = "Log In")
@@ -96,10 +105,16 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                     Column(
                         Modifier
                             .width(134.dp)
-                            .clickable {
-                                navController.currentBackStackEntry?.arguments
-                                navController.navigate(Destinations.SignUp)
-                            },
+                            .clip(RoundedCornerShape(10.dp))
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication =
+                                rememberRipple(bounded = true),
+                                onClick = {
+                                    navController.currentBackStackEntry?.arguments
+                                    navController.navigate(Destinations.SignUp)
+                                }
+                            ),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(text = "Sign Up")
@@ -220,12 +235,19 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
             style = Typography.h4,
             color = Orange500,
             modifier = Modifier
-                .fillMaxWidth()
+                .wrapContentWidth()
                 .padding(start = 25.dp)
-                .clickable {
-                    navController.currentBackStackEntry?.arguments
-                    navController.navigate(Destinations.ForgotPassword)
-                }
+                .clip(RoundedCornerShape(10.dp))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication =
+                    rememberRipple(bounded = true),
+                    onClick = {
+                        navController.currentBackStackEntry?.arguments
+                        navController.navigate(Destinations.ForgotPassword)
+                    }
+                )
+                .align(Alignment.Start)
         )
 
         Spacer(modifier = Modifier.height(25.dp))
@@ -246,17 +268,6 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                             Log.w(TAG, "LOGIN FAILED!", it.exception)
                         }
                     }
-
-                // room'a kaydetme kısmı
-                /*
-                if (name.isNotEmpty() and surname.isNotEmpty() and email.isNotEmpty() and phone.isNotEmpty() and password.isNotEmpty()) {
-                    customerViewModel.insertCustomer((
-                            CustomerItem(name, surname, email, password, phone)
-                            ))
-                }
-*/
-
-
             },
             modifier = Modifier
                 .padding(start = 45.dp, end = 45.dp)

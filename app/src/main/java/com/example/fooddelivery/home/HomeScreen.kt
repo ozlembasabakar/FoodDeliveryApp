@@ -4,6 +4,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -12,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,10 +71,16 @@ fun HomeScreen(
                 CategoryList(
                     categories = listOf(
                         CategoryData(resId = R.drawable.all, category = "", title = "All"),
-                        CategoryData(resId = R.drawable.crown_outlined, category = "Popular", title = "Popular"),
+                        CategoryData(resId = R.drawable.crown_outlined,
+                            category = "Popular",
+                            title = "Popular"),
                         CategoryData(resId = R.drawable.pizza, category = "Pizza", title = "Pizza"),
-                        CategoryData(resId = R.drawable.hamburger, category = "Burgers", title = "Burger"),
-                        CategoryData(resId = R.drawable.drinks, category = "Drinks", title = "Drink"),
+                        CategoryData(resId = R.drawable.hamburger,
+                            category = "Burgers",
+                            title = "Burger"),
+                        CategoryData(resId = R.drawable.drinks,
+                            category = "Drinks",
+                            title = "Drink"),
                     ),
                     selectedCategory = state.selectedCategory,
                     onCategoryItemSelected = productViewModel::onCategoryItemSelected
@@ -93,10 +101,17 @@ fun HomeScreen(
             }
             items(state.listByCategory) { product: Product ->
                 ProductInfoCard(
-                    modifier = Modifier.clickable {
-                        onProductSelected(product)
-                        navController.navigate(Destinations.Detail)
-                    },
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(18.dp))
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication =
+                            rememberRipple(bounded = true),
+                            onClick = {
+                                onProductSelected(product)
+                                navController.navigate(Destinations.Detail)
+                            }
+                        ),
                     product = product
                 )
             }
@@ -115,16 +130,25 @@ fun Header(navController: NavController) {
             .fillMaxWidth()
             .padding(end = 13.dp)
     ) {
-        BoxWithRes(resId = R.drawable.bag, description = "Menu", modifier = Modifier.clickable {
-            navController.navigate(Destinations.AddCart)
-        }
+        BoxWithRes(resId = R.drawable.bag, description = "Menu", modifier = Modifier
+            .clip(RoundedCornerShape(10.dp))
+            .clickable {
+                navController.navigate(Destinations.AddCart)
+            }
         )
 
         BoxWithRes(resId = R.drawable.favorite_border,
             description = "Favorite",
-            modifier = Modifier.clickable {
-                navController.navigate(Destinations.AddFavorite)
-            }
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication =
+                rememberRipple(bounded = true),
+                onClick = {
+                    navController.navigate(Destinations.AddFavorite)
+                }
+            )
         )
     }
 }
@@ -202,9 +226,16 @@ fun CategoryList(
     ) {
         items(categories) { category ->
             CategoryItem(
-                modifier = Modifier.clickable {
-                    onCategoryItemSelected(category.category)
-                },
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication =
+                        rememberRipple(bounded = true),
+                        onClick = {
+                            onCategoryItemSelected(category.category)
+                        }
+                    ),
                 categoryData = category,
                 isSelected = category.category == selectedCategory
             )
@@ -245,5 +276,4 @@ fun CategoryItem(
             )
         }
     }
-
 }

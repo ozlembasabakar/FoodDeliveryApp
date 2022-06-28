@@ -2,15 +2,18 @@ package com.example.fooddelivery.product.detail
 
 import android.widget.Toast
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -78,7 +81,7 @@ fun ProductDetailScreen(
                     style = Typography.body1,
                     fontSize = 22.sp
                 )
-                
+
                 Spacer(modifier = Modifier.size(20.dp))
 
                 Row(
@@ -87,7 +90,7 @@ fun ProductDetailScreen(
                 )
                 {
                     Text(
-                        text = "€",
+                        text = "€ ",
                         style = Typography.body1,
                         fontSize = 14.sp,
                         color = Orange500
@@ -157,9 +160,15 @@ fun ProductDetailScreen(
                         .background(
                             Yellow500
                         )
-                        .clickable {
-                            productDetailViewModel.addProductToBag(product, quantity = count.value)
-                        },
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication =
+                            rememberRipple(bounded = true),
+                            onClick = {
+                                productDetailViewModel.addProductToBag(product,
+                                    quantity = count.value)
+                            }
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(text = "Add to card", style = Typography.body1, color = Color.White)
@@ -184,34 +193,41 @@ fun DetailHeader(
         BoxWithRes(
             resId = R.drawable.arrow_left,
             description = "Back",
-            modifier = Modifier.clickable {
-                navController.navigateUp()
-            }
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication =
+                    rememberRipple(bounded = true),
+                    onClick = {
+                        navController.navigateUp()
+                    }
+                )
         )
 
         Box(
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(10.dp))
-                .background(CardItemBg),
+                .background(CardItemBg)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication =
+                    rememberRipple(bounded = true),
+                    onClick = {
+                        productDetailViewModel.saveToDb(
+                            product = product)
+                    }
+                ),
             contentAlignment = Alignment.Center
         ) {
-            Box(
+            Icon(
+                painter = painterResource(id = R.drawable.favorite_border),
+                contentDescription = "",
                 modifier = Modifier
-                    .size(24.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.favorite_border),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clickable {
-                            productDetailViewModel.saveToDb(
-                                product = product)
-                        },
-                    tint = IconColor
-                )
-            }
+                    .size(24.dp),
+                tint = IconColor
+            )
         }
     }
 }

@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fooddelivery.cart.AddToCard
 import com.example.fooddelivery.customer.CustomerViewModel
 import com.example.fooddelivery.favorite.AddToFavorite
+import com.example.fooddelivery.forgotPassword.ForgotPasswordScreen
 import com.example.fooddelivery.home.HomeScreen
 import com.example.fooddelivery.product.detail.ProductDetailScreen
 import com.example.fooddelivery.ui.screens.*
