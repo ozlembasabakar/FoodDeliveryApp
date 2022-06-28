@@ -35,7 +35,7 @@ fun FoodDeliveryNavHost(customerViewModel: CustomerViewModel) {
 
     NavHost(
         navController = navController,
-        startDestination = Destinations.Home,
+        startDestination = Destinations.Login,
         builder = {
 
             composable(Destinations.Login) {
