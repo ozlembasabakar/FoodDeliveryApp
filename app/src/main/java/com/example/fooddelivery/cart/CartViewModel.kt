@@ -18,8 +18,8 @@ class CartViewModel @Inject constructor(
     private val customerRepository: CustomerRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(emptyList<Product>())
-    val state: StateFlow<List<Product>>
+    private val _state = MutableStateFlow(CartViewState(emptyList<Product>()))
+    val state: StateFlow<CartViewState>
         get() = _state
 
     init {
@@ -29,7 +29,7 @@ class CartViewModel @Inject constructor(
     private fun fetchProducts() {
         viewModelScope.launch {
             val products = cartRepository.getProducts(customerRepository.getCustomerFromRoom())
-            _state.value = products
+            _state.value = _state.value.copy(product = products)
         }
     }
 

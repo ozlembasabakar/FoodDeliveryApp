@@ -70,10 +70,7 @@ fun FoodDeliveryNavHost(customerViewModel: CustomerViewModel) {
 
             composable(Destinations.AddCart) {
                 AddToCard(
-                    navController = navController,
-                    getSelectedProduct = {
-                        navigationViewModel.getSelectedProduct()
-                    }
+                    navController = navController
                 )
             }
 

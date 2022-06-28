@@ -27,13 +27,13 @@ import com.example.fooddelivery.R
 import com.example.fooddelivery.product.detail.BoxWithRes
 import com.example.fooddelivery.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
+import kotlin.math.absoluteValue
 
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun AddToCard(
-    navController: NavController,
-    getSelectedProduct: () -> Product?,
+    navController: NavController
 ) {
 
     val cartViewModel: CartViewModel = hiltViewModel()
@@ -49,7 +49,7 @@ fun AddToCard(
         LazyColumn(modifier = Modifier
             .fillMaxSize()
             .weight(1f)) {
-            items(state) { product: Product ->
+            items(state.product) { product: Product ->
 
                 Row(
                     modifier = Modifier
@@ -120,15 +120,14 @@ fun AddToCard(
                         )
                     }
                 }
-
             }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
 
-            //Text(text = "Total Amount: ", )
+            Text(text = "Total Amount:  ${state.totalAmount()}€")
 
             Spacer(modifier = Modifier.weight(1f))
 

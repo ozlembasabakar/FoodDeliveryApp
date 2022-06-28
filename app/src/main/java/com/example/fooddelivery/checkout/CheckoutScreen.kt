@@ -57,7 +57,7 @@ fun CheckoutScreen(
                     Yellow500
                 )
                 .clickable {
-                    for (item in cartViewModel.state.value) {
+                    for (item in state.product) {
                         cartViewModel.deleteProducts(item.id.toInt())
                     }
                     navController.navigate(Destinations.Home)
