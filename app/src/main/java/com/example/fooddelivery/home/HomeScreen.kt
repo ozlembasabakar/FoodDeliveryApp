@@ -71,16 +71,10 @@ fun HomeScreen(
                 CategoryList(
                     categories = listOf(
                         CategoryData(resId = R.drawable.all, category = "", title = "All"),
-                        CategoryData(resId = R.drawable.crown_outlined,
-                            category = "Popular",
-                            title = "Popular"),
+                        CategoryData(resId = R.drawable.crown_outlined, category = "Popular", title = "Popular"),
                         CategoryData(resId = R.drawable.pizza, category = "Pizza", title = "Pizza"),
-                        CategoryData(resId = R.drawable.hamburger,
-                            category = "Burgers",
-                            title = "Burger"),
-                        CategoryData(resId = R.drawable.drinks,
-                            category = "Drinks",
-                            title = "Drink"),
+                        CategoryData(resId = R.drawable.hamburger, category = "Burgers", title = "Burger"),
+                        CategoryData(resId = R.drawable.drinks, category = "Drinks", title = "Drink"),
                     ),
                     selectedCategory = state.selectedCategory,
                     onCategoryItemSelected = productViewModel::onCategoryItemSelected
@@ -181,7 +175,7 @@ fun OrderNowBox() {
                         )
                     ) {
                         append(
-                            "The Fastest In\n" + "Delivery "
+                            "The Quickest\n" + "Delivery Of "
                         )
                     }
 

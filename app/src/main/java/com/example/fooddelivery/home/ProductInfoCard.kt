@@ -38,21 +38,14 @@ fun ProductInfoCard(
                 .clip(
                     RoundedCornerShape(18.dp)
                 )
-                //.clickable {
-                // = Bundle().apply {
-                //     putParcelable(Destinations.DetailArgs.foodData, popularData)
-                //   }
-                // navController.navigate(Destinations.Detail)
-                //}
                 .background(CardItemBg)
         )
-
         Column(
             modifier = Modifier
                 .padding(top = 20.dp, start = 20.dp)
         ) {
             Box(modifier = Modifier
-                .height(40.dp)
+                .wrapContentHeight()
                 .width(150.dp),
                 contentAlignment = Alignment.CenterStart) {
                 Text(
@@ -62,7 +55,10 @@ fun ProductInfoCard(
                     fontSize = 17.sp
                 )
             }
-            Box(modifier = Modifier.height(40.dp), contentAlignment = Alignment.Center) {
+
+            Box(modifier = Modifier.wrapContentHeight(),
+                contentAlignment = Alignment.Center
+            ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "$",
@@ -158,7 +154,6 @@ fun ProductInfoCard(
         )
 */
     }
-
     Spacer(modifier = Modifier.height(20.dp))
 }
 
