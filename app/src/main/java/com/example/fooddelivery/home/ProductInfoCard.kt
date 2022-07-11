@@ -14,8 +14,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.fooddelivery.product.Product
 import com.example.fooddelivery.R
+import com.example.fooddelivery.product.Product
 import com.example.fooddelivery.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
 
@@ -129,11 +129,9 @@ fun ProductInfoCard(
 
             }
         }
-        //val imagePainter = rememberAsyncImagePainter(product.image)
 
         GlideImage(
             imageModel = product.image,
-            // Crop, Fit, Inside, FillHeight, FillWidth, None
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
@@ -142,17 +140,6 @@ fun ProductInfoCard(
                     Alignment.CenterEnd
                 )
         )
-/*
-        Image(
-            painter = painterResource(id = product.image),
-            contentDescription = "",
-            modifier = Modifier
-                .size(156.dp)
-                .align(
-                    Alignment.CenterEnd
-                )
-        )
-*/
     }
     Spacer(modifier = Modifier.height(20.dp))
 }

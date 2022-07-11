@@ -5,5 +5,5 @@ import androidx.annotation.DrawableRes
 data class CategoryData(
     @DrawableRes val resId: Int,
     val category: String,
-    val title: String
+    val title: String,
 )

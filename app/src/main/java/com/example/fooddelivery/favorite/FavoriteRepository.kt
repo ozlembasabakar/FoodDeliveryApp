@@ -12,7 +12,6 @@ class FavoriteRepository @Inject constructor(private val favoriteDao: FavoriteDa
 
     fun insertFavorite(addFavorite: FavoriteItem) {
         coroutineScope.launch(Dispatchers.IO) {
-            //favoriteDao.deleteTable()
             favoriteDao.insertFavorite(addFavorite)
         }
     }

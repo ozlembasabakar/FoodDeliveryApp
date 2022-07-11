@@ -17,7 +17,7 @@ class NavigationViewModel @Inject constructor() : ViewModel() {
         Log.d("Ozlemwashere", "$product")
     }
 
-    fun getSelectedProduct() : Product? {
+    fun getSelectedProduct(): Product? {
         return selectedProduct.value
     }
 }

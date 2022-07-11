@@ -48,7 +48,6 @@ fun ProductDetailScreen(
         contentAlignment = Alignment.TopCenter
     ) {
         if (product != null) {
-            //TODO: show only design screen
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -137,7 +136,6 @@ fun ProductDetailScreen(
                         if (count.value <= 9) count.value++ else Toast.makeText(context,
                             "You can order up to 10",
                             Toast.LENGTH_LONG).show()
-
                     }
                 }
 
@@ -253,7 +251,6 @@ fun BoxWithResCalc(
             bottom = 8.dp
         ),
         modifier = Modifier.size(boxSize!!.dp)
-
     ) {
         Icon(
             painter = painterResource(id = resId),

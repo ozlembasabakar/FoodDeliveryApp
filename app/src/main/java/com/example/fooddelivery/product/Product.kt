@@ -15,5 +15,5 @@ data class Product(
     val rate: Double,
     val saleState: Int,
     val title: String,
-    val user: String
-): Parcelable
+    val user: String,
+) : Parcelable

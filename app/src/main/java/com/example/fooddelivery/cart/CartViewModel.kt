@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CartViewModel @Inject constructor(
     private val cartRepository: CartRepository,
-    private val customerRepository: CustomerRepository
+    private val customerRepository: CustomerRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CartViewState(emptyList<Product>()))

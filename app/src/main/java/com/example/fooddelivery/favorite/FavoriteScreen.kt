@@ -61,13 +61,11 @@ fun AddToFavorite(
                 ) {
                     GlideImage(
                         imageModel = product.image,
-                        // Crop, Fit, Inside, FillHeight, FillWidth, None
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .padding(4.dp)
                             .size(70.dp)
                             .clip(RoundedCornerShape(10.dp))
-
                     )
 
                     Spacer(modifier = Modifier.size(12.dp))
@@ -147,13 +145,13 @@ fun AddToFavoriteHeader(navController: NavController) {
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
                 .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication =
-                rememberRipple(bounded = true),
-                onClick = {
-                    navController.navigateUp()
-                }
-            )
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication =
+                    rememberRipple(bounded = true),
+                    onClick = {
+                        navController.navigateUp()
+                    }
+                )
         )
     }
 }

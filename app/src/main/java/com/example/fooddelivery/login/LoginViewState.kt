@@ -19,14 +19,8 @@ data class LoginViewState(
     }
 
     val isPasswordValid by derivedStateOf {
-        val passwordRegex = "(?=.*\\d)(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^!/.&+=]).{8,}".toRegex()
+        val passwordRegex =
+            "(?=.*\\d)(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^!/.&+=]).{8,}".toRegex()
         passwordRegex.matches(password.text.value)
-    }
-
-    @Composable
-    fun checkVisibility(): Boolean {
-        var itemVisibility by rememberSaveable { mutableStateOf(false) }
-
-        return itemVisibility
     }
 }

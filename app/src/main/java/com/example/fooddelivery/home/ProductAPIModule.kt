@@ -19,7 +19,7 @@ object ProductAPIModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit.Builder{
+    fun provideRetrofit(): Retrofit.Builder {
         val logging = HttpLoggingInterceptor()
 
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)

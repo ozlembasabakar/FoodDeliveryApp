@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -35,9 +36,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.fooddelivery.Destinations
+import com.example.fooddelivery.login.LoginViewModel
 import com.example.fooddelivery.login.User
 import com.example.fooddelivery.ui.theme.*
-import com.example.fooddelivery.login.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -61,7 +62,6 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
     {
         Box(
             modifier = Modifier
-                //.height(200.dp)
                 .fillMaxWidth()
                 .clip(
                     RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
@@ -114,7 +114,8 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                                     navController.currentBackStackEntry?.arguments
                                     navController.navigate(Destinations.SignUp)
                                 }
-                            ),
+                            )
+                            .testTag("signUp"),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(text = "Sign Up")
@@ -131,7 +132,6 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
         }
 
         Card(
-            //text = "hello",
             modifier = Modifier
                 .padding(start = 25.dp, end = 25.dp, top = 50.dp)
                 .fillMaxWidth()
@@ -198,7 +198,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                     )
                 },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag("password"),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done
@@ -252,7 +252,6 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
 
         Spacer(modifier = Modifier.height(25.dp))
 
-
         Button(
             onClick = {
                 auth.signInWithEmailAndPassword(viewStateLogin!!.email.text.value,
@@ -273,9 +272,11 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 .padding(start = 45.dp, end = 45.dp)
                 .fillMaxWidth()
                 .height(56.dp)
-                .clip(RoundedCornerShape(30.dp)),
+                .clip(RoundedCornerShape(30.dp))
+                .testTag("loginButton"),
             colors = ButtonDefaults.buttonColors(backgroundColor = Yellow500),
             enabled = viewStateLogin!!.isValidEmail && viewStateLogin!!.isPasswordValid,
+
         ) {
             Text(
                 text = "Login", color = Color.White, style = Typography.body1

@@ -35,6 +35,7 @@ import com.example.fooddelivery.ui.composables.CustomOutlinedTextField
 import com.example.fooddelivery.ui.theme.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fooddelivery.Destinations
 import com.example.fooddelivery.MainActivity
@@ -45,8 +46,6 @@ import com.google.firebase.auth.FirebaseUser
 
 @Composable
 fun SignUpScreen(navController: NavController) {
-    // val contactViewModel: ContactViewModel = viewModel()
-    // ViewModelProvider().get(ContactViewModel::class.java)
 
     val contactViewModel: ContactViewModel = viewModel()
 
@@ -74,7 +73,9 @@ fun SignUpScreen(navController: NavController) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(top = 20.dp)
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .testTag("register")
             ) {
                 Text(
                     text = "Register",
@@ -183,7 +184,7 @@ fun SignUpScreen(navController: NavController) {
                 label = "Confirmed Password",
                 showError = !viewState!!.isValidConfirmedPassword && viewState!!.showValidationError,
                 errorMessage = when {
-                    !viewState!!.isValidConfirmedPassword -> "Must mix capital and non-capital letters, a number, spacial character and min. length of 8"
+                    !viewState!!.isValidConfirmedPassword -> "Passwords must be equal"
                     else -> "Passwords must be equal"
                 },
                 isPasswordField = true,
@@ -267,7 +268,8 @@ fun SignUpScreen(navController: NavController) {
 
                 ClickableText(
                     text = annotatedText,
-                    onClick = { navController.navigate(Destinations.Login)
+                    onClick = {
+                        navController.navigate(Destinations.Login)
                     },
                 )
             }

@@ -14,7 +14,10 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,11 +31,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.fooddelivery.Destinations
-import com.example.fooddelivery.product.Product
 import com.example.fooddelivery.R
+import com.example.fooddelivery.product.Product
+import com.example.fooddelivery.product.ProductViewModel
 import com.example.fooddelivery.product.detail.BoxWithRes
 import com.example.fooddelivery.ui.theme.*
-import com.example.fooddelivery.product.ProductViewModel
 
 @Composable
 fun HomeScreen(

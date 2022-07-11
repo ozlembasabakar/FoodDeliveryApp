@@ -14,8 +14,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductDetailViewModel @Inject constructor(
     private val productRepository: ProductRepository,
-    val favoriteRepository: FavoriteRepository
-    ) : ViewModel() {
+    val favoriteRepository: FavoriteRepository,
+) : ViewModel() {
 
     fun addProductToBag(product: Product, quantity: Int) {
         viewModelScope.launch {

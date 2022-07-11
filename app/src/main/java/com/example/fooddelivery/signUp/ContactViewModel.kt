@@ -13,7 +13,7 @@ class ContactViewModel : ViewModel() {
 
     fun register(
         onUserRegistered: () -> Unit,
-        onError: () -> Unit
+        onError: () -> Unit,
     ) {
         if (viewState.value!!.isValidData) {
             addUserToFirebase(onUserRegistered, onError)
@@ -25,7 +25,7 @@ class ContactViewModel : ViewModel() {
 
     private fun addUserToFirebase(
         onUserRegistered: () -> Unit,
-        onError: () -> Unit
+        onError: () -> Unit,
     ) {
         val contact = hashMapOf(
             "Name" to viewState.value!!.name.text.value,
@@ -39,18 +39,6 @@ class ContactViewModel : ViewModel() {
         db.collection("contacts").add(contact)
             .addOnSuccessListener { documentReference ->
                 onUserRegistered()
-
-/*
-                if (viewState.value!!.isValidData) {
-                    customerViewModel.insertCustomer((
-                            CustomerItem(viewState.value!!.name.text.value,
-                                viewState.value!!.surname.text.value,
-                                viewState.value!!.phoneNumber.text.value,
-                                viewState.value!!.email.text.value,
-                                viewState.value!!.password.text.value)
-                            ))
-                }
-*/
             }
             .addOnFailureListener { e ->
                 onError()

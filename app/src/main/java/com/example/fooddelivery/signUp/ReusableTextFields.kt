@@ -30,7 +30,7 @@ fun CustomOutlinedTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     showError: Boolean = false,
-    errorMessage: String = ""
+    errorMessage: String = "",
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),

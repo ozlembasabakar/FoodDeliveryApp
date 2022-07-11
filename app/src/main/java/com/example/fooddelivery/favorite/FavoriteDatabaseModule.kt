@@ -14,14 +14,4 @@ class FavoriteDatabaseModule {
     fun provideFavoriteDao(favoriteDatabase: CustomerDatabase): FavoriteDao {
         return favoriteDatabase.favoriteDao()
     }
-
-/*    @Provides
-    @Singleton
-    fun provideFavoriteDatabase(@ApplicationContext appContext: Context): FavoriteDatabase {
-        return Room.databaseBuilder(
-            appContext,
-            FavoriteDatabase::class.java,
-            "FoodDelivery"
-        ).build()
-    }*/
 }

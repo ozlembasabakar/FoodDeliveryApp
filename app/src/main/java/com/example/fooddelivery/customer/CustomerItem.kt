@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class CustomerItem(
 
     @ColumnInfo(name = "name")
-    val name:String?,
+    val name: String?,
 
     @ColumnInfo(name = "surname")
     val surname: String?,

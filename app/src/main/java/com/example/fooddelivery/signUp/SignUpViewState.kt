@@ -17,7 +17,7 @@ data class SignUpViewState(
     val confirmedPassword: TextInputState = TextInputState(),
     val isPasswordVisible: Boolean = false,
     val showValidationError: Boolean = false,
-    var auth: FirebaseAuth = Firebase.auth
+    var auth: FirebaseAuth = Firebase.auth,
 ) {
 
     val isValidName by derivedStateOf {

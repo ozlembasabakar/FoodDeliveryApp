@@ -23,14 +23,6 @@ class LoginViewModel @Inject constructor(
     private val _viewStateLogin = MutableLiveData<LoginViewState>(LoginViewState())
     val viewStateLogin: LiveData<LoginViewState> = _viewStateLogin
 
-    fun smh() {
-
-        viewModelScope.launch {
-            val customer = customerRepository.getCustomer()
-            Log.d("Customer", customer.toString())
-        }
-    }
-
     fun togglePasswordVisibilityLogin() {
         val currentVisibility = _viewStateLogin.value!!.isPasswordVisible
         _viewStateLogin.value =

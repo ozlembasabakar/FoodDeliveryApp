@@ -6,12 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.fooddelivery.cart.AddToCard
-import com.example.fooddelivery.customer.CustomerViewModel
 import com.example.fooddelivery.favorite.AddToFavorite
 import com.example.fooddelivery.forgotPassword.ForgotPasswordScreen
 import com.example.fooddelivery.home.HomeScreen
 import com.example.fooddelivery.product.detail.ProductDetailScreen
-import com.example.fooddelivery.ui.screens.*
+import com.example.fooddelivery.ui.screens.LoginScreen
+import com.example.fooddelivery.ui.screens.SignUpScreen
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -28,7 +28,7 @@ object Destinations {
 }
 
 @Composable
-fun FoodDeliveryNavHost(customerViewModel: CustomerViewModel) {
+fun FoodDeliveryNavHost() {
 
     val navigationViewModel: NavigationViewModel = hiltViewModel()
 
@@ -84,10 +84,9 @@ fun FoodDeliveryNavHost(customerViewModel: CustomerViewModel) {
                 )
             }
 
-            composable(Destinations.CheckoutScreen){
+            composable(Destinations.CheckoutScreen) {
                 CheckoutScreen(navController = navController)
             }
         }
     )
-
 }

@@ -3,7 +3,7 @@ package com.example.fooddelivery.cart
 import com.example.fooddelivery.product.Product
 
 data class CartViewState(
-    val product: List<Product>
+    val product: List<Product>,
 ) {
 
     fun totalAmount(): Double {
