@@ -10,8 +10,8 @@ import com.example.fooddelivery.favorite.AddToFavorite
 import com.example.fooddelivery.forgotPassword.ForgotPasswordScreen
 import com.example.fooddelivery.home.HomeScreen
 import com.example.fooddelivery.product.detail.ProductDetailScreen
-import com.example.fooddelivery.ui.screens.LoginScreen
-import com.example.fooddelivery.ui.screens.SignUpScreen
+import com.example.fooddelivery.login.LoginScreen
+import com.example.fooddelivery.signUp.SignUpScreen
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 

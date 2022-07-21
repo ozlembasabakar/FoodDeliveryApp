@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.fooddelivery.product.Product
 import com.example.fooddelivery.R
+import com.example.fooddelivery.product.Product
 import com.example.fooddelivery.product.detail.BoxWithRes
 import com.example.fooddelivery.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage

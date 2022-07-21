@@ -1,4 +1,4 @@
-package com.example.fooddelivery.ui.composables
+package com.example.fooddelivery.signUp
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions

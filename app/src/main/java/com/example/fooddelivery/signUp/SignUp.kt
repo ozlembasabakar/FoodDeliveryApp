@@ -1,4 +1,4 @@
-package com.example.fooddelivery.ui.screens
+package com.example.fooddelivery.signUp
 
 import android.content.Intent
 import android.widget.Toast
@@ -31,7 +31,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.fooddelivery.ui.composables.CustomOutlinedTextField
 import com.example.fooddelivery.ui.theme.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -39,7 +38,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fooddelivery.Destinations
 import com.example.fooddelivery.MainActivity
-import com.example.fooddelivery.signUp.ContactViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 

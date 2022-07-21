@@ -8,11 +8,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.fooddelivery.customer.CustomerItem
 import com.example.fooddelivery.customer.CustomerRepository
 import com.example.fooddelivery.favorite.FavoriteRepository
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +26,8 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
     private val _viewStateLogin = MutableLiveData<LoginViewState>(LoginViewState())
     val viewStateLogin: LiveData<LoginViewState> = _viewStateLogin
+
+    val loadingState = MutableStateFlow(LoadingState.IDLE)
 
     fun togglePasswordVisibilityLogin() {
         val currentVisibility = _viewStateLogin.value!!.isPasswordVisible
@@ -69,6 +75,16 @@ class LoginViewModel @Inject constructor(
     fun resetFavorites() {
         viewModelScope.launch {
             favoriteRepository.deleteFavorites()
+        }
+    }
+
+    fun signWithCredential(credential: AuthCredential) = viewModelScope.launch {
+        try {
+            loadingState.emit(LoadingState.LOADING)
+            Firebase.auth.signInWithCredential(credential).await()
+            loadingState.emit(LoadingState.LOADED)
+        } catch (e: Exception) {
+            loadingState.emit(LoadingState.error(e.localizedMessage))
         }
     }
 }

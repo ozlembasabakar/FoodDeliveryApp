@@ -1,15 +1,7 @@
 package com.example.fooddelivery
 
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import androidx.test.core.app.ActivityScenario
-import com.example.fooddelivery.ui.screens.LoginScreen
-import com.example.fooddelivery.ui.theme.FoodDeliveryTheme
-import com.squareup.okhttp.Route
-import kotlinx.coroutines.delay
 import org.junit.Rule
 import org.junit.Test
 
