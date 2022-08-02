@@ -12,6 +12,8 @@ Used technologies:
 - Hilt
 - UI test
 
+<img src="https://user-images.githubusercontent.com/53402156/182396460-f0d7c843-618c-4c80-bd15-ff2caaf24803.gif" width=20% height=20%>  
+
 ## Pages
 
 ### Login - Register - Forgot Password
@@ -105,20 +107,3 @@ onClick = {
 }
 ```
 <img src="https://user-images.githubusercontent.com/53402156/182393934-9ca8754a-a473-4d67-8b3c-3f2143044f1d.jpg" width=20% height=20%>  <img src="https://user-images.githubusercontent.com/53402156/182393936-815da436-3324-414c-9b07-257f5fb50d08.jpg" width=20% height=20%>  <img src="https://user-images.githubusercontent.com/53402156/182393930-ff50aecb-35fc-48d2-b023-09045cd769ac.jpg" width=20% height=20%>  <img src="https://user-images.githubusercontent.com/53402156/182393940-62731648-103b-43e4-8862-c2371caefd40.jpg" width=20% height=20%>  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
