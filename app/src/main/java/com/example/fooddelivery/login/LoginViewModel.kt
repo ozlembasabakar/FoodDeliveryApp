@@ -1,33 +1,43 @@
 package com.example.fooddelivery.login
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import com.example.fooddelivery.Destinations
 import com.example.fooddelivery.customer.CustomerItem
 import com.example.fooddelivery.customer.CustomerRepository
 import com.example.fooddelivery.favorite.FavoriteRepository
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import java.util.logging.Handler
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     val customerRepository: CustomerRepository,
-    val favoriteRepository: FavoriteRepository
+    val favoriteRepository: FavoriteRepository,
 ) : ViewModel() {
     private val _viewStateLogin = MutableLiveData<LoginViewState>(LoginViewState())
     val viewStateLogin: LiveData<LoginViewState> = _viewStateLogin
 
-    val loadingState = MutableStateFlow(LoadingState.IDLE)
 
     fun togglePasswordVisibilityLogin() {
         val currentVisibility = _viewStateLogin.value!!.isPasswordVisible
@@ -75,16 +85,6 @@ class LoginViewModel @Inject constructor(
     fun resetFavorites() {
         viewModelScope.launch {
             favoriteRepository.deleteFavorites()
-        }
-    }
-
-    fun signWithCredential(credential: AuthCredential) = viewModelScope.launch {
-        try {
-            loadingState.emit(LoadingState.LOADING)
-            Firebase.auth.signInWithCredential(credential).await()
-            loadingState.emit(LoadingState.LOADED)
-        } catch (e: Exception) {
-            loadingState.emit(LoadingState.error(e.localizedMessage))
         }
     }
 }
